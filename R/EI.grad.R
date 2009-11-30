@@ -15,8 +15,7 @@ EI.grad <- function(x, model, envir) {
 		covStruct <- model@covariance
 		c <- envir$c # Rajout David 15 Avril 2009
 		Tinv.c<-envir$Tinv.c # Rajout David 15 Avril 2009
-
-		dc <- covVector.dx(as.numeric(x), X, covStruct, c)	
+		dc <- covVector.dx(object=covStruct, x=as.numeric(x), X=X, c=c)
 		W <- backsolve(t(T), dc, upper.tri=FALSE)
 		kriging.mean.grad <- t(W)%*%z
 	

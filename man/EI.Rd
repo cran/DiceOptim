@@ -28,7 +28,7 @@ EI(x, model, type="UK", envir=NULL)
   where X is the current design of experiments and Y is the random process assumed to have generated the objective function y.
 }
 
-\author{David Ginsbourger (Stochastic Characterization Hydrogeology Group, University of Neuchatel, Switzerland)  
+\author{David Ginsbourger (Departement of Mathematics and Statistics, University of Berne, Switzerland)   
 
 Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).}
 

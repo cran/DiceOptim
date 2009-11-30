@@ -12,18 +12,18 @@ Sequential and parallel Kriging-based optimization methods relying on the 1-poin
 \tabular{ll}{
 Package: \tab DiceOptim\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab November 2009\cr
+Version: \tab 1.2\cr
+Date: \tab May 2011\cr
 License: \tab GPL-3\cr
 }
 }
 
-\author{David Ginsbourger (Stochastic Characterization Hydrogeology Group, University of Neuchatel, Switzerland)  
+\author{David Ginsbourger (Departement of Mathematics and Statistics, University of Berne, Switzerland)  
 
 Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).}
 
 \note{
-This work was conducted within the frame of the DICE (Deep Inside Computer Experiments) Consortium between ARMINES, Renault, EDF, IRSN, ONERA and TOTAL S.A. \url{http://www.dice-consortium.fr/}.
+This work is a follow-up of DiceOptim 1.0, which was conducted within the frame of the DICE (Deep Inside Computer Experiments) Consortium between ARMINES, Renault, EDF, IRSN, ONERA and TOTAL S.A. (http://www.dice-consortium.fr/).
 
 The authors would like to thank Yves Deville for his precious advices
 in R programming and packaging, as well as the DICE members for useful feedbacks, and especially Yann Richet (IRSN) for numerous discussions concerning the user-friendliness of this package.

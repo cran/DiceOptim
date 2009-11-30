@@ -55,7 +55,7 @@ Here, the EI maximization is also possible with any linear trend. However, note 
 when the trend is a constant since it is the only case where the analytical gradient is available. }
 
 
-\author{David Ginsbourger (Stochastic Characterization Hydrogeology Group, University of Neuchatel, Switzerland)  
+\author{David Ginsbourger (Departement of Mathematics and Statistics, University of Berne, Switzerland)   
 
 Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).}
 

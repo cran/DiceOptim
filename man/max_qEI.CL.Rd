@@ -55,7 +55,7 @@ max_qEI.CL(model, npoints, L, lower, upper, parinit=NULL, control=NULL)
 }
 
 
-\author{David Ginsbourger (Stochastic Characterization Hydrogeology Group, University of Neuchatel, Switzerland)  
+\author{David Ginsbourger (Departement of Mathematics and Statistics, University of Berne, Switzerland)  
 
 Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).}
 
