@@ -1,0 +1,9 @@
+import("DiceKriging",
+	"rgenoud", "MASS")
+
+export( EI,EI.grad,max_EI,
+	EGO.nsteps,
+	max_qEI.CL,
+	CL.nsteps, 
+	qEI)
+
