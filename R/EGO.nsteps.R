@@ -17,6 +17,7 @@ EGO.nsteps <-function(model, fun, nsteps, lower, upper, parinit=NULL, control=NU
 		model@y<-rbind(model@y, fun(t(oEGO$par)))
 		
 		kmcontrol$parinit <- covparam2vect(model@covariance)
+    kmcontrol$control$trace=FALSE
 		
 		if (model@param.estim) {
 			model <- km(formula=model@trend.formula, design=model@X, response=model@y, 

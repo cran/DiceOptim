@@ -103,6 +103,7 @@ M. Schonlau (1997), \emph{Computer experiments and global optimization}, Ph.D. t
 
 \examples{
 
+set.seed(123)
 ###############################################################
 ### 	10 ITERATIONS OF EGO ON THE BRANIN FUNCTION, 	   ####
 ###	 STARTING FROM A 9-POINTS FACTORIAL DESIGN         ####
@@ -121,7 +122,7 @@ names(response.branin) <- "y"
 
 # model identification
 fitted.model1 <- km(~1, design=design.fact, response=response.branin, 
-covtype="gauss", control=list(pop.size=50), parinit=c(0.5, 0.5))
+covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 
 # EGO n steps
 library(rgenoud)
@@ -164,7 +165,7 @@ names(response.goldsteinPrice) <- "y"
 # model identification
 fitted.model1 <- km(~1, design=design.fact, response=response.goldsteinPrice, 
 covtype="gauss", control=list(pop.size=50, max.generations=50, 
-wait.generations=5, BFGSburnin=10), parinit=c(0.5, 0.5), optim.method="gen")
+wait.generations=5, BFGSburnin=10,trace=FALSE), parinit=c(0.5, 0.5), optim.method="gen")
 
 # EGO n steps
 library(rgenoud)
@@ -208,7 +209,7 @@ n <- nrow(design)
 response <- data.frame(q=apply(design,1,fonction)) 
 names(response) <- "y" 
 fitted.model1 <- km(~1, design=design, response=response, covtype="gauss", 
-control=list(pop.size=50, max.generations=20, wait.generations=5, BFGSburnin=5), 
+control=list(pop.size=50, max.generations=20, wait.generations=5, BFGSburnin=5,trace=FALSE), 
 optim.method="gen", parinit=rep(0.8,6))
 
 res.nsteps <- EGO.nsteps(model=fitted.model1, fun=fonction, nsteps=nsteps, 

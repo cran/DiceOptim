@@ -99,6 +99,7 @@ M. Schonlau (1997), \emph{Computer experiments and global optimization}, Ph.D. t
 
 \examples{
 
+set.seed(123)
 # 3 Iterations of the Constant Liar are applied to Branin's function, 
 # with 8 points in parallel at each iteration 
 
@@ -114,7 +115,7 @@ names(response.branin) <- "y"
 
 # model identification
 fitted.model1 <- km(~1, design=design.fact, response=response.branin, 
-covtype="gauss", control=list(pop.size=50), parinit=c(0.5, 0.5))
+covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 
 # parallel EGO 
 library(rgenoud)

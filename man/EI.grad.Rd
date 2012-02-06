@@ -50,6 +50,7 @@ M. Schonlau (1997), \emph{Computer experiments and global optimization}, Ph.D. t
 \keyword{optimize}
 
 \examples{
+set.seed(123)
 # a 9-points factorial design, and the corresponding response
 d <- 2; n <- 9
 design.fact <- expand.grid(seq(0,1,length=3), seq(0,1,length=3)) 
@@ -62,7 +63,7 @@ names(response.branin) <- "y"
 
 # model identification
 fitted.model1 <- km(~1, design=design.fact, response=response.branin, 
-covtype="gauss", control=list(pop.size=50), parinit=c(0.5, 0.5))
+covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 
 # graphics
 n.grid <- 50
@@ -88,6 +89,7 @@ design.grid2 <- expand.grid(x.grid2, y.grid2)
 EI.envir <- new.env()	
 	environment(EI) <- environment(EI.grad) <- EI.envir 
 
+options(warn=-1)
 for(i in seq(1, nrow(design.grid2)) )
 {
 	x <- design.grid2[i,]

@@ -32,7 +32,7 @@ max_EI <-function(model, lower, upper, parinit=NULL, control=NULL) {
            	Domains=domaine, default.domains=10, solution.tolerance=0.01,
           	gr=gr, boundary.enforcement=2, lexical=FALSE, gradient.check=FALSE, BFGS=TRUE,
           	data.type.int=FALSE, hessian=TRUE, unif.seed=812821, int.seed=53058,
-          	print.level=2, share.type=0, instance.number=0,
+          	print.level=0, share.type=0, instance.number=0,
           	output.path="stdout", output.append=FALSE, project.path=NULL,
          	P1=50, P2=50, P3=50, P4=50, P5=50, P6=50, P7=50, P8=50, P9=0,
            	P9mix=NULL, 

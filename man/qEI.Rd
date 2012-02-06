@@ -61,6 +61,7 @@ M. Schonlau (1997), \emph{Computer experiments and global optimization}, Ph.D. t
 %\keyword{optimize}
 
 \examples{
+set.seed(123)
 # ----------------------------------
 # A 1D example with known parameters
 # ----------------------------------
@@ -72,7 +73,7 @@ theta <- 0.1
 sigma <- 10 
 trend <- 5*c(-2,1)
 model <- km(~x,design=data.frame(x=x), response=data.frame(y=y), 
-coef.trend=trend, covtype="gauss", coef.cov=theta, coef.var=sigma^2)
+coef.trend=trend, covtype="gauss", coef.cov=theta, coef.var=sigma^2, control <- list(trace=FALSE))
 
 ## Kriging with gaussian covariance, and linear trend t(x) = -10 + 5x
 type="SK"

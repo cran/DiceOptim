@@ -76,7 +76,7 @@ W.R. Jr. Mebane and J.S. Sekhon (2009), in press, Genetic optimization using der
 \keyword{optimize}
 
 \examples{
-
+set.seed(123)
 ##########################################################
 ### "ONE-SHOT" EI-MAXIMIZATION OF THE BRANIN FUNCTION ####
 ### 	KNOWN AT A 9-POINTS FACTORIAL DESIGN          ####
@@ -95,7 +95,7 @@ names(response.branin) <- "y"
 
 # model identification
 fitted.model1 <- km(~1, design=design.fact, response=response.branin, 
-covtype="gauss", control=list(pop.size=50), parinit=c(0.5, 0.5))
+covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 
 # EGO one step
 library(rgenoud)
@@ -135,7 +135,7 @@ names(response.camelback) <- "y"
 
 # model identification
 fitted.model1 <- km(~1, design=design.fact, response=response.camelback, 
-covtype="gauss", control=list(pop.size=50), parinit=c(0.5, 0.5))
+covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 
 # EI maximization
 library(rgenoud)
@@ -177,7 +177,7 @@ names(response.goldsteinPrice) <- "y"
 # model identification
 fitted.model1 <- km(~1, design=design.fact, response=response.goldsteinPrice, 
 covtype="gauss", control=list(pop.size=50, max.generations=50, 
-wait.generations=5, BFGSburnin=10), parinit=c(0.5, 0.5), optim.method="gen")
+wait.generations=5, BFGSburnin=10, trace=FALSE), parinit=c(0.5, 0.5), optim.method="gen")
 
 # EI maximization
 library(rgenoud)
