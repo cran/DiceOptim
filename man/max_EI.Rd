@@ -55,16 +55,18 @@ Here, the EI maximization is also possible with any linear trend. However, note 
 when the trend is a constant since it is the only case where the analytical gradient is available. }
 
 
-\author{David Ginsbourger (Departement of Mathematics and Statistics, University of Berne, Switzerland)   
+\author{
+David Ginsbourger (Departement of Mathematics and Statistics, University of Berne, Switzerland)   
 
-Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).}
+Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).
+}
 
 
 \references{
 
 D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et l'optimisation de fonctions numeriques multivariables}, Ph.D. thesis, Ecole Nationale Superieure des
 Mines de Saint-Etienne, 2009. 
-\url{http://members.unine.ch/david.ginsbourger/recherche/these.htm}
+\url{http://www.ginsbourger.ch/recherche/these.php}
 
 D.R. Jones, M. Schonlau, and W.J. Welch (1998), Efficient global optimization of expensive black-box functions, \emph{Journal of Global Optimization}, 13, 455-492.
 

@@ -41,7 +41,7 @@ Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France)
 
 D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et l'optimisation de fonctions numeriques multivariables}, Ph.D. thesis, Ecole Nationale Superieure des
 Mines de Saint-Etienne, 2009. 
-\url{http://members.unine.ch/david.ginsbourger/recherche/these.htm}
+\url{http://www.ginsbourger.ch/recherche/these.php}
 
 D. Ginsbourger, R. Le Riche, and L. Carraro (2009), chapter "Kriging is well-suited to parallelize optimization", to appear in \emph{Computational Intelligence in Expensive Optimization Problems}, Studies in Evolutionary Learning and Optimization, Springer.
 

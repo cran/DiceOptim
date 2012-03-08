@@ -5,22 +5,28 @@
 \title{ Kriging-based optimization methods for computer experiments}
 
 \description{
-Sequential and parallel Kriging-based optimization methods relying on the 1-point and multipoints expected improvement criteria.
+Sequential and parallel Kriging-based optimization methods relying on expected improvement criteria.
 }
 
 \details{
 \tabular{ll}{
 Package: \tab DiceOptim\cr
 Type: \tab Package\cr
-Version: \tab 1.2\cr
-Date: \tab May 2011\cr
+Version: \tab 1.3\cr
+Date: \tab March 2012\cr
 License: \tab GPL-3\cr
 }
 }
 
-\author{David Ginsbourger (Departement of Mathematics and Statistics, University of Berne, Switzerland)  
+\author{
+David Ginsbourger (Departement of Mathematics and Statistics, University of Bern, Switzerland)  
 
-Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).}
+Victor Picheny (CERFACS, Toulouse, France)
+
+Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).
+
+with contributions by C. Chevalier and T. Wagner 
+}
 
 \note{
 This work is a follow-up of DiceOptim 1.0, which was conducted within the frame of the DICE (Deep Inside Computer Experiments) Consortium between ARMINES, Renault, EDF, IRSN, ONERA and TOTAL S.A. (http://www.dice-consortium.fr/).
@@ -42,15 +48,22 @@ Important functions or methods:
 
 \code{max_EI} \tab One-point noise-free EI maximization. No need to specify any objective function\cr
 
-\code{max_qEI.CL} \tab (sub-)maximization of the q-points EI, based on the Constant Liar heuristic.\cr
+\code{max_qEI.CL} \tab (sub-)maximization of the q-points EI, based on the Constant Liar heuristic\cr
 
    \tab No need to specify any objective function\cr
 
 \code{CL.nsteps} \tab Parallel EI Algorithm ---model updates including re-estimation of covariance\cr
 
- \tab hyperparameters--- with a fixed number of iterations (nsteps)
-}
+ \tab hyperparameters--- with a fixed number of iterations (nsteps)\cr
 
+\code{EQI} \tab One-point noisy EI-like criterion (Expected Quantile Improvement)\cr
+
+\code{AEI} \tab One-point noisy EI-like criterion (Augmented Expected Improvement)\cr
+
+\code{AKG} \tab One-point noisy EI criterion (Approximate Knowledge Gradient)\cr
+
+\code{noisy.optimizer} \tab Sequential EI-like Algorithms for Noisy Kriging-based Optimization
+}
 }
 
 
@@ -61,7 +74,7 @@ series in probability and mathematical statistics.
 
 D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et l'optimisation de fonctions numeriques multivariables}, Ph.D. thesis, Ecole Nationale Superieure des
 Mines de Saint-Etienne, 2009. 
-\url{http://members.unine.ch/david.ginsbourger/recherche/these.htm}
+\url{http://www.ginsbourger.ch/recherche/these.php}
 
 D. Ginsbourger, R. Le Riche, and L. Carraro (2009), chapter "Kriging is well-suited to parallelize optimization", to appear in \emph{Computational Intelligence in Expensive Optimization Problems}, Studies in Evolutionary Learning and Optimization, Springer.
 

@@ -209,8 +209,8 @@ n <- nrow(design)
 response <- data.frame(q=apply(design,1,fonction)) 
 names(response) <- "y" 
 fitted.model1 <- km(~1, design=design, response=response, covtype="gauss", 
-control=list(pop.size=50, max.generations=20, wait.generations=5, BFGSburnin=5,trace=FALSE), 
-optim.method="gen", parinit=rep(0.8,6))
+control=list(pop.size=50, max.generations=20, wait.generations=5, BFGSburnin=5,
+trace=FALSE), optim.method="gen", parinit=rep(0.8,6))
 
 res.nsteps <- EGO.nsteps(model=fitted.model1, fun=fonction, nsteps=nsteps, 
 lower=rep(0,6), upper=rep(1,6), parinit=rep(0.5,6), control=list(pop.size=50, 
