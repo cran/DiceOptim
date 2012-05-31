@@ -342,7 +342,7 @@ if (optim.crit =="random.search")
     {
       print("Building interpolating model")
       # Build interpolating model
-      pred <- predict.km(object=model, newdata=model@X, type="UK")
+      pred <- predict(object=model, newdata=model@X, type="UK", checkNames = FALSE)
       mk <- pred$mean
       optim.param$ymin <- min(mk)
       rm(optim.model)
@@ -371,7 +371,7 @@ if (optim.crit =="random.search")
     {
       # Set plugin value (depending on "optim.param$plugin.type": "quantile", "ytilde" or "other")
       if (optim.param$plugin.type=="quantile")
-      {  pred <- predict.km(object=model, newdata=model@X, type="UK")
+      {  pred <- predict(object=model, newdata=model@X, type="UK", checkNames = FALSE)
          mk <- pred$mean
          sk <- pred$sd
          qk <- mk + qnorm(optim.param$quantile)*sk
@@ -409,7 +409,7 @@ if (optim.crit =="random.search")
       } else { alpha <- optim.param$quantile }
 
       new.noise.var <- noise.var/(n.ite+1-i.time.steps)
-      pred <- predict.km(object=model, newdata=model@X, type="UK")
+      pred <- predict(object=model, newdata=model@X, type="UK", checkNames = FALSE)
       mk <- pred$mean
       sk <- pred$sd
       sk <- sk*sqrt(model@n/(model@n-1))
@@ -465,7 +465,7 @@ if (optim.crit =="random.search")
       q <- oEGO$val
 
       # Compare with values at DoE
-      pred <- predict.km(object=model, newdata=model@X, type="UK")
+      pred <- predict(object=model, newdata=model@X, type="UK", checkNames = FALSE)
       mk <- pred$mean
       sk <- pred$sd
       q.doe <- mk + qnorm(alpha)*sk
@@ -486,7 +486,7 @@ if (optim.crit =="random.search")
       } else { alpha <- optim.param$quantile }
 
       # Find current best and y.min
-      pred <- predict.km(object=model, newdata=model@X, type="UK")
+      pred <- predict(object=model, newdata=model@X, type="UK", checkNames = FALSE)
       mk <- pred$mean
       sk <- pred$sd
       qk <- mk + qnorm(alpha)*sk

@@ -7,7 +7,7 @@ d <- length(x)
 newdata <- matrix(x, 1, d)
 
 # Prediction en newdata en partant de X
-predx <- predict.km(model, newdata=newdata, type="UK")
+predx <- predict(model, newdata=newdata, type="UK", checkNames = FALSE)
 kriging.mean <- predx$mean
 kriging.sd <- predx$sd  
 

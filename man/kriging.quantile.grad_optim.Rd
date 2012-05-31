@@ -72,7 +72,7 @@ model <- km(y~1, design=data.frame(x=x), response=
 data.frame(y=y), coef.trend=0, covtype=covtype, 
 coef.cov=theta, coef.var=1, noise.var=noise.var, 
 control=list(trace=FALSE)) 
-p <- predict.km(model, newdata=t, type="SK")
+p <- predict(model, newdata=t, type="SK", checkNames = FALSE)
 
 par(mfrow=c(2,1))
 lower <- p$lower95; upper <- p$upper95

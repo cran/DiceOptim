@@ -7,7 +7,7 @@ kriging.quantile.grad <- function(x, model, alpha=0.1, type="UK")
 	d <- length(x)
 	newdata <- matrix(x, 1, d)
 
-	predx <- predict.km(object=model, newdata=newdata, type)
+	predx <- predict(object=model, newdata=newdata, type=type, checkNames = FALSE)
 	kriging.mean <- predx$mean
 	kriging.sd <- predx$sd
 

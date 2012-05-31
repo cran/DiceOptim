@@ -77,7 +77,7 @@ func.grid[i] <- test.function(design.grid[i,])
 
 # Compute kriging mean and variance on a grid
 names(design.grid) <- c("V1","V2")
-pred <- predict.km(model, newdata=design.grid, type="UK")
+pred <- predict(model, newdata=design.grid, type="UK", checkNames = FALSE)
 mk.grid <- pred$m
 sk.grid <- pred$sd
 

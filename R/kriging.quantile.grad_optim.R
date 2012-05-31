@@ -13,7 +13,7 @@ kriging.quantile.grad_optim <- function(x, model, alpha=0.1, type="UK", envir)
 	d <- length(x)
 	newdata <- matrix(x, 1, d)
 
-	#predx <- predict.km(object=model, newdata=x, type)
+	#predx <- predict(object=model, newdata=x, type=type, checkNames = FALSE)
 	kriging.mean <- envir$kriging.mean #predx$mean
 	kriging.sd <- envir$kriging.sd #predx$sd
 

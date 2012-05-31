@@ -15,7 +15,7 @@ if (is.null(q.min))
 }
 
 ######### Compute prediction at x #########
-predx <- predict.km(model, newdata=newdata, type=type)
+predx <- predict(model, newdata=newdata, type=type, checkNames = FALSE)
 mk.old <- predx$mean
 
 ######### Intermediate values ##########

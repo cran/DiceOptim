@@ -143,11 +143,11 @@ for (i in 1:nt)
 { func.grid[i] <- test.function(x=design.grid[i,])}
 
 # Compute initial and final kriging on a grid
-pred <- predict.km(object=model, newdata=design.grid, type="UK")
+pred <- predict(object=model, newdata=design.grid, type="UK", checkNames = FALSE)
 mk.grid1 <- pred$m
 sk.grid1 <- pred$sd
 
-pred <- predict.km(object=new.model, newdata=design.grid, type="UK")
+pred <- predict(object=new.model, newdata=design.grid, type="UK", checkNames = FALSE)
 mk.grid2 <- pred$m
 sk.grid2 <- pred$sd
 

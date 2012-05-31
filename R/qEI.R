@@ -3,7 +3,7 @@ qEI <- function
 {
    library(MASS) #Useful for simulation of Gaussian Vectors
 
-   p <- predict.km(object=model, newdata=newdata, type=type,   	cov.compute=TRUE) #Prediction, along with cond cov
+   p <- predict(object=model, newdata=newdata, type=type, checkNames = FALSE,	cov.compute=TRUE) #Prediction, along with cond cov
 
    # Conditional simulation of the process at newdata	
    cond.simu <- mvrnorm(n=MC.samples, mu=p$mean, Sigma=p$cov) 

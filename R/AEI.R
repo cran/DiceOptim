@@ -9,7 +9,7 @@ newdata <- matrix(x, 1, d)
 # Compute y.min if missing
 if (is.null(y.min))
 {
-  pred <- predict.km(model, newdata=model@X, type="UK")
+  pred <- predict(model, newdata=model@X, type="UK", checkNames = FALSE)
   mk <- pred$mean
   sk <- pred$sd
   qk <- mk + qnorm(0.75)*sk
@@ -17,7 +17,7 @@ if (is.null(y.min))
 }
 
 # Prediction en newdata en partant de X
-pred <- predict.km(model, newdata, type="UK") 
+pred <- predict(model, newdata, type="UK", checkNames = FALSE) 
 mk <- pred$mean
 sk <- pred$sd  
 

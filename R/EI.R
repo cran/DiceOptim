@@ -4,7 +4,7 @@ EI <- function (x, model, type="UK", envir=NULL) {
 	d <- length(x)
    x <- matrix(x, 1, d)
    
-   predx <- predict.km(object=model, newdata=x, type=type)
+   predx <- predict(object=model, newdata=x, type=type, checkNames = FALSE)
    kriging.mean <- predx$mean
    kriging.sd <- predx$sd
 	
