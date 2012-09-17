@@ -74,7 +74,7 @@ func.grid <- rep(0,1,nt)
 for (i in 1:nt)
 { 
 crit.grid[i] <- EI.plugin(x=design.grid[i,], model=model, plugin=1)
-func.grid[i] <- test.function(design.grid[i,])
+func.grid[i] <- test.function(design.grid[i,])[1,]
 }
 
 # Compute kriging mean and variance on a grid

@@ -14,7 +14,7 @@ if (is.null(y.min))
 }
 
 # Model parameters
-pred <- predict.km(model, x, type="UK")
+pred <- predict.km(model, x, type="UK", checkNames = FALSE)
 mk <- pred$mean
 sk <- pred$sd
 

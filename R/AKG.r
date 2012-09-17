@@ -7,7 +7,7 @@ type="UK"
 tau2.new <- new.noise.var
 
 ######### Compute prediction at x #########
-predx <- predict.km(model, newdata=newdata, type=type)
+predx <- predict.km(model, newdata=newdata, type=type, checkNames = FALSE)
 mk.x <- predx$mean
 c.x  <- predx$c
 V.x <- predx$Tinv.c
@@ -18,7 +18,7 @@ U <- model@M
 sk.x <- sqrt(model@covariance@sd2 - t(V.x)%*%V.x + (1 - t(V.x)%*%U)^2/(t(U)%*%U))
 
 ######### Compute prediction at X #########
-predX <- predict.km(model, newdata=model@X, type=type)
+predX <- predict.km(model, newdata=model@X, type=type, checkNames = FALSE)
 mk.X <- predX$mean
 V.X <- predX$Tinv.c
 

@@ -18,7 +18,7 @@ sk.x <- sqrt(model@covariance@sd2 - t(V.x)%*%V.x + (1 - t(V.x)%*%U)^2/(t(U)%*%U)
 dc.x <- covVector.dx(model@covariance, x=as.numeric(newdata), X=model@X, c=c.x)
 
 ######### Compute prediction at X #########
-predX <- predict.km(model, newdata=model@X, type=type)
+predX <- predict.km(model, newdata=model@X, type=type, checkNames = FALSE)
 mk.X <- predX$mean
 V.X <- predX$Tinv.c
 

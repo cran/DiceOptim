@@ -8,7 +8,7 @@ newdata <- matrix(x, 1, d)
 # Compute q.min if missing
 if (is.null(q.min))
 {
-  pred <- predict.km(model, newdata=model@X, type=type)
+  pred <- predict.km(model, newdata=model@X, type=type, checkNames = FALSE)
   mk <- pred$mean
   sk <- pred$sd
   sk <- sk*sqrt(model@n/(model@n-1))
@@ -17,7 +17,7 @@ if (is.null(q.min))
 }
 
 ######### Compute prediction at x #########
-predx <- predict.km(model, newdata=newdata, type=type)
+predx <- predict.km(model, newdata=newdata, type=type, checkNames = FALSE)
 mk.old <- predx$mean
 #sk.old <- predx$sd
 
