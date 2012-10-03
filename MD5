@@ -1,4 +1,4 @@
-f1df2355d8f7a67e549fe28811b5b9a8 *DESCRIPTION
+13de59b608b4bd042e38a3d01e8ea6db *DESCRIPTION
 6ae2374eea2e6be65ef502f1e3e91a55 *NAMESPACE
 debb2dff652ae2e0e9acbf12acd02b2b *R/AEI.R
 2eaf5f36dc65235243c17e4f889dc171 *R/AEI.grad.R
@@ -35,6 +35,7 @@ b21b507fecb253e7ff449c04d4ba98e1 *R/max_EI.plugin.R
 87d825a6f3e5dcd1e2ce66cdbef99cb8 *R/sphere6.R
 3fdf001d280c3e8a606c696d9e0b11fc *R/update_km.R
 55ce87dca170e61f5639db250988c2a0 *data/mydata.rda
+26528a5453d54aec55eacc56f5f0c910 *inst/CITATION
 ec76dd049c12186d40ff78e71d96e44b *man/AEI.Rd
 bf6f220d497c9126baa18f70702e7f84 *man/AEI.grad.Rd
 a17ea1e2f2cea6654d0d160ba28d6acd *man/AEI.grad_optim.Rd
@@ -42,8 +43,8 @@ e51b1501279056698de9ae0007a47905 *man/AKG.Rd
 f2541b0d1c7f87721fd0ab54ad915a2d *man/AKG.grad.Rd
 e30ca5c72126ea91fb479eba5640ced3 *man/AKG.grad_optim.Rd
 4c9c0d7e9b58e10a7c0fe8d0a67b1ebd *man/CL.nsteps.Rd
-ad6926c6096cfd5a5126b6399d72148c *man/DiceOptim-package.Rd
-81013e92f0133192559deaad5c89f8a7 *man/EGO.nsteps.Rd
+50759b630a6eb1fbfd16fae85a29b799 *man/DiceOptim-package.Rd
+0a07b3bc33a2a924501e42aee86a1458 *man/EGO.nsteps.Rd
 e0de01d77d8f1b5737c0d663502b89a5 *man/EI.Rd
 79707c215443e14c8d73651f40b936ad *man/EI.grad.Rd
 72297720940de8ba93479c13874bd067 *man/EI.plugin.Rd
@@ -65,7 +66,7 @@ d2720bb18226f3eab25884babbe89caa *man/max_EI.plugin.Rd
 6c96de74008888cd9617998523438f46 *man/max_qEI.CL.Rd
 677c30ca8a21959c075bdddec4e91b79 *man/min_quantile.Rd
 d657e70c109ef3896dac5b79d98a7a38 *man/mydata.Rd
-110fcbf971f5b613a76191aecc30c58a *man/noisy.optimizer.Rd
+02ee91a9aefeeac134c72e9e8a3da556 *man/noisy.optimizer.Rd
 b704f199ca41843b1738f6297114c824 *man/qEI.Rd
 716d26ebe1d31d0c0907f8981582a611 *man/rosenbrock4.Rd
 2f400d51e62153534c8ca0442d36e790 *man/sphere6.Rd

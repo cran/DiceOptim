@@ -12,9 +12,9 @@ Sequential and parallel Kriging-based optimization methods relying on expected i
 \tabular{ll}{
 Package: \tab DiceOptim\cr
 Type: \tab Package\cr
-Version: \tab 1.3\cr
-Date: \tab March 2012\cr
-License: \tab GPL-3\cr
+Version: \tab 1.3.3\cr
+Date: \tab October 2012\cr
+License: \tab GPL-2 | GPL-3\cr
 }
 }
 
@@ -89,6 +89,9 @@ J. Mockus (1988), \emph{Bayesian Approach to Global Optimization}. Kluwer academ
 C.E. Rasmussen and C.K.I. Williams (2006), \emph{Gaussian Processes for Machine Learning}, the MIT Press, \url{http://www.GaussianProcess.org/gpml}
 
 B.D. Ripley (1987), \emph{Stochastic Simulation}, Wiley.
+
+O. Roustant, D. Ginsbourger and Yves Deville (2012), DiceKriging, DiceOptim: Two R Packages for the Analysis of Computer Experiments by Kriging-Based Metamodeling and Optimization, \emph{Journal of Statistical Software}, 
+\bold{51}(1), 1-55, \url{http://www.jstatsoft.org/v51/i01/}.
 
 T.J. Santner, B.J. Williams, and W.J. Notz (2003), \emph{The design and analysis of computer experiments}, Springer.
 

@@ -118,8 +118,8 @@ model <- km(y~1, design=doe, response=data.frame(y=y.tilde),
      covtype="gauss", noise.var=rep(noise.var,1,doe.size), 
      lower=rep(.1,dim), upper=rep(1,dim), control=list(trace=FALSE))
 
-# Optimisation with noisy.optimizer
-n.ite <- 15
+# Optimisation with noisy.optimizer (n.ite can be increased)
+n.ite <- 5 
 optim.param <- list()
 optim.param$quantile <- .9
 optim.result <- noisy.optimizer(optim.crit="EQI", optim.param=optim.param, model=model,

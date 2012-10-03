@@ -150,7 +150,7 @@ text(oEGO$par[,1], oEGO$par[,2], labels=1:nsteps, pos=3)
 ### 	20 ITERATIONS OF EGO ON THE GOLDSTEIN-PRICE,  	   ####
 ###	 STARTING FROM A 9-POINTS FACTORIAL DESIGN   	   ####
 ###############################################################
-
+\dontrun{
 # a 9-points factorial design, and the corresponding response
 d <- 2 
 n <- 9
@@ -188,13 +188,14 @@ title("Goldstein-Price Function")
 points(design.fact[,1], design.fact[,2], pch=17, col="blue")
 points(oEGO$par, pch=19, col="red")
 text(oEGO$par[,1], oEGO$par[,2], labels=1:nsteps, pos=3)
-
+}
 
 #######################################################################
 ### 	nsteps ITERATIONS OF EGO ON THE HARTMAN6 FUNCTION,  	   ####
 ###	  STARTING FROM A 10-POINTS UNIFORM DESIGN      	   ####
 #######################################################################
 
+\dontrun{
 fonction<-hartman6
 data(mydata)
 a <- mydata
@@ -217,5 +218,5 @@ lower=rep(0,6), upper=rep(1,6), parinit=rep(0.5,6), control=list(pop.size=50,
 max.generations=20, wait.generations=5, BFGSburnin=5), kmcontrol=NULL)
 print(res.nsteps)
 plot(res.nsteps$value,type="l")
-
+}
 }
