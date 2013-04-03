@@ -25,8 +25,8 @@ max_AKG(model, new.noise.var=0, type = "UK", lower, upper, parinit=NULL, control
   \item{parinit}{ optional vector containing the initial values for the variables to be optimized over }
 
    \item{control}{  optional list of control parameters for optimization. 
-One can control  \code{"pop.size"}  (default : [N=3*2^dim for dim<6 and N=32*dim otherwise]),  \code{"max.generations"} (10),  
-\code{"wait.generations"} (2) and  \code{"BFGSburnin"} (0) of function  \code{"genoud"} (see \code{\link[rgenoud]{genoud}}). 
+One can control  \code{"pop.size"}  (default : [N=3*2^dim for dim<6 and N=32*dim otherwise]),  \code{"max.generations"} (12),  
+\code{"wait.generations"} (2) and  \code{"BFGSburnin"} (2) of function  \code{"genoud"} (see \code{\link[rgenoud]{genoud}}). 
 Numbers into brackets are the default values }  
 
 }
@@ -77,19 +77,14 @@ res <- max_AKG(model, new.noise.var=noise.var, type = "UK",
 lower=c(0,0), upper=c(1,1)) 
 X.genoud <- res$par
 
+\dontrun{
 # Compute actual function and criterion on a grid
-n.grid <- 21
+n.grid <- 12 # Change to 21 for a nicer picture
 x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
 names(design.grid) <- c("V1","V2")
 nt <- nrow(design.grid)
-crit.grid <- rep(0,1,nt)
-
-for (i in 1:nt)
-{ 
-crit.grid[i] <- AKG(x=design.grid[i,], model=model, 
-new.noise.var=noise.var)
-}
+crit.grid <- apply(design.grid, 1, AKG, model=model, new.noise.var=noise.var)
 
 # # 2D plots
 z.grid <- matrix(crit.grid, n.grid, n.grid)
@@ -98,4 +93,5 @@ filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = topo.colors,
 plot.axes = {title(tit);points(model@X[,1],model@X[,2],pch=17,col="blue"); 
 points(X.genoud[1],X.genoud[2],pch=17,col="green");
 axis(1); axis(2)})
+}
 }

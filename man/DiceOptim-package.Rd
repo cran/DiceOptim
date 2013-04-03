@@ -12,8 +12,8 @@ Sequential and parallel Kriging-based optimization methods relying on expected i
 \tabular{ll}{
 Package: \tab DiceOptim\cr
 Type: \tab Package\cr
-Version: \tab 1.3.3\cr
-Date: \tab October 2012\cr
+Version: \tab 1.4\cr
+Date: \tab April 2013\cr
 License: \tab GPL-2 | GPL-3\cr
 }
 }
@@ -21,7 +21,7 @@ License: \tab GPL-2 | GPL-3\cr
 \author{
 David Ginsbourger (Departement of Mathematics and Statistics, University of Bern, Switzerland)  
 
-Victor Picheny (CERFACS, Toulouse, France)
+Victor Picheny (INRA, Castanet-Tolosan, France)
 
 Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).
 
@@ -76,7 +76,7 @@ D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et l'opt
 Mines de Saint-Etienne, 2009. 
 \url{http://www.ginsbourger.ch/recherche/these.php}
 
-D. Ginsbourger, R. Le Riche, and L. Carraro (2009), chapter "Kriging is well-suited to parallelize optimization", to appear in \emph{Computational Intelligence in Expensive Optimization Problems}, Studies in Evolutionary Learning and Optimization, Springer.
+D. Ginsbourger, R. Le Riche, and L. Carraro (2010), chapter "Kriging is well-suited to parallelize optimization", in \emph{Computational Intelligence in Expensive Optimization Problems}, Studies in Evolutionary Learning and Optimization, Springer.
 
 D.R. Jones (2001), A taxonomy of global optimization methods based on response surfaces, \emph{Journal of Global Optimization}, 21, 345-383.
 
@@ -85,6 +85,9 @@ D.R. Jones, M. Schonlau, and W.J. Welch (1998), Efficient global optimization of
 W.R. Jr. Mebane and J.S. Sekhon (2009), in press, Genetic optimization using derivatives: The rgenoud package for R, \emph{Journal of Statistical Software}.
 
 J. Mockus (1988), \emph{Bayesian Approach to Global Optimization}. Kluwer academic publishers.
+
+V. Picheny and D. Ginsbourger (2013), Noisy kriging-based optimization methods: A unified implementation within the DiceOptim package, 
+\emph{Computational Statistics & Data Analysis}, \url{http://dx.doi.org/10.1016/j.csda.2013.03.018}
 
 C.E. Rasmussen and C.K.I. Williams (2006), \emph{Gaussian Processes for Machine Learning}, the MIT Press, \url{http://www.GaussianProcess.org/gpml}
 
@@ -96,7 +99,6 @@ O. Roustant, D. Ginsbourger and Yves Deville (2012), DiceKriging, DiceOptim: Two
 T.J. Santner, B.J. Williams, and W.J. Notz (2003), \emph{The design and analysis of computer experiments}, Springer.
 
 M. Schonlau (1997), \emph{Computer experiments and global optimization}, Ph.D. thesis, University of Waterloo.
-
 }
 
 

@@ -7,7 +7,7 @@
 \description{
 Evaluation of the Augmented Expected Improvement (AEI) criterion, which is a modification of the classical EI criterion for noisy functions. 
 The AEI consists of the regular EI multiplied by a penalization function that accounts for the disminishing payoff of observation replicates.
-The current minimum y_min is chosen as the kriging predictor of the observation with smallest kriging quantile.}
+The current minimum y.min is chosen as the kriging predictor of the observation with smallest kriging quantile.}
 
 \usage{
 AEI(x, model, new.noise.var=0, y.min=NULL, type = "UK", envir=NULL)
@@ -20,7 +20,7 @@ AEI(x, model, new.noise.var=0, y.min=NULL, type = "UK", envir=NULL)
   \item{y.min}{ The kriging predictor at the current best point (point with smallest kriging quantile). 
 If not provided, this quantity is evaluated. } 
   \item{type}{ Kriging type: "SK" or "UK" }
-  \item{envir}{ environment for saving intermediate calculations and reusing them within AEI.grad_optim }
+  \item{envir}{ environment for saving intermediate calculations and reusing them within AEI.grad }
 }
 %\details{}
 \value{Augmented Expected Improvement}
@@ -30,7 +30,7 @@ D.R. Jones, M. Schonlau, and W.J. Welch (1998), Efficient global optimization of
 D. Huang, T.T. Allen, W.I. Notz, and N. Zeng (2006), Global Optimization of Stochastic Black-Box Systems via Sequential Kriging Meta-Models, \emph{Journal of Global Optimization}, 34, 441-466.
 }
 \author{ 
-Victor Picheny (CERFACS, Toulouse, France)
+Victor Picheny (INRA, Castanet-Tolosan, France)
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}
@@ -69,18 +69,15 @@ model <- km(y~1, design=doe, response=data.frame(y=y.tilde),
 	    lower=rep(.1,dim), upper=rep(1,dim), control=list(trace=FALSE))
 
 # Compute actual function and criterion on a grid
-n.grid <- 21
+n.grid <- 12 # Change to 21 for a nicer picture
 x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
 nt <- nrow(design.grid)
 crit.grid <- rep(0,1,nt)
 func.grid <- rep(0,1,nt)
 
-for (i in 1:nt)
-{ 
-crit.grid[i] <- AEI(x=design.grid[i,], model=model, new.noise.var=noise.var)
-func.grid[i] <- test.function(design.grid[i,])[1,]
-}
+crit.grid <- apply(design.grid, 1, AEI, model=model, new.noise.var=noise.var)
+func.grid <- apply(design.grid, 1, test.function)
 
 # Compute kriging mean and variance on a grid
 names(design.grid) <- c("V1","V2")

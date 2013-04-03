@@ -87,26 +87,29 @@ points(x, y, col="red", pch=19)
 abline(h=0)
 
 ## A first try of qEI
-candidate.design <- seq(0,1,,101)
+grid <- seq(0,1,,101)
+candidate.design <- data.frame(grid)
+names(candidate.design) <- names(model@X)
 res <- qEI(newdata=candidate.design, model=model, type=type, 
 MC.samples=10000, return.I=TRUE)
 
 ## One_point EI can easly be estimated on the basis of the matrix of improvements
 EI_simples <- colMeans(res$I)
-plot(candidate.design,EI_simples, type="l")
+plot(grid,EI_simples, type="l")
 
 ## Let us check that the analytical formula of EI and the MC estimate match
-EI_analytical <- apply(as.data.frame(candidate.design), 1, EI, model, type=type)
+EI_analytical <- apply(candidate.design, 1, EI, model, type=type)
 plot(EI_simples, EI_analytical)
 
+\dontrun{
 # Computation of the 2-points EI grid associated to candidate.design
 # (Straightforward computation method: faster not available in this version yet) 
 
-two_points_EI <- matrix(0,ncol=length(candidate.design),
-nrow=length(candidate.design))
+two_points_EI <- matrix(0,ncol=length(grid),
+nrow=length(grid))
 
-for(i in seq(1,length(candidate.design)) ){
-for(j in seq(i,length(candidate.design)) ){
+for(i in seq(1,length(grid)) ){
+for(j in seq(i,length(grid)) ){
 qI <- pmax(res$I[,i],res$I[,j])
 two_points_EI[i,j] <- mean(qI)
 two_points_EI[j,i] <- two_points_EI[i,j]
@@ -116,4 +119,5 @@ two_points_EI[j,i] <- two_points_EI[i,j]
 # based on the latter qEI estimation
 
 contour(two_points_EI)
+}
 }

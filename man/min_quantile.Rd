@@ -2,19 +2,19 @@
 \Rdversion{1}
 \alias{min_quantile}
 
-\title{ Minimizer of the Kriging quantile. }
+\title{ Minimization of the Kriging quantile. }
 
 \description{
 Minimization, based on the package rgenoud of the kriging quantile.}
 
 \usage{
-min_quantile(model, alpha=0.1, type = "UK", lower, upper, parinit=NULL, control=NULL)
+min_quantile(model, beta=0.1, type = "UK", lower, upper, parinit=NULL, control=NULL)
 }
 
 \arguments{
   \item{model}{ a Kriging model of "km" class }
   
-  \item{alpha}{ Quantile level (default value is 0.1) }  
+  \item{beta}{ Quantile level (default value is 0.1) }  
 
   \item{type}{ Kriging type: "SK" or "UK" }
       
@@ -25,9 +25,9 @@ min_quantile(model, alpha=0.1, type = "UK", lower, upper, parinit=NULL, control=
   \item{parinit}{ optional vector containing the initial values for the variables to be optimized over }
 
    \item{control}{  optional list of control parameters for optimization. 
-One can control  \code{"pop.size"}  (default : [4+3*log(nb of variables)]),  \code{"max.generations"} (5),  
-\code{"wait.generations"} (2) and  \code{"BFGSburnin"} (0) of function  \code{"genoud"} (see \code{\link[rgenoud]{genoud}}). 
-Numbers into brackets are the default values }  
+One can control  \code{"pop.size"}  (default : [N=3*2^dim for dim<6 and N=32*dim otherwise]),  \code{"max.generations"} (12),  
+\code{"wait.generations"} (2) and  \code{"BFGSburnin"} (2) of function  \code{"genoud"} (see \code{\link[rgenoud]{genoud}}). 
+Numbers into brackets are the default values } 
 
 }
 
@@ -37,7 +37,7 @@ Numbers into brackets are the default values }
 }
 %\references{}
 \author{
-Victor Picheny (CERFACS, Toulouse, France)
+Victor Picheny (INRA, Castanet-Tolosan, France)
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}
@@ -73,21 +73,16 @@ model <- km(y~1, design=doe, response=data.frame(y=y.tilde),
      lower=rep(.1,dim), upper=rep(1,dim), control=list(trace=FALSE))
 
 # Optimisation using max_kriging.quantile
-res <- min_quantile(model, alpha=0.1, type = "UK", lower=c(0,0), upper=c(1,1)) 
+res <- min_quantile(model, beta=0.1, type = "UK", lower=c(0,0), upper=c(1,1)) 
 X.genoud <- res$par
 
 # Compute actual function and criterion on a grid
-n.grid <- 21
+n.grid <- 12 # Change to 21 for a nicer picture
 x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
 names(design.grid) <- c("V1","V2")
 nt <- nrow(design.grid)
-crit.grid <- rep(0,1,nt)
-
-for (i in 1:nt)
-{ 
-crit.grid[i] <- kriging.quantile(x=design.grid[i,], model=model,alpha=0.1)
-}
+crit.grid <- apply(design.grid, 1, kriging.quantile, model=model, beta=.1)
 
 # # 2D plots
 z.grid <- matrix(crit.grid, n.grid, n.grid)

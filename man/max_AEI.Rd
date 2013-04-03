@@ -23,13 +23,13 @@ max_AEI(model, new.noise.var=0, y.min=NULL, type = "UK", lower, upper, parinit=N
       
   \item{lower}{ vector containing the lower bounds of the variables to be optimized over }
 
-  \item{upper}{ vector containing the upper bounds of the variables to be optimized over }
+  \item{upper}{ optional vector containing the upper bounds of the variables to be optimized over }
 
   \item{parinit}{ optional vector containing the initial values for the variables to be optimized over }
 
    \item{control}{  optional list of control parameters for optimization. 
-One can control  \code{"pop.size"}  (default : [4+3*log(nb of variables)]),  \code{"max.generations"} (5),  
-\code{"wait.generations"} (2) and  \code{"BFGSburnin"} (0) of function  \code{"genoud"} (see \code{\link[rgenoud]{genoud}}). 
+One can control  \code{"pop.size"}  (default : [N=3*2^dim for dim<6 and N=32*dim otherwise]),  \code{"max.generations"} (12),  
+\code{"wait.generations"} (2) and  \code{"BFGSburnin"} (2) of function  \code{"genoud"} (see \code{\link[rgenoud]{genoud}}). 
 Numbers into brackets are the default values }  
 
 }
@@ -40,7 +40,7 @@ Numbers into brackets are the default values }
 }
 %\references{}
 \author{ 
-Victor Picheny (CERFACS, Toulouse, France)
+Victor Picheny (INRA, Castanet-Tolosan, France)
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}
@@ -49,7 +49,8 @@ David Ginsbourger (University of Bern, Switzerland)
 
 %
 \examples{
-set.seed(10)
+
+set.seed(100)
 
 # Set test problem parameters
 doe.size <- 10
@@ -77,19 +78,14 @@ lower=c(0,0), upper=c(1,1))
 X.genoud <- res$par
 
 # Compute actual function and criterion on a grid
-n.grid <- 21
+n.grid <- 12 # Change to 21 for a nicer picture
 x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
 names(design.grid) <- c("V1","V2")
 nt <- nrow(design.grid)
-crit.grid <- rep(0,1,nt)
+crit.grid <- apply(design.grid, 1, AEI, model=model, new.noise.var=noise.var)
 
-for (i in 1:nt)
-{ 
-crit.grid[i] <- AEI(x=design.grid[i,], model=model, 
-new.noise.var=noise.var)
-}
-
+\dontrun{
 # # 2D plots
 z.grid <- matrix(crit.grid, n.grid, n.grid)
 tit <- "Green: best point found by optimizer"
@@ -97,4 +93,5 @@ filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = rainbow,
 plot.axes = {title(tit);points(model@X[,1],model@X[,2],pch=17,col="blue"); 
 points(X.genoud[1],X.genoud[2],pch=17,col="green");
 axis(1); axis(2)})
+}
 }

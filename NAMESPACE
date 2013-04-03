@@ -1,13 +1,12 @@
 import("DiceKriging",
-	"rgenoud", "MASS", "lhs")
+	"rgenoud", "MASS")
 
-export( EI,EI.grad,max_EI,EGO.nsteps,
-	qEI, max_qEI.CL,CL.nsteps,  
-	branin2, goldsteinprice, hartman4, rosenbrock4, sphere6, 
-	AEI, AEI.grad, AEI.grad_optim, max_AEI, 
-	EI.plugin, EI.plugin.grad, max_EI.plugin,
-	EQI, EQI.grad, EQI.grad_optim, max_EQI,
-	AKG, AKG.grad, AKG.grad_optim, max_AKG,
-	kriging.quantile, kriging.quantile.grad, kriging.quantile.grad_optim, min_quantile, 
-	update_km, noisy.optimizer)
+export( EI,EI.grad,max_EI,EGO.nsteps, 
+qEI, max_qEI.CL, CL.nsteps, 
+branin2, goldsteinprice, hartman4, rosenbrock4, sphere6,
+AEI, AEI.grad, max_AEI,
+EQI, EQI.grad, max_EQI,
+AKG, AKG.grad, max_AKG,
+kriging.quantile, kriging.quantile.grad, min_quantile,
+update_km_noisyEGO, noisy.optimizer)
 

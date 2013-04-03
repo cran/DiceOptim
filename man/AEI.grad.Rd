@@ -5,10 +5,10 @@
 \title{ AEI's Gradient }
 
 \description{
-Gradient of the Augmented Expected Improvement (AEI) criterion.}
+Analytical gradient of the Augmented Expected Improvement (AEI) criterion.}
 
 \usage{
-AEI.grad(x, model, new.noise.var=0, y.min=NULL,  type = "UK")
+AEI.grad(x, model, new.noise.var=0, y.min=NULL,  type = "UK", envir=NULL)
 }
 
 \arguments{
@@ -17,12 +17,13 @@ AEI.grad(x, model, new.noise.var=0, y.min=NULL,  type = "UK")
   \item{new.noise.var}{ the (scalar) noise variance of the new observation.}
   \item{y.min}{ The kriging predictor at the current best point (point with smallest kriging quantile). If not provided, this quantity is evaluated. } 
   \item{type}{ Kriging type: "SK" or "UK" }
+  \item{envir}{ environment for inheriting intermediate calculations from AEI }
 }
 %\details{}
 \value{Gradient of the Augmented Expected Improvement}
 %\references{}
 \author{ 
-Victor Picheny (CERFACS, Toulouse, France) 
+Victor Picheny (INRA, Castanet-Tolosan, France) 
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}
@@ -31,6 +32,7 @@ David Ginsbourger (University of Bern, Switzerland)
 
 %
 \examples{
+\dontrun{
 set.seed(421)
 
 # Set test problem parameters
@@ -55,32 +57,27 @@ model <- km(y~1, design=doe, response=data.frame(y=y.tilde),
 	lower=rep(.1,dim), upper=rep(1,dim), control=list(trace=FALSE))
 
 # Compute actual function and criterion on a grid
-n.grid <- 21
+n.grid <- 12 # Change to 21 for a nicer picture
 x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
-#names(design.grid) <- c("V1", "V2")
 nt <- nrow(design.grid)
-crit.grid <- rep(0,1,nt)
-crit.grad    <- matrix(0,nt,2)
 
-for (i in 1:nt)
-{ 
-crit.grid[i] <- AEI(x=design.grid[i,], model=model, new.noise.var=noise.var)
-crit.grad[i,] <- AEI.grad(x=design.grid[i,], model=model, new.noise.var=noise.var)
-}
+crit.grid <- apply(design.grid, 1, AEI, model=model, new.noise.var=noise.var)
+crit.grad <- t(apply(design.grid, 1, AEI.grad, model=model, new.noise.var=noise.var))
 
 z.grid <- matrix(crit.grid, n.grid, n.grid)
 contour(x.grid,y.grid, z.grid, 30)
 title("AEI and its gradient")
 points(model@X[,1],model@X[,2],pch=17,col="blue")
 
+options(warn=-1)
 for (i in 1:nt)
 {
  x <- design.grid[i,]
  arrows(x$Var1,x$Var2, x$Var1+crit.grad[i,1]*.6,x$Var2+crit.grad[i,2]*.6, 
 length=0.04,code=2,col="orange",lwd=2)
 }
-
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory. \keyword{}

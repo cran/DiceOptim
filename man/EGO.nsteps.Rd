@@ -126,15 +126,16 @@ covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 
 # EGO n steps
 library(rgenoud)
-nsteps <- 10
-lower <- rep(0,d); upper <- rep(1,d)     
+nsteps <- 5 # Was 10, reduced to 5 for speeding up compilation
+lower <- rep(0,d) 
+upper <- rep(1,d)     
 oEGO <- EGO.nsteps(model=fitted.model1, fun=branin, nsteps=nsteps, 
-lower, upper, control=list(pop.size=20, BFGSburnin=2))
+lower=lower, upper=upper, control=list(pop.size=20, BFGSburnin=2))
 print(oEGO$par)
 print(oEGO$value)
 
 # graphics
-n.grid <- 20
+n.grid <- 15 # Was 20, reduced to 15 for speeding up compilation
 x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
 response.grid <- apply(design.grid, 1, branin)
@@ -165,11 +166,11 @@ names(response.goldsteinPrice) <- "y"
 # model identification
 fitted.model1 <- km(~1, design=design.fact, response=response.goldsteinPrice, 
 covtype="gauss", control=list(pop.size=50, max.generations=50, 
-wait.generations=5, BFGSburnin=10,trace=FALSE), parinit=c(0.5, 0.5), optim.method="gen")
+wait.generations=5, BFGSburnin=10,trace=FALSE), parinit=c(0.5, 0.5), optim.method="BFGS")
 
 # EGO n steps
 library(rgenoud)
-nsteps <- 20
+nsteps <- 10 # Was 20, reduced to 10 for speeding up compilation
 lower <- rep(0,d) 
 upper <- rep(1,d)     
 oEGO <- EGO.nsteps(model=fitted.model1, fun=goldsteinPrice, nsteps=nsteps, 
@@ -178,7 +179,7 @@ print(oEGO$par)
 print(oEGO$value)
 
 # graphics
-n.grid <- 20
+n.grid <- 15 # Was 20, reduced to 15 for speeding up compilation
 x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
 response.grid <- apply(design.grid, 1, goldsteinPrice)
@@ -200,7 +201,7 @@ fonction<-hartman6
 data(mydata)
 a <- mydata
 nb<-10
-nsteps <- 2
+nsteps <- 3 # Maybe be changed to a larger value 
 x1<-a[[1]][1:nb];x2<-a[[2]][1:nb];x3<-a[[3]][1:nb]
 x4<-a[[4]][1:nb];x5<-a[[5]][1:nb];x6<-a[[6]][1:nb]
 design <- data.frame(cbind(x1,x2,x3,x4,x5,x6)) 

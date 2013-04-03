@@ -11,7 +11,7 @@ EGO.nsteps <-function(model, fun, nsteps, lower, upper, parinit=NULL, control=NU
 		
 
 	for (i in 1:nsteps) {
-		oEGO<-max_EI(model, lower, upper, parinit, control)
+		oEGO<-max_EI(model=model, lower=lower, upper=upper, parinit=parinit, control=control)
 		
 		model@X<-rbind(model@X, oEGO$par)
 		model@y<-rbind(model@y, fun(t(oEGO$par)))

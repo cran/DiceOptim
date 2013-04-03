@@ -103,7 +103,7 @@ covtype="gauss", control=list(pop.size=50, trace=FALSE), parinit=c(0.5, 0.5))
 
 # EGO parallel
 library(rgenoud)
-npoints <- 10
+npoints <- 3
 lower <- rep(0,d) 
 upper <- rep(1,d) 
 oEGOparallel <- max_qEI.CL(model=fitted.model1, npoints=npoints, 
@@ -111,6 +111,7 @@ L=min(response.branin), lower, upper,
 control=list(pop.size=20, BFGSburnin=2)) 
 print(oEGOparallel)
 
+\dontrun{
 # graphics
 n.grid <- 20
 x.grid <- y.grid <- seq(0,1,length=n.grid)
@@ -122,5 +123,6 @@ title("Branin function")
 points(design.fact[,1], design.fact[,2], pch=17, col="blue")
 points(oEGOparallel$par, pch=19, col="red")
 text(oEGOparallel$par[,1], oEGOparallel$par[,2], labels=1:npoints, pos=3)
+}
 
 }

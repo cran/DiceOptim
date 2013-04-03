@@ -69,7 +69,7 @@ kmcontrol = NULL, control = NULL)
 
 
 
-\author{David Ginsbourger (Departement of Mathematics and Statistics, University of Berne, Switzerland)  
+\author{David Ginsbourger (Departement of Mathematics and Statistics, University of Bern, Switzerland)  
 
 Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).}
 
@@ -101,7 +101,7 @@ M. Schonlau (1997), \emph{Computer experiments and global optimization}, Ph.D. t
 
 set.seed(123)
 # 3 Iterations of the Constant Liar are applied to Branin's function, 
-# with 8 points in parallel at each iteration 
+# with 3 points in parallel at each iteration 
 
 # a 9-points factorial design, and the corresponding response
 d <- 2
@@ -119,29 +119,30 @@ covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 
 # parallel EGO 
 library(rgenoud)
-nsteps <- 3
-npoints <- 8
+nsteps <- 3 
+npoints <- 2 # Was 8, reduced to 2 for speeding up compilation   
 lower <- rep(0,d) 
 upper <- rep(1,d) 
 
 oEGOparallel1 <- CL.nsteps(model=fitted.model1, fun=branin, npoints=npoints, 
-nsteps=nsteps, lower, upper, control=list(pop.size=20, BFGSburnin=2)) 
+nsteps=nsteps, lower=lower, upper=upper, control=list(pop.size=10, BFGSburnin=2)) 
 
 print(oEGOparallel1)
 
+\dontrun{
 # graphics
-n.grid <- 20
+n.grid <- 15 # Was 20, reduced to 15 for speeding up compilation 
 x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
 response.grid <- apply(design.grid, 1, branin)
 z.grid <- matrix(response.grid, n.grid, n.grid)
 contour(x.grid,y.grid,z.grid,40)
-title("3 iterations of Constant Liar with 8 parallel searches")
+title("3 iterations of Constant Liar with 2 parallel searches")
 points(design.fact[,1], design.fact[,2], pch=17, col="blue")
 points(oEGOparallel1$par[1:npoints,], pch=19, col="red")
 points(oEGOparallel1$par[(npoints+1):(2*npoints),], pch=19, col="violet")
 points(oEGOparallel1$par[(2*npoints+1):(3*npoints),], pch=19, col="green")
 text(oEGOparallel1$par[,1], oEGOparallel1$par[,2], 
 labels=1:(npoints*nsteps), pos=3)
-
+}
 }

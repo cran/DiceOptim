@@ -2,12 +2,12 @@
 
 \alias{EI.grad}
 
-\title{ Analytical gradient of the Expected Improvement criterion (noise-free version)}
+\title{ Analytical gradient of the Expected Improvement criterion}
 
-\description{ Computes the gradient of the Expected Improvement at the current location. Only available for Universal Kriging with constant trend (Ordinary Kriging). }
+\description{ Computes the gradient of the Expected Improvement at the current location. The current minimum of the observations can be replaced by an arbitrary value (plugin), which is usefull in particular in noisy frameworks.}
 
 \usage{
-EI.grad(x, model, envir)}
+EI.grad(x, model, plugin=NULL, type="UK", envir=NULL)}
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -16,7 +16,11 @@ EI.grad(x, model, envir)}
 
   \item{model}{ an object of class \code{\link[DiceKriging]{km}}. }
 
-  \item{envir}{ an environment specifying where to get intermediate values calculated in \code{\link{EI}}. }
+  \item{plugin}{ optional scalar: if provided, it replaces the minimum of the current observations,}
+
+  \item{type}{ Kriging type: "SK" or "UK" }
+
+  \item{envir}{ an optional environment specifying where to get intermediate values calculated in \code{\link{EI}}. }
 
 }
 
@@ -27,9 +31,9 @@ Returns 0 at design points (where the gradient does not exist).
 
 \author{David Ginsbourger (Departement of Mathematics and Statistics, University of Berne, Switzerland)  
 
-Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).}
+Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).
 
-
+Victor Picheny (INRA, Castanet-Tolosan, France)}
 \references{
 
 D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et l'optimisation de fonctions numeriques multivariables}, Ph.D. thesis, Ecole Nationale Superieure des
@@ -50,6 +54,7 @@ M. Schonlau (1997), \emph{Computer experiments and global optimization}, Ph.D. t
 \keyword{optimize}
 
 \examples{
+\dontrun{
 set.seed(123)
 # a 9-points factorial design, and the corresponding response
 d <- 2; n <- 9
@@ -102,5 +107,5 @@ for(i in seq(1, nrow(design.grid2)) )
 	length = 0.04, code=2, col="orange", lwd=2)
 	}
 }
-
+}
 }

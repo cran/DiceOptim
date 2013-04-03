@@ -1,7 +1,7 @@
 \name{max_EI}
 \alias{max_EI}
 
-\title{ One-shot maximization of the Expected Improvement criterion (noise-free version)}
+\title{ Maximization of the Expected Improvement criterion}
 
 \description{  
 Given an object of class \code{\link[DiceKriging]{km}} and a set of tuning parameters (\code{lower},\code{upper},\code{parinit}, and \code{control}), 
@@ -12,33 +12,31 @@ The latter maximization relies on a genetic algorithm using derivatives, \code{\
 This function plays a central role in the package since it is in constant use in the proposed algorithms.
 It is important to remark that the information needed about the objective function reduces here
 to the vector of response values embedded in \code{model} (no call to the objective function or simulator). 
+
+The current minimum of the observations can be replaced by an arbitrary value (plugin), which is usefull in particular in noisy frameworks.
 }
 
 \usage{
-max_EI(model, lower, upper, parinit=NULL, control = NULL) }
+max_EI(model, plugin=NULL, type="UK", lower, upper, parinit=NULL, control = NULL) }
 
 \arguments{
 
   \item{model}{  an object of class \code{\link[DiceKriging]{km}} , }
 
+  \item{plugin}{ optional scalar: if provided, it replaces the minimum of the current observations,}
+
+  \item{type}{ Kriging type: "SK" or "UK" }
 
   \item{lower}{ vector of lower bounds for the variables to be optimized over, }
 
   \item{upper}{ vector of upper bounds for the variables to be optimized over, }
 
-  \item{parinit}{  optional vector of initial values for the variables to be optimized over, }
+  \item{parinit}{ optional vector of initial values for the variables to be optimized over, }
 
-  \item{control}{  an optional list of control parameters for optimization. One can control  
-
-		 \code{"pop.size"} (default : [4+3*log(nb of variables)]), 
-
-	       \code{"max.generations"}  (default :5), 
-
-		 \code{"wait.generations"} (default :2), 
-
-		\code{"BFGSburnin"} (default :0),
-
-		of the function \code{\link[rgenoud]{genoud}}. }
+   \item{control}{  optional list of control parameters for optimization. 
+One can control  \code{"pop.size"}  (default : [N=3*2^dim for dim<6 and N=32*dim otherwise]),  \code{"max.generations"} (12),  
+\code{"wait.generations"} (2) and  \code{"BFGSburnin"} (2) of function  \code{"genoud"} (see \code{\link[rgenoud]{genoud}}). 
+Numbers into brackets are the default values } 
 
 }
 
@@ -50,15 +48,12 @@ max_EI(model, lower, upper, parinit=NULL, control = NULL) }
 
 }
 
-\note{ Most EGO-like methods (EI algorithms) usually work with Ordinary Kriging (constant trend), by maximization of the expected improvement. 
-Here, the EI maximization is also possible with any linear trend. However, note that the optimization may perform much faster and better
-when the trend is a constant since it is the only case where the analytical gradient is available. }
-
-
 \author{
-David Ginsbourger (Departement of Mathematics and Statistics, University of Berne, Switzerland)   
+David Ginsbourger (Departement of Mathematics and Statistics, University of Bern, Switzerland)   
 
 Olivier Roustant (Ecole Nationale Superieure des Mines de Saint-Etienne, France).
+
+Victor Picheny (INRA, Castanet-Tolosan, France)
 }
 
 
@@ -103,7 +98,7 @@ covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 library(rgenoud)
 lower <- rep(0,d) 
 upper <- rep(1,d)     # domain for Branin function
-oEGO <- max_EI(fitted.model1, lower, upper, 
+oEGO <- max_EI(fitted.model1, lower=lower, upper=upper, 
 control=list(pop.size=20, BFGSburnin=2))
 print(oEGO)
 
@@ -123,7 +118,7 @@ points(oEGO$par[1], oEGO$par[2], pch=19, col="red")
 ### "ONE-SHOT" EI-MAXIMIZATION OF THE CAMELBACK FUNCTION ####
 ###	KNOWN AT A 16-POINTS FACTORIAL DESIGN            ####
 #############################################################
-
+\dontrun{
 # a 16-points factorial design, and the corresponding response
 d <- 2 
 n <- 16
@@ -143,7 +138,7 @@ covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 library(rgenoud)
 lower <- rep(0,d) 
 upper <- rep(1,d)   
-oEGO <- max_EI(fitted.model1, lower, upper, 
+oEGO <- max_EI(fitted.model1, lower=lower, upper=upper, 
 control=list(pop.size=20, BFGSburnin=2))
 print(oEGO)
 
@@ -157,14 +152,14 @@ contour(x.grid,y.grid,z.grid,40)
 title("Camelback Function")
 points(design.fact[,1], design.fact[,2], pch=17, col="blue")
 points(oEGO$par[1], oEGO$par[2], pch=19, col="red")
-
+}
 
 ####################################################################
 ### "ONE-SHOT" EI-MAXIMIZATION OF THE GOLDSTEIN-PRICE FUNCTION #####
 ### 	     KNOWN AT A 9-POINTS FACTORIAL DESIGN              #####
 ####################################################################
 
-
+\dontrun{
 # a 9-points factorial design, and the corresponding response
 d <- 2 
 n <- 9
@@ -184,7 +179,7 @@ wait.generations=5, BFGSburnin=10, trace=FALSE), parinit=c(0.5, 0.5), optim.meth
 # EI maximization
 library(rgenoud)
 lower <- rep(0,d); upper <- rep(1,d);     # domain for Branin function
-oEGO <- max_EI(fitted.model1, lower, upper, control
+oEGO <- max_EI(fitted.model1, lower=lower, upper=upper, control
 =list(pop.size=50, max.generations=50, wait.generations=5, BFGSburnin=10))
 print(oEGO)
 
@@ -198,6 +193,6 @@ contour(x.grid,y.grid,z.grid,40)
 title("Goldstein-Price Function")
 points(design.fact[,1], design.fact[,2], pch=17, col="blue")
 points(oEGO$par[1], oEGO$par[2], pch=19, col="red")
-
+}
 }
 

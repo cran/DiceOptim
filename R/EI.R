@@ -1,34 +1,41 @@
-EI <- function (x, model, type="UK", envir=NULL) {
+# source("EI.R")
+EI <- function (x, model, plugin=NULL, type="UK", envir=NULL) {
+  
+   if (is.null(plugin)){ plugin <- min(model@y) }
+	 m <- plugin
 
-	m <- min(model@y)
-	d <- length(x)
-   x <- matrix(x, 1, d)
-   
-   predx <- predict(object=model, newdata=x, type=type, checkNames = FALSE)
+   ########################################################################################
+   # Convert x in proper format(s)
+   d <- length(x)
+   if (d != model@d){ stop("x does not have the right size") }
+   newdata.num <- as.numeric(x)
+   newdata <- data.frame(t(newdata.num))
+   colnames(newdata) = colnames(model@X)
+
+   ########################################################################################
+   predx <- predict(object=model, newdata=newdata, type=type, checkNames = FALSE)
    kriging.mean <- predx$mean
-   kriging.sd <- predx$sd
-	
+   kriging.sd   <- predx$sd
+
    xcr <- (m - kriging.mean)/kriging.sd
     
-	if (kriging.sd < 1e-06) {
- 	    	res <- 0
-    	}
-   else {
-		xcr.prob <- pnorm(xcr)
+	if (kriging.sd/sqrt(model@covariance@sd2) < 1e-06) 
+	{ res <- 0
+    xcr <- xcr.prob <- xcr.dens <- NULL
+	} else 
+  {   xcr.prob <- pnorm(xcr)
       	xcr.dens <- dnorm(xcr)	        
-	   	res <- (m - kriging.mean) * xcr.prob + kriging.sd * xcr.dens
-		if (!is.null(envir)) {
-			assign("xcr", xcr, envir=envir)
-			assign("xcr.prob", xcr.prob, envir=envir)
-	   		assign("xcr.dens", xcr.dens, envir=envir)
-	   		}
+	   	  res <- (m - kriging.mean) * xcr.prob + kriging.sd * xcr.dens
 	}
     
-   if (!is.null(envir)) {
-   		assign("kriging.sd", kriging.sd, envir=envir)
+  if (!is.null(envir)) 
+  { assign("xcr", xcr, envir=envir)
+    assign("xcr.prob", xcr.prob, envir=envir)
+    assign("xcr.dens", xcr.dens, envir=envir)
+    assign("kriging.sd", kriging.sd, envir=envir)
 		assign("c", predx$c, envir=envir)
  		assign("Tinv.c", predx$Tinv.c, envir=envir)
+    
  	}
-   	
 	return(res)
 }

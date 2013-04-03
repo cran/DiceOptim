@@ -8,13 +8,13 @@
 Evaluation of a kriging quantile a a new point. To be used in an optimization loop.}
 
 \usage{
-kriging.quantile(x, model, alpha=0.1,type = "UK", envir=NULL)
+kriging.quantile(x, model, beta=0.1,type = "UK", envir=NULL)
 }
 
 \arguments{
   \item{x}{ the input vector at which one wants to evaluate the criterion }
   \item{model}{ a Kriging model of "km" class }
-  \item{alpha}{ Quantile level (default value is 0.1) }  
+  \item{beta}{ Quantile level (default value is 0.1) }  
   \item{type}{ Kriging type: "SK" or "UK" }
   \item{envir}{ an optional environment specifying where to assign intermediate values for future gradient calculations. Default is NULL.}
 }
@@ -22,7 +22,7 @@ kriging.quantile(x, model, alpha=0.1,type = "UK", envir=NULL)
 \value{Kriging quantile}
 %\references{}
 \author{ 
-Victor Picheny (CERFACS, Toulouse, France)
+Victor Picheny (INRA, Castanet-Tolosan, France)
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}
@@ -37,7 +37,6 @@ David Ginsbourger (University of Bern, Switzerland)
 ### OF THE BRANIN FUNCTION KNOWN AT A 12-POINT LATIN HYPERCUBE DESIGN ####
 ##########################################################################
 
-#library("lhs")
 set.seed(421)
 
 # Set test problem parameters
@@ -62,18 +61,13 @@ model <- km(y~1, design=doe, response=data.frame(y=y.tilde),
 	    lower=rep(.1,dim), upper=rep(1,dim), control=list(trace=FALSE))
 
 # Compute actual function and criterion on a grid
-n.grid <- 21
+n.grid <- 12 # Change to 21 for a nicer picture
 x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
 nt <- nrow(design.grid)
-crit.grid <- rep(0,1,nt)
-func.grid <- rep(0,1,nt)
 
-for (i in 1:nt)
-{ 
-crit.grid[i] <- kriging.quantile(x=design.grid[i,], model=model, alpha=0.1)
-func.grid[i] <- test.function(design.grid[i,])[1,]
-}
+crit.grid <- apply(design.grid, 1, kriging.quantile, model=model, beta=.1)
+func.grid <- apply(design.grid, 1, test.function)
 
 # Compute kriging mean and variance on a grid
 names(design.grid) <- c("V1","V2")

@@ -3,7 +3,7 @@
 	n1 <- nrow(model@X)
 		
    for (s in 1:npoints) {
-		oEGO <- max_EI(model, lower, upper, parinit, control)
+		oEGO <- max_EI(model=model, lower=lower, upper=upper, parinit=parinit, control=control)
   		model@X <- rbind(model@X, oEGO$par)
       	model@y <- rbind(model@y, L, deparse.level=0)   		
 		model@F <- trendMatrix.update(model, Xnew=data.frame(oEGO$par))

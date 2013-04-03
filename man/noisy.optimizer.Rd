@@ -12,8 +12,8 @@ The criterion optimization is based on the package rgenoud.
 }
 
 \usage{
-noisy.optimizer(optim.crit, optim.param=NULL, model, n.ite, noise.var=NULL, funnoise, lower, upper, parinit=NULL, control=NULL,CovReEstimate=TRUE,
-                             noiseReEstimate=FALSE, nugget.LB=1e-5, obs.n.rep=NULL, estim.model=NULL)
+noisy.optimizer(optim.crit, optim.param=NULL, model, n.ite, noise.var=NULL, funnoise, lower, upper, 
+parinit=NULL, control=NULL, CovReEstimate=TRUE, NoiseReEstimate=FALSE, nugget.LB=1e-5, estim.model=NULL, type="UK")
 }
 
 \arguments{
@@ -21,11 +21,6 @@ noisy.optimizer(optim.crit, optim.param=NULL, model, n.ite, noise.var=NULL, funn
   \item{optim.crit}{String defining the criterion to be optimized at each iteration. Possible values are: "random.search", "SPO", "reinterpolation", "EI.plugin", "EQI", "min.quantile", "AEI", "AKG".}
 
   \item{optim.param}{List of parameters for the chosen criterion.
- 
-  For "SPO": optim.param$nrep is a vector of integers representing the number of repetitions for each observation; 
-                 optim.param$history.best is a vector of the indices (integers) of the best observations. 
-                 If not provided, nrep is set to a vector of ones and history.best is set to the index of the current best observation.
-
   For "EI.plugin": optim.param$plugin.type is a string defining which plugin is to be used. Possible values are "ytilde", "quantile" and "other".
                       If "quantile" is chosen, optim.param$quantile defines the quantile level. 
                       If "other" is chosen, optim.param$plugin directly sets the plugin value.
@@ -59,30 +54,33 @@ Numbers into brackets are the default values }
 	
    \item{CovReEstimate}{ optional boolean specfiying if the covariance parameters should be re-estimated at every iteration (default value = TRUE)}
 
-   \item{noiseReEstimate}{optional boolean specfiying if the noise variance should be re-estimated at every iteration (default value = FALSE)}
-
-   \item{obs.n.rep}{optional vector containing the number of repetitions per observation point. 
-Required if "model" has heterogeneous variances and noise is reestimated. In that case noise variances
-must be of the form sigma^2/obs.n.rep[i].}
+   \item{NoiseReEstimate}{optional boolean specfiying if the noise variance should be re-estimated at every iteration (default value = FALSE)}
 
    \item{nugget.LB}{optional scalar of minimal value for the estimated noise variance. Default value is 1e-5.}
 
-   \item{estim.model}{optional kriging model of "km" class with homogeneous nugget effect (no noise.var). 
+   \item{estim.model}{optional kriging model of "km" class with homogeneous nugget effect (no noise.var).
 Required if noise variance is reestimated and the initial "model" has heterogenenous noise variances.}
 
+   \item{type}{"SK" or "UK" for Kriging with known or estimated trend}
 }
-
 
 \value{A list with components:
-\item{par}{ The added observations}
-\item{value}{the added observation values}
-\item{nsteps}{the number of added observations}
-\item{lastmodel}{the current (last) kriging model of "km" class}
+\item{model}{the current (last) kriging model of "km" class}
+\item{best.x}{ The best design found}
+\item{best.y}{The objective function value at best.x}
+\item{best.index}{The index of best.x in the design of experiments}
+
+\item{history.x}{ The added observations}
+\item{history.y}{The added observation values}
+\item{history.hyperparam}{The history of the kriging parameters}
+
 \item{estim.model}{If noiseReEstimate=TRUE, the current (last) kriging model of "km" class for estimating the noise variance.}
+\item{history.noise.var}{If noiseReEstimate=TRUE, the history of the noise variance estimate.}
 }
+
 %\references{}
 \author{ 
-Victor Picheny (CERFACS, Toulouse, France)
+Victor Picheny (INRA, Castanet-Tolosan, France)
 }
 %\note{}
 
@@ -90,7 +88,7 @@ Victor Picheny (CERFACS, Toulouse, France)
 
 \examples{
 ##########################################################################
-### EXAMPLE 1: 5 OPTIMIZATION STEPS USING EQI WITH KNOWN NOISE         ###
+### EXAMPLE 1: 3 OPTIMIZATION STEPS USING EQI WITH KNOWN NOISE         ###
 ### AND KNOWN COVARIANCE PARAMETERS FOR THE BRANIN FUNCTION            ###
 ##########################################################################
 
@@ -119,20 +117,21 @@ model <- km(y~1, design=doe, response=data.frame(y=y.tilde),
      lower=rep(.1,dim), upper=rep(1,dim), control=list(trace=FALSE))
 
 # Optimisation with noisy.optimizer (n.ite can be increased)
-n.ite <- 5 
+n.ite <- 2 
 optim.param <- list()
 optim.param$quantile <- .9
 optim.result <- noisy.optimizer(optim.crit="EQI", optim.param=optim.param, model=model,
 		n.ite=n.ite, noise.var=noise.var, funnoise=funnoise, lower=lower, upper=upper,
-		noiseReEstimate=FALSE, CovReEstimate=FALSE)
+		NoiseReEstimate=FALSE, CovReEstimate=FALSE)
 
 new.model <- optim.result$model
-new.doe   <- optim.result$X
-new.y     <- optim.result$y
+best.x    <- optim.result$best.x
+new.doe   <- optim.result$history.x
 
+\dontrun{
 ##### DRAW RESULTS #####
 # Compute actual function on a grid
-n.grid <- 21
+n.grid <- 12
 x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
 names(design.grid) <- c("V1","V2")
@@ -186,6 +185,35 @@ filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = topo.colors,
 plot.axes = {title(tit);points(model@X[,1],model@X[,2],pch=17,col="black"); 
 points(new.doe[1,],new.doe[2,],pch=15,col="red");
 axis(1); axis(2)})
+}
+
+##########################################################################
+### EXAMPLE 2: 3 OPTIMIZATION STEPS USING EQI WITH UNKNOWN NOISE       ###
+### AND UNKNOWN COVARIANCE PARAMETERS FOR THE BRANIN FUNCTION          ###
+##########################################################################
+# Same initial model and parameters as for example 1
+n.ite <- 2 # May be changed to a larger value 
+res <- noisy.optimizer(optim.crit="min.quantile", 
+optim.param=list(type="quantile",quantile=0.01),
+model=model, n.ite=n.ite, noise.var=noise.var, funnoise=funnoise, 
+lower=lower, upper=upper, 
+control=list(print.level=0),CovReEstimate=TRUE, NoiseReEstimate=TRUE)
+
+# Plot actual function and observations
+plot(model@X[,1], model@X[,2], pch=17,xlim=c(0,1),ylim=c(0,1))
+points(res$history.x[1,], res$history.x[2,], col="blue")
+
+# Restart: requires the output estim.model of the previous run
+# to deal with potential repetitions
+res2 <- noisy.optimizer(optim.crit="min.quantile", 
+optim.param=list(type="quantile",quantile=0.01), 
+model=res$model, n.ite=n.ite, noise.var=noise.var, funnoise=funnoise, 
+lower=lower, upper=upper, estim.model=res$estim.model,
+control=list(print.level=0),CovReEstimate=TRUE, NoiseReEstimate=TRUE)
+
+# Plot new observations
+points(res2$history.x[1,], res2$history.x[2,], col="red")
+
 } 
 
 
