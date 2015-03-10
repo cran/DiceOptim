@@ -6,7 +6,9 @@
   When the noise level is unkown, a twin model "estim.model" is also updated.
 }
 \usage{
-update_km_noisyEGO(model, x.new, y.new, noise.var=0, type="UK", add.obs=TRUE, index.in.DOE=NULL, CovReEstimate=TRUE, NoiseReEstimate=FALSE, estim.model=NULL, nugget.LB=1e-5)
+update_km_noisyEGO(model, x.new, y.new, noise.var=0, type="UK", 
+add.obs=TRUE, index.in.DOE=NULL, CovReEstimate=TRUE, 
+NoiseReEstimate=FALSE, estim.model=NULL, nugget.LB=1e-5)
 }
 \arguments{
   \item{model}{ a Kriging model of "km" class }

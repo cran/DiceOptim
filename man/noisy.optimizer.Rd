@@ -12,8 +12,9 @@ The criterion optimization is based on the package rgenoud.
 }
 
 \usage{
-noisy.optimizer(optim.crit, optim.param=NULL, model, n.ite, noise.var=NULL, funnoise, lower, upper, 
-parinit=NULL, control=NULL, CovReEstimate=TRUE, NoiseReEstimate=FALSE, nugget.LB=1e-5, estim.model=NULL, type="UK")
+noisy.optimizer(optim.crit, optim.param=NULL, model, n.ite, noise.var=NULL, 
+funnoise, lower, upper, parinit=NULL, control=NULL, CovReEstimate=TRUE, 
+NoiseReEstimate=FALSE, nugget.LB=1e-5, estim.model=NULL, type="UK")
 }
 
 \arguments{

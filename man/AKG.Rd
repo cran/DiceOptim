@@ -24,6 +24,7 @@ AKG(x, model, new.noise.var=0, type = "UK", envir=NULL)
 %\references{}
 \author{ 
 Victor Picheny (INRA, Castanet-Tolosan, France)
+
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}

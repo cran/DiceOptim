@@ -23,7 +23,9 @@ It has no further local minima.
 }
 
 \author{ Tobias Wagner, T.U. Dortmund,
+
 Victor Picheny, Ecole Centrale Paris
+
 D. Ginsbourger, University of Bern. }
 
 \keyword{optimize}

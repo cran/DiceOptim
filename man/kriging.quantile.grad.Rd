@@ -29,6 +29,7 @@ kriging.quantile.grad(x, model, beta=0.1, type="UK",envir=NULL)}
 }
 \author{
 Victor Picheny (INRA, Castanet-Tolosan, France)
+
 David Ginsbourger (IMSV, University of Berne, Switzerland)  
 }
 
@@ -37,8 +38,8 @@ David Ginsbourger (IMSV, University of Berne, Switzerland)
 
 O. Roustant, D. Ginsbourger, Y. Deville,
 \emph{DiceKriging, DiceOptim: Two R packages for the analysis of computer experiments by kriging-based metamodeling and optimization}, 
-submitted to J. Stat. Soft., 2010.
-\url{http://hal.archives-ouvertes.fr/hal-00495766_v2/}
+J. Stat. Soft., Vol. 51, Issue 1, Oct 2012.
+\url{http://www.jstatsoft.org/v51/i01/}
 
 D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et l'optimisation de fonctions numeriques multivariables}, Ph.D. thesis, Ecole Nationale Superieure des
 Mines de Saint-Etienne, 2009. 

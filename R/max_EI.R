@@ -1,5 +1,5 @@
 #source("max_EI.R")
-max_EI <-function(model, plugin=NULL, type = "UK", lower, upper, parinit=NULL, control=NULL) {
+max_EI <-function(model, plugin=NULL, type = "UK", lower, upper, parinit=NULL, minimization = TRUE, control=NULL) {
 
   if (is.null(plugin)){ plugin <- min(model@y) }
   
@@ -32,7 +32,7 @@ max_EI <-function(model, plugin=NULL, type = "UK", lower, upper, parinit=NULL, c
 	            P1=50, P2=50, P3=50, P4=50, P5=50, P6=50, P7=50, P8=50, P9=0, P9mix=NULL, 
 	            BFGSburnin=control$BFGSburnin, BFGSfn=NULL, BFGShelp=NULL, control=list("maxit"=control$BFGSmaxit), 
 	            cluster=FALSE, balance=FALSE, debug=FALSE,
-	            model=model, plugin=plugin, type=type, envir=EI.envir
+	            model=model, plugin=plugin, type=type,minimization = minimization, envir=EI.envir
 	)
   
 # 	o <- genoud(EI, nvars=d, max=TRUE, 

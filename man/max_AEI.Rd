@@ -8,7 +8,8 @@
 Maximization, based on the package rgenoud of the Augmented Expected Improvement (AEI) criterion.}
 
 \usage{
-max_AEI(model, new.noise.var=0, y.min=NULL, type = "UK", lower, upper, parinit=NULL, control=NULL)
+max_AEI(model, new.noise.var=0, y.min=NULL, type = "UK", 
+lower, upper, parinit=NULL, control=NULL)
 }
 
 \arguments{
@@ -41,6 +42,7 @@ Numbers into brackets are the default values }
 %\references{}
 \author{ 
 Victor Picheny (INRA, Castanet-Tolosan, France)
+
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}

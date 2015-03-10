@@ -21,7 +21,9 @@ x* = c(0.1873, 0.1906, 0.5566, 0.2647), with minimum f(x*) = -3.135474
 }
 
 \author{ Tobias Wagner, T.U. Dortmund,
+
 Victor Picheny, Ecole Centrale Paris
+
 D. Ginsbourger, University of Bern. }
 
 \keyword{optimize}

@@ -7,7 +7,7 @@
 \description{ Computes the gradient of the Expected Improvement at the current location. The current minimum of the observations can be replaced by an arbitrary value (plugin), which is usefull in particular in noisy frameworks.}
 
 \usage{
-EI.grad(x, model, plugin=NULL, type="UK", envir=NULL)}
+EI.grad(x, model, plugin=NULL, type="UK", minimization = TRUE, envir=NULL)}
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +20,8 @@ EI.grad(x, model, plugin=NULL, type="UK", envir=NULL)}
 
   \item{type}{ Kriging type: "SK" or "UK" }
 
+  \item{minimization}{ logical specifying if EI is used in minimiziation or in maximization, }
+  
   \item{envir}{ an optional environment specifying where to get intermediate values calculated in \code{\link{EI}}. }
 
 }
@@ -38,7 +40,7 @@ Victor Picheny (INRA, Castanet-Tolosan, France)}
 
 D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et l'optimisation de fonctions numeriques multivariables}, Ph.D. thesis, Ecole Nationale Superieure des
 Mines de Saint-Etienne, 2009. 
-\url{http://members.unine.ch/david.ginsbourger/recherche/these.htm}
+\url{http://www.ginsbourger.ch/recherche/these.php}
 
 J. Mockus (1988), \emph{Bayesian Approach to Global Optimization}. Kluwer academic publishers.
 

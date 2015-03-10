@@ -23,7 +23,9 @@ AKG.grad(x, model, new.noise.var=0, type = "UK", envir=NULL)
 \value{Gradient of the Approximate Knowledge Gradient}
 %\references{}
 \author{
-Victor Picheny (INRA, Castanet-Tolosan, France)
+Victor Picheny (INRA, Castanet-Tolosan, France) 
+
+David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}
 

@@ -1,8 +1,8 @@
-import("DiceKriging",
+import("DiceKriging","lhs","mnormt",
 	"rgenoud", "MASS")
 
 export( EI,EI.grad,max_EI,EGO.nsteps, 
-qEI, max_qEI.CL, CL.nsteps, 
+qEI, qEI.grad, max_qEI, sampleFromEI,qEGO.nsteps,
 branin2, goldsteinprice, hartman4, rosenbrock4, sphere6,
 AEI, AEI.grad, max_AEI,
 EQI, EQI.grad, max_EQI,

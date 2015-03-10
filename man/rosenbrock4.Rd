@@ -22,7 +22,9 @@ and an additional local minimizer,
 x*,2 = c(0.26667,0.4,0.4,0.4), with minimum f(x*,2) = -1.019691.}
 
 \author{ Tobias Wagner, T.U. Dortmund,
+
 Victor Picheny, Ecole Centrale Paris
+
 D. Ginsbourger, University of Bern. }
 
 \keyword{optimize}

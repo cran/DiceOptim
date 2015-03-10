@@ -7,19 +7,21 @@
 \description{ Computes the Expected Improvement at current location. The current minimum of the observations can be replaced by an arbitrary value (plugin), which is usefull in particular in noisy frameworks.}
 
 \usage{
-EI(x, model, plugin=NULL, type="UK", envir=NULL)
+EI(x, model, plugin=NULL, type="UK", minimization = TRUE, envir = NULL)
 }
 
 \arguments{
 
-  \item{x}{ a vector representing the input for which one wishes to calculate EI. }
+  \item{x}{ a vector representing the input for which one wishes to calculate EI, }
 
-  \item{model}{ an object of class \code{\link[DiceKriging]{km}}. }
+  \item{model}{ an object of class \code{\link[DiceKriging]{km}}, }
 
   \item{plugin}{ optional scalar: if provided, it replaces the minimum of the current observations,}
 
-  \item{type}{ "SK" or "UK" (by default), depending whether uncertainty related to trend estimation has to be taken into account. }
+  \item{type}{ "SK" or "UK" (by default), depending whether uncertainty related to trend estimation has to be taken into account, }
 
+  \item{minimization}{ logical specifying if EI is used in minimiziation or in maximization, }
+  
   \item{envir}{ an optional environment specifying where to assign intermediate values for future gradient calculations. Default is NULL.}
 
 }

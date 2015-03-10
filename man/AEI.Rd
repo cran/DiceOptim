@@ -30,7 +30,8 @@ D.R. Jones, M. Schonlau, and W.J. Welch (1998), Efficient global optimization of
 D. Huang, T.T. Allen, W.I. Notz, and N. Zeng (2006), Global Optimization of Stochastic Black-Box Systems via Sequential Kriging Meta-Models, \emph{Journal of Global Optimization}, 34, 441-466.
 }
 \author{ 
-Victor Picheny (INRA, Castanet-Tolosan, France)
+Victor Picheny (INRA, Castanet-Tolosan, France) 
+
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}

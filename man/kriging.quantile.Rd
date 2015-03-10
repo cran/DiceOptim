@@ -23,6 +23,7 @@ kriging.quantile(x, model, beta=0.1,type = "UK", envir=NULL)
 %\references{}
 \author{ 
 Victor Picheny (INRA, Castanet-Tolosan, France)
+
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}

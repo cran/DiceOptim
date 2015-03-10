@@ -17,7 +17,8 @@ The current minimum of the observations can be replaced by an arbitrary value (p
 }
 
 \usage{
-max_EI(model, plugin=NULL, type="UK", lower, upper, parinit=NULL, control = NULL) }
+max_EI(model, plugin=NULL, type="UK", lower, upper, parinit=NULL, 
+minimization = TRUE, control = NULL) }
 
 \arguments{
 
@@ -33,6 +34,8 @@ max_EI(model, plugin=NULL, type="UK", lower, upper, parinit=NULL, control = NULL
 
   \item{parinit}{ optional vector of initial values for the variables to be optimized over, }
 
+  \item{minimization}{ logical specifying if EI is used in minimiziation or in maximization, }
+  
    \item{control}{  optional list of control parameters for optimization. 
 One can control  \code{"pop.size"}  (default : [N=3*2^dim for dim<6 and N=32*dim otherwise]),  \code{"max.generations"} (12),  
 \code{"wait.generations"} (2) and  \code{"BFGSburnin"} (2) of function  \code{"genoud"} (see \code{\link[rgenoud]{genoud}}). 

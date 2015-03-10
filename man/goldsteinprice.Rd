@@ -30,6 +30,7 @@ f(x*,4) = -0.807367.
 
 \author{ Tobias Wagner, T.U. Dortmund, Germany
 Victor Picheny, CERFACS, Toulouse, France
+
 D. Ginsbourger, University of Bern, Switzerland. }
 
 \keyword{optimize}

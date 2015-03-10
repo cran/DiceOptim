@@ -24,7 +24,9 @@ x*.3 = c(0.9617, 0.1650), with minimum f(x*,i) = -1.047410
 }
 
 \author{ Tobias Wagner, T.U. Dortmund,
+
 Victor Picheny, Ecole Centrale Paris
+
 D. Ginsbourger, University of Bern. }
 
 \keyword{optimize}

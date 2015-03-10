@@ -27,6 +27,7 @@ Default value is 0 (noise-free observation).}
 %\references{}
 \author{
 Victor Picheny (INRA, Castanet-Tolosan, France)
+
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}
@@ -65,8 +66,10 @@ x.grid <- y.grid <- seq(0,1,length=n.grid)
 design.grid <- expand.grid(x.grid, y.grid)
 nt <- nrow(design.grid)
 
-crit.grid <- apply(design.grid, 1, EQI, model=model, new.noise.var=noise.var, beta=.9)
-crit.grad <- t(apply(design.grid, 1, EQI.grad, model=model, new.noise.var=noise.var, beta=.9))
+crit.grid <- apply(design.grid, 1, EQI, model=model, 
+new.noise.var=noise.var, beta=.9)
+crit.grad <- t(apply(design.grid, 1, EQI.grad, model=model, 
+new.noise.var=noise.var, beta=.9))
 
 z.grid <- matrix(crit.grid, n.grid, n.grid)
 contour(x.grid,y.grid, z.grid, 30)

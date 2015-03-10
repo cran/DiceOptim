@@ -1,7 +1,13 @@
 # source("EI.R")
-EI <- function (x, model, plugin=NULL, type="UK", envir=NULL) {
+EI <- function (x, model, plugin=NULL, type="UK", minimization = TRUE, envir=NULL) {
   
-   if (is.null(plugin)){ plugin <- min(model@y) }
+   if (is.null(plugin)){ 
+    if (minimization) {
+      plugin <- min(model@y)
+    } else {
+      plugin <- -max(model@y)
+    }
+   }
 	 m <- plugin
 
    ########################################################################################
@@ -15,6 +21,9 @@ EI <- function (x, model, plugin=NULL, type="UK", envir=NULL) {
    ########################################################################################
    predx <- predict(object=model, newdata=newdata, type=type, checkNames = FALSE)
    kriging.mean <- predx$mean
+   if(!minimization) {
+    kriging.mean <- -kriging.mean
+   }
    kriging.sd   <- predx$sd
 
    xcr <- (m - kriging.mean)/kriging.sd

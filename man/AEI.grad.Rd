@@ -24,6 +24,7 @@ AEI.grad(x, model, new.noise.var=0, y.min=NULL,  type = "UK", envir=NULL)
 %\references{}
 \author{ 
 Victor Picheny (INRA, Castanet-Tolosan, France) 
+
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}

@@ -38,6 +38,7 @@ Numbers into brackets are the default values }
 %\references{}
 \author{
 Victor Picheny (CERFACS, Toulouse, France)
+
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}

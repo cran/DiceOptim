@@ -8,7 +8,8 @@
 Maximization, based on the package rgenoud of the Expected Quantile Improvement (EQI) criterion.}
 
 \usage{
-max_EQI(model, new.noise.var=0, beta=0.9, q.min=NULL, type = "UK", lower, upper, parinit=NULL, control=NULL)
+max_EQI(model, new.noise.var=0, beta=0.9, q.min=NULL, type = "UK", lower, 
+upper, parinit=NULL, control=NULL)
 }
 
 \arguments{
@@ -43,6 +44,7 @@ Numbers into brackets are the default values }
 %\references{}
 \author{
 Victor Picheny (INRA, Castanet-Tolosan, France)
+
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}

@@ -96,7 +96,7 @@ M. Schonlau (1997), \emph{Computer experiments and global optimization}, Ph.D. t
 }
 
 
-\seealso{ \code{\link{EI}}, \code{\link{max_EI}}, \code{\link{EI.grad}}, \code{\link{CL.nsteps}} }
+\seealso{ \code{\link{EI}}, \code{\link{max_EI}}, \code{\link{EI.grad}} }
 
 %\keyword{models}
 \keyword{optimize}

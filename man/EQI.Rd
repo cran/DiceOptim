@@ -27,6 +27,7 @@ Default value is 0 (noise-free observation).}
 %\references{}
 \author{ 
 Victor Picheny (INRA, Castanet-Tolosan, France)
+
 David Ginsbourger (University of Bern, Switzerland)
 }
 %\note{}

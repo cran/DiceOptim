@@ -1,7 +1,13 @@
-EI.grad <- function(x, model, plugin=NULL, type="UK", envir=NULL){ 
+EI.grad <- function(x, model, plugin=NULL, type="UK", minimization = TRUE, envir=NULL){ 
 	
   ########################################################################################
-  if (is.null(plugin)){ plugin <- min(model@y) }
+  if (is.null(plugin)){ 
+    if (minimization) {
+      plugin <- min(model@y)
+    } else {
+      plugin <- -max(model@y)
+    }
+  }
   m <- plugin
   
   ########################################################################################
@@ -24,6 +30,7 @@ EI.grad <- function(x, model, plugin=NULL, type="UK", envir=NULL){
   {  
     predx <- predict(object=model, newdata=newdata, type=type, checkNames = FALSE,se.compute=TRUE,cov.compute=FALSE)
      kriging.mean <- predx$mean
+     if(!minimization) kriging.mean <- -kriging.mean
      kriging.sd <- predx$sd
      v <- predx$Tinv.c
      c <- predx$c
@@ -57,7 +64,7 @@ EI.grad <- function(x, model, plugin=NULL, type="UK", envir=NULL){
     # Compute gradients of the kriging mean and variance
     W <- backsolve(t(T), dc, upper.tri=FALSE)
     kriging.mean.grad <- t(W)%*%z + t(model@trend.coef%*%f.deltax)
-  
+    if (!minimization) kriging.mean.grad <- -kriging.mean.grad
     if (type=="UK")
     { tuuinv <- solve(t(u)%*%u)
       kriging.sd2.grad <-  t( -2*t(v)%*%W +
