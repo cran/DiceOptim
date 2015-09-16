@@ -1,7 +1,8 @@
 #source("noisy.EGO.R")
 noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.var=NULL, funnoise, lower, upper, 
                       parinit=NULL, control=NULL,CovReEstimate=TRUE,NoiseReEstimate=FALSE, 
-                      nugget.LB=1e-5, estim.model=NULL, type="UK")
+                            nugget.LB=1e-5, estim.model=NULL, type="UK",
+                            cluster=NULL)
 {
   ############################################################################################################
   # A switch is made at every iteration to choose the corresponding infill criterion, then the model is updated 
@@ -19,9 +20,9 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
   #    - "noise.var": initial guess for the unknown variance (used in optimization)
   #    - "obs.n.rep": number of repetitions per observation point. Required if "model" has heterogeneous variances
   #    - "estim.model": model with homogeneous nugget effect (no noise.var). Required only for restarting algorithms
+  #    - "cluster":     run the rgenoud optimizer on this cluster
   #
   ############################################################################################################
-  
   cat("Starting noisy optimization with the following criterion and parameters \n")
   cat(optim.crit, "\n")
   if(!is.null(optim.param))  print(optim.param,quote=FALSE)
@@ -244,7 +245,9 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
     else if (optim.crit =="AKG")
     {
       # Choose new observation based on AKG
-      oEGO <- max_AKG(model=model, new.noise.var=noise.var, type=type, lower=lower, upper=upper, parinit=parinit, control=control)
+       oEGO <- max_AKG(model=model, new.noise.var=noise.var, type=type, lower=lower,
+                      upper=upper, parinit=parinit, control=control,
+                      cluster=cluster)
       x.new <- oEGO$par
       AKG <- oEGO$val
 

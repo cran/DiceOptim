@@ -1,5 +1,7 @@
 #source("max_AKG.R")
-max_AKG <-function(model, new.noise.var=0, type = "UK", lower, upper, parinit=NULL, control=NULL) {
+max_AKG <-function(model, new.noise.var=0, type = "UK", lower, upper, parinit=NULL,
+                   control=NULL,
+                   cluster=FALSE) {
 
 	AKG.envir <- new.env()	
 	environment(AKG) <- environment(AKG.grad) <- AKG.envir 
@@ -28,7 +30,7 @@ max_AKG <-function(model, new.noise.var=0, type = "UK", lower, upper, parinit=NU
               share.type=0, instance.number=0, output.path="stdout", output.append=FALSE, project.path=NULL,
 	            P1=50, P2=50, P3=50, P4=50, P5=50, P6=50, P7=50, P8=50, P9=0,	P9mix=NULL, 
               BFGSburnin=control$BFGSburnin, BFGSfn=NULL, BFGShelp=NULL, control=list("maxit"=control$BFGSmaxit),
-	            cluster=FALSE, balance=FALSE, debug=TRUE, 
+	            cluster=cluster, balance=FALSE, debug=TRUE, 
 	            model=model, new.noise.var=new.noise.var, type=type, envir=AKG.envir
 		)
                             
