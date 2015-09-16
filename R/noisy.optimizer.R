@@ -2,7 +2,7 @@
 noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.var=NULL, funnoise, lower, upper, 
                       parinit=NULL, control=NULL,CovReEstimate=TRUE,NoiseReEstimate=FALSE, 
                             nugget.LB=1e-5, estim.model=NULL, type="UK",
-                            cluster=NULL)
+                            cluster=FALSE)
 {
   ############################################################################################################
   # A switch is made at every iteration to choose the corresponding infill criterion, then the model is updated 

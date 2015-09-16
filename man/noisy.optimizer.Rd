@@ -14,7 +14,8 @@ The criterion optimization is based on the package rgenoud.
 \usage{
 noisy.optimizer(optim.crit, optim.param=NULL, model, n.ite, noise.var=NULL, 
 funnoise, lower, upper, parinit=NULL, control=NULL, CovReEstimate=TRUE, 
-NoiseReEstimate=FALSE, nugget.LB=1e-5, estim.model=NULL, type="UK")
+NoiseReEstimate=FALSE, nugget.LB=1e-5, estim.model=NULL, type="UK",
+  cluster=FALSE)
 }
 
 \arguments{
@@ -63,6 +64,13 @@ Numbers into brackets are the default values }
 Required if noise variance is reestimated and the initial "model" has heterogenenous noise variances.}
 
    \item{type}{"SK" or "UK" for Kriging with known or estimated trend}
+   \item{cluster}{to invoke \code{\link{genoud}} in parallel, 
+   an object of the 'cluster' class returned
+   by one of the \code{\link{makeCluster}} commands in the
+   \sQuote{parallel} 
+   package or a vector of machine names.  See
+   \code{\link{genoud}} for further details.  Currently
+   only supported for \dQuote{AKG} criterion.}
 }
 
 \value{A list with components:

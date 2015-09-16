@@ -8,7 +8,10 @@
 Maximization, based on the package rgenoud of the Expected Quantile Improvement (AKG) criterion.}
 
 \usage{
-max_AKG(model, new.noise.var=0, type = "UK", lower, upper, parinit=NULL, control=NULL)
+max_AKG(model, new.noise.var=0, type = "UK", lower, upper, parinit=NULL,
+        control=NULL,
+        cluster=FALSE
+)
 }
 
 \arguments{
@@ -28,7 +31,13 @@ max_AKG(model, new.noise.var=0, type = "UK", lower, upper, parinit=NULL, control
 One can control  \code{"pop.size"}  (default : [N=3*2^dim for dim<6 and N=32*dim otherwise]),  \code{"max.generations"} (12),  
 \code{"wait.generations"} (2) and  \code{"BFGSburnin"} (2) of function  \code{"genoud"} (see \code{\link[rgenoud]{genoud}}). 
 Numbers into brackets are the default values }  
-
+  \item{cluster}{to invoke \code{\link{genoud}} in parallel, 
+  an object of the 'cluster' class returned
+  by one of the \code{\link{makeCluster}} commands in the
+  \sQuote{parallel} 
+  package or a vector of machine names.  See
+  \code{\link{genoud}} for further details.
+}
 }
 
 \value{A list with components:
