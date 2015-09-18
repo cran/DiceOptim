@@ -7,6 +7,7 @@ Author: D. Ginsbourger, V. Picheny, O. Roustant, with contributions by
 Maintainer: D. Ginsbourger <david.ginsbourger@stat.unibe.ch>
 Description: Expected Improvement. EGO algorithm. Multipoint EI and parallelized versions of EGO. Criteria and algorithms for Noisy Kriging-based Optimization , including AEI, AKG, EQI, and EI with plugin.
 Depends: DiceKriging (>= 1.2), rgenoud, MASS, lhs, mnormt
+Imports: doParallel
 License: GPL-2 | GPL-3
 URL: http://dice.emse.fr/
 Packaged: 2015-03-10 16:49:26 UTC; ginsbourger

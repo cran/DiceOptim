@@ -33,7 +33,7 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
      multistart <- 1
   }
   else {
-     doParallel::registerDoParallel(cl)
+     doParallel::registerDoParallel(cluster)
      multistart <- length(cluster)
   }
   #---------------------------------------------------------------------------------------------------------
@@ -289,7 +289,7 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
     upmod <- update_km_noisyEGO(model=model, x.new=x.new, y.new=y.new, noise.var=noise.var, type=type,
                                 add.obs=add.obs, index.in.DOE=i.best, CovReEstimate=CovReEstimate, NoiseReEstimate=NoiseReEstimate, 
                                 estim.model=estim.model, nugget.LB=nugget.LB,
-                                multistart=multistart)
+                                cluster=cluster)
     model <- upmod$model
     if (NoiseReEstimate)
     { estim.model <- upmod$estim.model

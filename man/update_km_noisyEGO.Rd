@@ -8,7 +8,8 @@
 \usage{
 update_km_noisyEGO(model, x.new, y.new, noise.var=0, type="UK", 
 add.obs=TRUE, index.in.DOE=NULL, CovReEstimate=TRUE, 
-NoiseReEstimate=FALSE, estim.model=NULL, nugget.LB=1e-5)
+NoiseReEstimate=FALSE, estim.model=NULL, nugget.LB=1e-5,
+cluster=NULL)
 }
 \arguments{
   \item{model}{ a Kriging model of "km" class }
@@ -22,6 +23,14 @@ NoiseReEstimate=FALSE, estim.model=NULL, nugget.LB=1e-5)
   \item{NoiseReEstimate}{ optional boolean specfiying if the noise variance should be re-estimated (default value = TRUE) }
   \item{estim.model}{ optional input of "km" class. Required if NoiseReEstimate=TRUE, in order to deal with repetitions.}
   \item{nugget.LB}{optional scalar: is used to define a lower bound on the noise variance.}
+  \item{cluster}{to invoke \code{\link{km}} and \code{\link{genoud}} in parallel, 
+    an object of the 'cluster' class returned
+    by one of the \code{\link{makeCluster}} commands in the
+    \sQuote{parallel} 
+    package, or a vector of machine names.  See
+    \code{\link{genoud}} for further details.  Currently
+    only supported for \dQuote{AKG} criterion.
+  }
 }
 
 \value{

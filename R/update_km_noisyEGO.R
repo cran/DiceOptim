@@ -13,7 +13,7 @@ update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.
      multistart <- 1
   }
   else {
-     doParallel::registerDoParallel(cl)
+     doParallel::registerDoParallel(cluster)
      multistart <- length(cluster)
   }
   #-------------------------------------------------------------------------------------------------------
