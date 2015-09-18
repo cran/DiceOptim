@@ -64,11 +64,11 @@ Numbers into brackets are the default values }
 Required if noise variance is reestimated and the initial "model" has heterogenenous noise variances.}
 
    \item{type}{"SK" or "UK" for Kriging with known or estimated trend}
-   \item{cluster}{to invoke \code{\link{genoud}} in parallel, 
+   \item{cluster}{to invoke \code{\link{km}} and \code{\link{genoud}} in parallel, 
    an object of the 'cluster' class returned
    by one of the \code{\link{makeCluster}} commands in the
    \sQuote{parallel} 
-   package or a vector of machine names.  See
+   package, or a vector of machine names.  See
    \code{\link{genoud}} for further details.  Currently
    only supported for \dQuote{AKG} criterion.}
 }

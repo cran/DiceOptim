@@ -1,5 +1,6 @@
 import("DiceKriging","lhs","mnormt",
 	"rgenoud", "MASS")
+importFrom("doParallel", "registerDoParallel")
 
 export( EI,EI.grad,max_EI,EGO.nsteps, 
 qEI, qEI.grad, max_qEI, sampleFromEI,qEGO.nsteps,
