@@ -25,7 +25,9 @@ EGO.nsteps <-function(model, fun, nsteps, lower, upper, parinit=NULL, control=NU
 			model <- km(formula=model@trend.formula, design=model@X, response=model@y, 
 		   		 covtype=model@covariance@name, lower=model@lower, upper=model@upper, 
                  nugget=NULL, penalty=kmcontrol$penalty, optim.method=kmcontrol$optim.method, 
-		    	parinit=kmcontrol$parinit, control=kmcontrol$control, gr=model@gr, iso=is(model@covariance,"covIso"))
+		    	parinit=kmcontrol$parinit, control=kmcontrol$control,
+                                    gr=model@gr, iso=is(model@covariance,"covIso"),
+                                    multistart=multistart)
 		} else {
 			coef.cov <- covparam2vect(model@covariance)
 			model <- km(formula=model@trend.formula, design=model@X, response=model@y, 

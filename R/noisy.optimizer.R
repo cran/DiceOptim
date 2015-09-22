@@ -29,12 +29,20 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
   cat("----------------- \n")
   optim.result <- list()
   ## Prepare the multistart for dicekriging
-  if(is.null(cluster)) {
+  if(length(cluster) < 2) {
      multistart <- 1
+     cluster <- FALSE
+                           # just to ensure if fits to genoud()
   }
   else {
-     doParallel::registerDoParallel(cluster)
-     multistart <- length(cluster)
+     if(inherits(cluster, "cluster")) {
+        doParallel::registerDoParallel(cluster)
+        multistart <- length(cluster)
+     }
+     else {
+        stop("'cluster' object must either be 'FALSE' or of class 'cluster'.\n",
+             "Currently it is ", class(cluster))
+     }
   }
   #---------------------------------------------------------------------------------------------------------
   # Initialization for the unknown noise variance case

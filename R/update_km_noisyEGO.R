@@ -2,19 +2,26 @@
 update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.obs=TRUE, index.in.DOE=NULL, 
                                CovReEstimate=TRUE, NoiseReEstimate=FALSE,
                                estim.model=NULL, nugget.LB=1e-5,
-                               cluster=NULL)
+                               cluster=FALSE)
 {
   i.new <- index.in.DOE
   cov.reestim <- CovReEstimate
   trend.reestim <- FALSE
   if (type=="UK") {trend.reestim <- TRUE}
   ## Prepare the multistart for dicekriging
-  if(is.null(cluster)) {
+  if(length(cluster) < 2) {
      multistart <- 1
+     cluster <- FALSE
   }
   else {
-     doParallel::registerDoParallel(cluster)
-     multistart <- length(cluster)
+     if(inherits(cluster, "cluster")) {
+        doParallel::registerDoParallel(cluster)
+        multistart <- length(cluster)
+     }
+     else {
+        stop("'cluster' object must either be 'FALSE' or of class 'cluster'.\n",
+             "Currently it is ", class(cluster))
+     }
   }
   #-------------------------------------------------------------------------------------------------------
   #-- Case 1: unknown noise variance ---------------------------------------------------------------------

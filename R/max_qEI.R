@@ -1,4 +1,6 @@
-max_qEI <- function(model, npoints, lower, upper, crit="exact", minimization = TRUE, optimcontrol=NULL) {  
+max_qEI <- function(model, npoints, lower, upper, crit="exact", minimization = TRUE,
+                    optimcontrol=NULL,
+                    cluster=FALSE) {  
   if (is.null(optimcontrol$method)) optimcontrol$method <- "BFGS"
   optim.method <- optimcontrol$method
   d <- model@d 
@@ -74,7 +76,7 @@ max_qEI <- function(model, npoints, lower, upper, crit="exact", minimization = T
                     output.path = "stdout", output.append = FALSE, project.path = NULL, 
                     P1 = 50, P2 = 50, P3 = 50, P4 = 50, P5 = 50, P6 = 50, 
                     P7 = 50, P8 = 50, P9 = 0, P9mix = NULL, BFGSburnin = optimcontrol$BFGSburnin, 
-                    BFGSfn = NULL, BFGShelp = NULL, cluster = FALSE, balance = FALSE, 
+                    BFGSfn = NULL, BFGShelp = NULL, cluster = cluster, balance = FALSE, 
                     debug = FALSE, model = model,fastCompute = optimcontrol$fastCompute,minimization=minimization,envir=EI.envir)
         
         o$par <- matrix(o$par,ncol=d)

@@ -19,7 +19,6 @@ max_AKG <-function(model, new.noise.var=0, type = "UK", lower, upper, parinit=NU
 	if (is.null(parinit))  parinit <- lower + runif(d) * (upper - lower)
      
 	domaine <- cbind(lower, upper)
-
 	o <- genoud(AKG, nvars=d, max=TRUE,
 	            pop.size=control$pop.size, max.generations=control$max.generations, wait.generations=control$wait.generations,
 	            hard.generation.limit=TRUE, starting.values=parinit, MemoryMatrix=TRUE, 
