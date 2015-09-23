@@ -9,7 +9,7 @@
 update_km_noisyEGO(model, x.new, y.new, noise.var=0, type="UK", 
 add.obs=TRUE, index.in.DOE=NULL, CovReEstimate=TRUE, 
 NoiseReEstimate=FALSE, estim.model=NULL, nugget.LB=1e-5,
-cluster=NULL)
+cluster=FALSE)
 }
 \arguments{
   \item{model}{ a Kriging model of "km" class }
@@ -27,9 +27,7 @@ cluster=NULL)
     an object of the 'cluster' class returned
     by one of the \code{\link{makeCluster}} commands in the
     \sQuote{parallel} 
-    package, or a vector of machine names.  See
-    \code{\link{genoud}} for further details.  Currently
-    only supported for \dQuote{AKG} criterion.
+    package.
   }
 }
 

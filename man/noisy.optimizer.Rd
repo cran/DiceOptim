@@ -69,8 +69,7 @@ Required if noise variance is reestimated and the initial "model" has heterogene
    by one of the \code{\link{makeCluster}} commands in the
    \sQuote{parallel} 
    package, or a vector of machine names.  See
-   \code{\link{genoud}} for further details.  Currently
-   only supported for \dQuote{AKG} criterion.}
+   \code{\link{genoud}} for further details.}
 }
 
 \value{A list with components:
