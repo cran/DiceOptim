@@ -1,6 +1,6 @@
-import("DiceKriging","lhs","mnormt",
-	"rgenoud", "MASS")
+import("DiceKriging","lhs","mnormt", "MASS")
 importFrom("doParallel", "registerDoParallel")
+importFrom("rgenoud", "genoud")
 
 export( EI,EI.grad,max_EI,EGO.nsteps, 
 qEI, qEI.grad, max_qEI, sampleFromEI,qEGO.nsteps,
