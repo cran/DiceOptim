@@ -1,4 +1,6 @@
-EGO.nsteps <-function(model, fun, nsteps, lower, upper, parinit=NULL, control=NULL, kmcontrol=NULL) {
+EGO.nsteps <-function(model, fun, nsteps, lower, upper, parinit=NULL, control=NULL,
+                      kmcontrol=NULL,
+                      multistart=1) {
 
 	n <- nrow(model@X)
 	
@@ -23,11 +25,17 @@ EGO.nsteps <-function(model, fun, nsteps, lower, upper, parinit=NULL, control=NU
 			model <- km(formula=model@trend.formula, design=model@X, response=model@y, 
 		   		 covtype=model@covariance@name, lower=model@lower, upper=model@upper, 
                  nugget=NULL, penalty=kmcontrol$penalty, optim.method=kmcontrol$optim.method, 
-		    	parinit=kmcontrol$parinit, control=kmcontrol$control, gr=model@gr, iso=is(model@covariance,"covIso"))
+		    	parinit=kmcontrol$parinit, control=kmcontrol$control,
+                                    gr=model@gr, iso=is(model@covariance,"covIso"),
+                                    multistart=multistart)
 		} else {
 			coef.cov <- covparam2vect(model@covariance)
 			model <- km(formula=model@trend.formula, design=model@X, response=model@y, 
-		   		 covtype=model@covariance@name, coef.trend=model@trend.coef, coef.cov=coef.cov, coef.var=model@covariance@sd2, nugget=NULL, iso=is(model@covariance,"covIso"))
+		   		 covtype=model@covariance@name,
+                                    coef.trend=model@trend.coef, coef.cov=coef.cov,
+                                    coef.var=model@covariance@sd2, nugget=NULL,
+                                    iso=is(model@covariance,"covIso"),
+                                    multistart=multistart)
 		}
 	}
 	

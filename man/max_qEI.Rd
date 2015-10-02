@@ -15,7 +15,7 @@ Maximization of the \code{\link{qEI}} criterion. Two options are available : Con
 
 \usage{
 max_qEI(model, npoints, lower, upper, crit = "exact", 
-minimization = TRUE, optimcontrol = NULL)
+minimization = TRUE, optimcontrol = NULL, cluster=FALSE)
 }
 
 \arguments{
@@ -33,6 +33,12 @@ minimization = TRUE, optimcontrol = NULL)
   \item{minimization}{ logical specifying if the qEI to be maximized is used in minimiziation or in maximization, }
   
   \item{optimcontrol}{  an optional list of control parameters for optimization. See details.}
+  \item{cluster}{to invoke \code{\link{km}} and \code{\link{genoud}} in parallel, 
+     an object of the 'cluster' class returned
+     by one of the \code{\link{makeCluster}} commands in the
+     \sQuote{parallel} 
+     package, or a vector of machine names.  See
+     \code{\link{genoud}} for further details.}
 
 }
 

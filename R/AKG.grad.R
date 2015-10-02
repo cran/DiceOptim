@@ -41,6 +41,7 @@ AKG.grad <- function(x, model, new.noise.var=0, type = "UK", envir=NULL){
       
       ######### Compute a and b #########
       a <- c(mk.X, mk.x)
+browser()
       b <- cn / sqrt(tau2.new + sk.x^2)
       sQ <- b[model@n+1]
     }
@@ -88,9 +89,9 @@ AKG.grad <- function(x, model, new.noise.var=0, type = "UK", envir=NULL){
     }
 #     print(t(dc.x) - t(t(V.X)%*%W))
     cn.grad <- t(dc.x) - t(t(V.X)%*%W) + mu.x.grad
-    
     b.grad[,1:model@n] <- cn.grad/sqrt(tau2.new+sk.x^2) - sk2.x.grad%*%cn[1:model@n]*as.numeric(1/2/(tau2.new+sk.x^2)^(3/2))
-    b.grad[,model@n+1] <- as.numeric(sk.x^2*(2*tau2.new+sk.x^2)/(tau2.new+sk.x^2)^2)*sk2.x.grad/as.numeric(2*sQ)
+    b.grad[,model@n+1] <- as.numeric(sk.x^2*(2*tau2.new+sk.x^2)/(tau2.new+sk.x^2)^2)*
+        sk2.x.grad/as.numeric(2*sQ)
     
     ######### Careful: the AKG is written for MAXIMIZATION #########
     ######### Minus signs have been added where necessary ##########

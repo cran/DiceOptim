@@ -1,4 +1,6 @@
-CL.nsteps <- function (model, fun, npoints, nsteps, lower, upper, parinit = NULL, kmcontrol = NULL, control=NULL) {
+CL.nsteps <- function (model, fun, npoints, nsteps, lower, upper, parinit = NULL,
+                       kmcontrol = NULL, control=NULL,
+                       multistart=1) {
     
     n <- nrow(model@X)
 
@@ -18,7 +20,9 @@ CL.nsteps <- function (model, fun, npoints, nsteps, lower, upper, parinit = NULL
 	  	model <- km(formula=model@trend.formula, design=model@X, response=model@y, 
 	  		    covtype=model@covariance@name, lower=model@lower, upper=model@upper, 
                             nugget=NULL, penalty=kmcontrol$penalty, optim.method=kmcontrol$optim.method, 
-		    	    parinit=kmcontrol$parinit, control=kmcontrol$control, gr=model@gr)
+		    	    parinit=kmcontrol$parinit, control=kmcontrol$control,
+                            gr=model@gr,
+                            multistart=multistart)
 	  	            
 	}
 

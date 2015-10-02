@@ -1,12 +1,28 @@
 #source("update_km_noisyEGO.R")
 update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.obs=TRUE, index.in.DOE=NULL, 
-                               CovReEstimate=TRUE, NoiseReEstimate=FALSE, estim.model=NULL, nugget.LB=1e-5)
+                               CovReEstimate=TRUE, NoiseReEstimate=FALSE,
+                               estim.model=NULL, nugget.LB=1e-5,
+                               cluster=FALSE)
 {
   i.new <- index.in.DOE
   cov.reestim <- CovReEstimate
   trend.reestim <- FALSE
   if (type=="UK") {trend.reestim <- TRUE}
-  
+  ## Prepare the multistart for dicekriging
+  if(length(cluster) < 2) {
+     multistart <- 1
+     cluster <- FALSE
+  }
+  else {
+     if(inherits(cluster, "cluster")) {
+        doParallel::registerDoParallel(cluster)
+        multistart <- length(cluster)
+     }
+     else {
+        stop("'cluster' object must either be 'FALSE' or of class 'cluster'.\n",
+             "Currently it is ", class(cluster))
+     }
+  }
   #-------------------------------------------------------------------------------------------------------
   #-- Case 1: unknown noise variance ---------------------------------------------------------------------
   #-------------------------------------------------------------------------------------------------------
@@ -103,11 +119,15 @@ update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.
     {
       if (type=="UK")
       { newmodel <- try(km(formula=model@trend.formula, design=model@X, response=model@y, covtype=model@covariance@name, noise.var=model@noise.var,
-                         parinit=covparam2vect(model@covariance),lower=model@lower, upper=model@upper,control=model@control))
+                         parinit=covparam2vect(model@covariance),lower=model@lower,
+                           upper=model@upper,control=model@control,
+                           multistart=multistart))
       } else
       { newmodel <- try(km(formula=model@trend.formula, design=model@X, response=model@y, covtype=model@covariance@name, noise.var=model@noise.var,
                            coef.trend=model@trend.coef,
-                           parinit=covparam2vect(model@covariance),lower=model@lower, upper=model@upper,control=model@control))
+                           parinit=covparam2vect(model@covariance),lower=model@lower,
+                           upper=model@upper,control=model@control,
+                           multistart=multistart))
       }
       
       # If km crashes: try to build it again with old hyperparameters
@@ -116,7 +136,9 @@ update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.
         newmodel <- km(formula=model@trend.formula, design=model@X, response=model@y, covtype=model@covariance@name, 
                        noise.var=model@noise.var, control=model@control,
                        coef.trend=model@trend.coef, coef.cov=covparam2vect(model@covariance), 
-                       coef.var=model@covariance@sd2, lower=model@lower, upper=model@upper)
+                       coef.var=model@covariance@sd2, lower=model@lower,
+                       upper=model@upper,
+                       multistart=multistart)
       }
     } else # If no hyperparameter reestimation
     {  newmodel <- computeAuxVariables(model)

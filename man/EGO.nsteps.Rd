@@ -12,7 +12,8 @@ then a new point is obtained by maximizing the Expected Improvement criterion (\
 
 \usage{
 EGO.nsteps(model, fun, nsteps, lower, upper, parinit=NULL, 
-control=NULL, kmcontrol=NULL)
+control=NULL, kmcontrol=NULL,
+multistart=1)
 }
 
 
@@ -45,15 +46,16 @@ control=NULL, kmcontrol=NULL)
 		of the function \code{\link[rgenoud]{genoud}}. }
 
   \item{kmcontrol}{ an optional list representing the control variables for the re-estimation of the kriging model. 
-		    The items are the same as in \code{\link[DiceKriging]{km}} : 
-
-		\code{penalty}, \code{optim.method}, \code{parinit}, \code{control}. 
-
-		The default values are those contained in \code{model}, typically corresponding to the variables 
-		used in \code{\link[DiceKriging]{km}} to estimate a kriging model from the initial design points.}
+    The items are the same as in \code{\link[DiceKriging]{km}} : 
+    \code{penalty}, \code{optim.method}, \code{parinit}, \code{control}. 
+    The default values are those contained in \code{model}, typically corresponding to the variables 
+    used in \code{\link[DiceKriging]{km}} to estimate a
+    kriging model from the initial design points.}
+  \item{multistart}{an integer, number of parallel kriging optimizations
+    (see \code{\link{km}}.)  Note, one has to register the corresponding
+    cluster by \code{\link[doParallel]{registerDoParallel}} (see package
+    \dQuote{foreach}).}
 }
-
-
 
 \value{ A list with components:
 

@@ -1,12 +1,13 @@
 Package: DiceOptim
-Version: 1.5
+Version: 1.5.1
 Title: Kriging-Based Optimization for Computer Experiments
 Date: 2015-03-10
 Author: D. Ginsbourger, V. Picheny, O. Roustant, with contributions by
         C. Chevalier,  S. Marmin, and T. Wagner
 Maintainer: D. Ginsbourger <david.ginsbourger@stat.unibe.ch>
 Description: Expected Improvement. EGO algorithm. Multipoint EI and parallelized versions of EGO. Criteria and algorithms for Noisy Kriging-based Optimization , including AEI, AKG, EQI, and EI with plugin.
-Depends: DiceKriging (>= 1.2), rgenoud, MASS, lhs, mnormt
+Depends: DiceKriging (>= 1.2), MASS, lhs, mnormt
+Imports: doParallel, rgenoud
 License: GPL-2 | GPL-3
 URL: http://dice.emse.fr/
 Packaged: 2015-03-10 16:49:26 UTC; ginsbourger

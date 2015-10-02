@@ -1,7 +1,8 @@
 #source("noisy.EGO.R")
 noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.var=NULL, funnoise, lower, upper, 
                       parinit=NULL, control=NULL,CovReEstimate=TRUE,NoiseReEstimate=FALSE, 
-                      nugget.LB=1e-5, estim.model=NULL, type="UK")
+                            nugget.LB=1e-5, estim.model=NULL, type="UK",
+                            cluster=FALSE)
 {
   ############################################################################################################
   # A switch is made at every iteration to choose the corresponding infill criterion, then the model is updated 
@@ -19,15 +20,30 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
   #    - "noise.var": initial guess for the unknown variance (used in optimization)
   #    - "obs.n.rep": number of repetitions per observation point. Required if "model" has heterogeneous variances
   #    - "estim.model": model with homogeneous nugget effect (no noise.var). Required only for restarting algorithms
+  #    - "cluster":     run the rgenoud optimizer on this cluster
   #
   ############################################################################################################
-  
   cat("Starting noisy optimization with the following criterion and parameters \n")
   cat(optim.crit, "\n")
   if(!is.null(optim.param))  print(optim.param,quote=FALSE)
   cat("----------------- \n")
   optim.result <- list()
-  
+  ## Prepare the multistart for dicekriging
+  if(length(cluster) < 2) {
+     multistart <- 1
+     cluster <- FALSE
+                           # just to ensure if fits to genoud()
+  }
+  else {
+     if(inherits(cluster, "cluster")) {
+        doParallel::registerDoParallel(cluster)
+        multistart <- length(cluster)
+     }
+     else {
+        stop("'cluster' object must either be 'FALSE' or of class 'cluster'.\n",
+             "Currently it is ", class(cluster))
+     }
+  }
   #---------------------------------------------------------------------------------------------------------
   # Initialization for the unknown noise variance case
   #---------------------------------------------------------------------------------------------------------
@@ -48,12 +64,13 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
       
       #-- Case 1.2: estim.model needs to be built (noise.var is estimated) ----------------------------------
     { if ( max(obs.n.rep)==1 )
-      { estim.model <- km(formula=model@trend.formula, covtype=model@covariance@name,
+     { estim.model <- km(formula=model@trend.formula, covtype=model@covariance@name,
                          design=model@X, response=model@y,
                          lower=model@lower, upper=model@upper,
                           coef.cov=covparam2vect(model@covariance), coef.var=model@covariance@sd2,
                           optim.method=model@optim.method, 
-                         nugget=noise.var, control=model@control)
+                         nugget=noise.var, control=model@control,
+                         multistart=multistart)
         if (type=="SK"){ estim.model@trend.coef=model@trend.coef }
         estim.model@covariance@nugget.estim =TRUE
       } else 
@@ -86,14 +103,16 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
       
       try(optim.model <- km(formula=model@trend.formula, design=model@X, response=mk,
     	            covtype=model@covariance@name, coef.trend=model@trend.coef, coef.cov=covparam2vect(model@covariance),
-    	            coef.var=model@covariance@sd2,control=model@control))
+    	            coef.var=model@covariance@sd2,control=model@control,
+                            multistart=multistart))
 
       # If km crashes: add nugget to the interpolating model
       if(!exists("optim.model"))
       { print("Error occured during model update - small nugget added to the reinterpolating model")
         optim.model <- km(formula=model@trend.formula, design=model@X, response=mk,
     	            covtype=model@covariance@name, coef.trend=model@trend.coef, coef.cov=covparam2vect(model@covariance),
-    	            coef.var=model@covariance@sd2, nugget=1e-8,control=model@control)
+    	            coef.var=model@covariance@sd2, nugget=1e-8,control=model@control,
+                          multistart=multistart)
       }
 
       # Choose new observation based on EI
@@ -244,7 +263,9 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
     else if (optim.crit =="AKG")
     {
       # Choose new observation based on AKG
-      oEGO <- max_AKG(model=model, new.noise.var=noise.var, type=type, lower=lower, upper=upper, parinit=parinit, control=control)
+       oEGO <- max_AKG(model=model, new.noise.var=noise.var, type=type, lower=lower,
+                      upper=upper, parinit=parinit, control=control,
+                      cluster=cluster)
       x.new <- oEGO$par
       AKG <- oEGO$val
 
@@ -275,7 +296,8 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
  
     upmod <- update_km_noisyEGO(model=model, x.new=x.new, y.new=y.new, noise.var=noise.var, type=type,
                                 add.obs=add.obs, index.in.DOE=i.best, CovReEstimate=CovReEstimate, NoiseReEstimate=NoiseReEstimate, 
-                                estim.model=estim.model, nugget.LB=nugget.LB)
+                                estim.model=estim.model, nugget.LB=nugget.LB,
+                                cluster=cluster)
     model <- upmod$model
     if (NoiseReEstimate)
     { estim.model <- upmod$estim.model
