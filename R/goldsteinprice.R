@@ -1,3 +1,29 @@
+##' 2D test function
+##' 
+##' Goldstein-Price 2-dimensional test function.
+##' 
+##' The goldsteinprice (standardized version) function is defined over the
+##' domain \code{[0,1]^2}. It has 1 global minimizer : x* = c(0.5, 0.25), with
+##' minimum f(x*) = -3.129172, and 3 local minima x*,2 = c(0.35, 0.4), x*,3 =
+##' c(0.95, 0.55), x*,4 = c(0.8 , 0.7), with respective minima f(x*,2) =
+##' -2.180396, f(x*,3) = -1.756143, f(x*,4) = -0.807367.
+##' 
+##' @param x a 2-dimensional vector specifying the location where the function
+##' is to be evaluated.
+##' @return A real number equal to the goldsteinprice function values at
+##' \code{x}
+##' @author Tobias Wagner  
+##' 
+##' Victor Picheny 
+##' 
+##' David Ginsbourger 
+##' @keywords optimize internal
+##' @examples
+##'  
+##' design <- matrix(runif(200), 200, 2)
+##' response <- apply(design, 1, goldsteinprice)
+##' 
+##' @export goldsteinprice
 goldsteinprice <- function(x)
 {
 # Goldstein and Price test function (standardized version)

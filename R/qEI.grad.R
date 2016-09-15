@@ -142,6 +142,126 @@ krigingDeriv <- function(x, model, type="UK", envir=NULL){
 }
 
 
+
+
+
+
+##' Computes an exact or approximate gradient of the multipoint expected
+##' improvement criterion
+##' 
+##' @title Gradient of the multipoint expected improvement (qEI) criterion
+##' @param x a matrix representing the set of input points (one row corresponds
+##' to one point) where to evaluate the gradient,
+##' @param model an object of class \code{\link[DiceKriging]{km}},
+##' @param plugin optional scalar: if provided, it replaces the minimum of the
+##' current observations,
+##' @param type "SK" or "UK" (by default), depending whether uncertainty
+##' related to trend estimation has to be taken into account,
+##' @param minimization logical specifying if EI is used in minimiziation or in
+##' maximization,
+##' @param fastCompute if TRUE, a fast approximation method based on a
+##' semi-analytic formula is used (see [Marmin 2014] for details),
+##' @param eps the value of \emph{epsilon} of the fast computation trick.
+##' Relevant only if \code{fastComputation} is TRUE,
+##' @param envir an optional environment specifying where to get intermediate
+##' values calculated in \code{\link{qEI}}.
+##' @return The gradient of the multipoint expected improvement criterion with
+##' respect to x. A 0-matrix is returned if the batch of input points contains
+##' twice the same point or a point from the design experiment of the km object
+##' (the gradient does not exist in these cases).
+##' @author Sebastien Marmin 
+##' 
+##' Clement Chevalier 
+##' 
+##' David Ginsbourger
+##' @seealso \code{\link{qEI}}
+##' @references
+##' 
+##' C. Chevalier and D. Ginsbourger (2014) Learning and Intelligent
+##' Optimization - 7th International Conference, Lion 7, Catania, Italy,
+##' January 7-11, 2013, Revised Selected Papers, chapter Fast computation of
+##' the multipoint Expected Improvement with applications in batch selection,
+##' pages 59-69, Springer.
+##' 
+##' D. Ginsbourger, R. Le Riche, L. Carraro (2007), A Multipoint Criterion for
+##' Deterministic Parallel Global Optimization based on Kriging. The
+##' International Conference on Non Convex Programming, 2007.
+##' 
+##' D. Ginsbourger, R. Le Riche, and L. Carraro. Kriging is well-suited to
+##' parallelize optimization (2010), In Lim Meng Hiot, Yew Soon Ong, Yoel
+##' Tenne, and Chi-Keong Goh, editors, \emph{Computational Intelligence in
+##' Expensive Optimization Problems}, Adaptation Learning and Optimization,
+##' pages 131-162. Springer Berlin Heidelberg.
+##' 
+##' S. Marmin. Developpements pour l'evaluation et la maximisation du critere
+##' d'amelioration esperee multipoint en optimisation globale (2014). Master's
+##' thesis, Mines Saint-Etienne (France) and University of Bern (Switzerland).
+##' 
+##' J. Mockus (1988), \emph{Bayesian Approach to Global Optimization}. Kluwer
+##' academic publishers.
+##' 
+##' M. Schonlau (1997), \emph{Computer experiments and global optimization},
+##' Ph.D. thesis, University of Waterloo.
+##' @keywords models optimize
+##' @examples
+##' 
+##' \dontrun{
+##' set.seed(15)
+##' # Example 1 - validation by comparison to finite difference approximations
+##' 
+##' # a 10-points optimum LHS design and the corresponding responses
+##' d <- 2;n <- d*5
+##' design <- maximinESE_LHS(lhsDesign(n,d)$design,1)$design
+##' colnames(design)<-c("x1", "x2")
+##' lower <- c(0,0)
+##' upper <- c(1,1)
+##' y <- data.frame(apply(design, 1, branin))
+##' names(y) <- "y"
+##' 
+##' # learning
+##' model <- km(~1, design=design, response=y)
+##' 
+##' # pick up 4 points sampled from the simple expected improvement
+##' q <- 4
+##' X <- sampleFromEI(model,n=q)
+##' 
+##' # compute the gradient at the 4-point batch
+##' grad.analytic <- qEI.grad(X,model)
+##' # numerically compute the gradient
+##' grad.numeric <- matrix(NaN,q,d)
+##' eps <- 10^(-6)
+##' EPS <- matrix(0,q,d)
+##' for (i in 1:q) {
+##'   for (j in 1:d) {
+##'     EPS[i,j] <- eps
+##'     grad.numeric[i,j] <- 1/eps*(qEI(X+EPS,model,fastCompute=FALSE)-qEI(X,model,fastCompute=FALSE))
+##'     EPS[i,j] <- 0
+##'   }  
+##' }
+##' print(grad.numeric)
+##' print(grad.analytic)
+##' 
+##' # graphics: displays the EI criterion, the design points in black, 
+##' # the batch points in red and the gradient in blue.
+##' nGrid <- 15
+##' gridAxe1 <- seq(lower[1],upper[1],length=nGrid)
+##' gridAxe2 <- seq(lower[2],upper[2],length=nGrid)
+##' grid <- expand.grid(gridAxe1,gridAxe2)
+##' aa <- apply(grid,1,EI,model=model)
+##' myMat <- matrix(aa,nrow=nGrid)
+##' image(x = gridAxe1, y = gridAxe2, z = myMat, 
+##'       col = colorRampPalette(c("darkgray","white"))(5*10), 
+##'       ylab = names(design)[1], xlab=names(design)[2], 
+##'       main = "qEI-gradient of a batch of 4 points", axes = TRUE, 
+##'       zlim = c(min(myMat), max(myMat)))
+##' contour(x = gridAxe1, y = gridAxe2, z = myMat, 
+##'         add = TRUE, nlevels = 10)
+##' points(X[,1],X[,2],pch=19,col='red')
+##' points(model@@X[,1],model@@X[,2],pch=19)
+##' arrows(X[,1],X[,2],X[,1]+0.012*grad.analytic[,1],X[,2]+0.012*grad.analytic[,2],col='blue')
+##' }
+##' 
+##' @export qEI.grad
 qEI.grad <- function(x, model, plugin=NULL, type="UK", minimization = TRUE, fastCompute = TRUE, eps = 10^(-6), envir=NULL) {
   
   

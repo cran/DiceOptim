@@ -1,3 +1,26 @@
+##' 4D test function
+##' 
+##' Hartman 4-dimensional test function.
+##' 
+##' The hartman4 (standardized version) function is defined over the domain
+##' \code{[0,1]^4}. It has 1 global minimizer : x* = c(0.1873, 0.1906, 0.5566,
+##' 0.2647), with minimum f(x*) = -3.135474
+##' 
+##' @param x a 4-dimensional vector specifying the location where the function
+##' is to be evaluated.
+##' @return A real number equal to the hartman4 function values at \code{x}
+##' @author Tobias Wagner  
+##' 
+##' Victor Picheny 
+##' 
+##' David Ginsbourger 
+##' @keywords optimize internal
+##' @examples
+##'  
+##' design <- matrix(runif(400), 100, 4)
+##' response <- apply(design, 1, hartman4)
+##' 
+##' @export hartman4
 hartman4 <- function(x)
 {
 # 4D-Hartman, q=4 test function (standardized version)
