@@ -296,7 +296,7 @@ qEI.grad <- function(x, model, plugin=NULL, type="UK", minimization = TRUE, fast
     if (!minimization) {
       stop("qEI.grad doesn't work in \'minimization = FALSE\' when dim = 1 (in progress).")
     }
-    return(EI.grad(x,model,plugin,type,envir))
+    return(EI.grad(x,model,plugin,type,minimization,envir))
   }
   
   if(!is.null(envir)) {
