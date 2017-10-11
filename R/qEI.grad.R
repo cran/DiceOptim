@@ -123,7 +123,7 @@ krigingDeriv <- function(x, model, type="UK", envir=NULL){
     # Compute gradients of the kriging covariance between point k and point l
     for (l in 1:q) {
         # Compute gradients of the kernel between point k and point l
-        ker.grad <- covVector.dx(x=newdata.num[k,], X=newdata[l,],
+        ker.grad <- covVector.dx(x=newdata.num[k,], X=matrix(newdata[l,], ncol=d),
                                  object=covStruct, c=covM[k,l])
         kriging.cov.jacob[k,,k,l] <- ker.grad - t(v[,l])%*%W
         if (type=="UK") {
