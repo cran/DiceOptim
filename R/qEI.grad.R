@@ -119,7 +119,7 @@ krigingDeriv <- function(x, model, type="UK", envir=NULL){
     f.deltax <- trend.deltax(x=newdata.num[k,], model=model)
     # Compute gradients of the kriging mean at point k
     W <- backsolve(t(T), dc, upper.tri=FALSE)
-    kriging.mean.jacob[k,,k] <- t(z)%*%W + model@trend.coef%*%matrix(f.deltax)
+    kriging.mean.jacob[k,,k] <- t(z)%*%W + model@trend.coef%*%matrix(f.deltax, ncol=d)
     # Compute gradients of the kriging covariance between point k and point l
     for (l in 1:q) {
         # Compute gradients of the kernel between point k and point l
