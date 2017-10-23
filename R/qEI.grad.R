@@ -119,11 +119,11 @@ krigingDeriv <- function(x, model, type="UK", envir=NULL){
     f.deltax <- trend.deltax(x=newdata.num[k,], model=model)
     # Compute gradients of the kriging mean at point k
     W <- backsolve(t(T), dc, upper.tri=FALSE)
-    kriging.mean.jacob[k,,k] <- t(z)%*%W + model@trend.coef%*%f.deltax
+    kriging.mean.jacob[k,,k] <- t(z)%*%W + model@trend.coef%*%matrix(f.deltax, ncol=d)
     # Compute gradients of the kriging covariance between point k and point l
     for (l in 1:q) {
         # Compute gradients of the kernel between point k and point l
-        ker.grad <- covVector.dx(x=newdata.num[k,], X=newdata[l,],
+        ker.grad <- covVector.dx(x=newdata.num[k,], X=matrix(newdata[l,], ncol=d),
                                  object=covStruct, c=covM[k,l])
         kriging.cov.jacob[k,,k,l] <- ker.grad - t(v[,l])%*%W
         if (type=="UK") {
@@ -296,7 +296,7 @@ qEI.grad <- function(x, model, plugin=NULL, type="UK", minimization = TRUE, fast
     if (!minimization) {
       stop("qEI.grad doesn't work in \'minimization = FALSE\' when dim = 1 (in progress).")
     }
-    return(EI.grad(x,model,plugin,type,envir))
+    return(EI.grad(x,model,plugin,type,minimization,envir))
   }
   
   if(!is.null(envir)) {

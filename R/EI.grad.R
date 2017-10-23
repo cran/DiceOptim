@@ -158,7 +158,7 @@ EI.grad <- function(x, model, plugin=NULL, type="UK", minimization = TRUE, envir
   } else 
   { # Compute derivatives of the covariance and trend functions
     dc <- covVector.dx(x=newdata.num, X=X, object=covStruct, c=c)  
-    f.deltax <- trend.deltax(x=newdata.num, model=model)
+    f.deltax <- matrix(trend.deltax(x=newdata.num, model=model), ncol=d)
   
     # Compute gradients of the kriging mean and variance
     W <- backsolve(t(T), dc, upper.tri=FALSE)
