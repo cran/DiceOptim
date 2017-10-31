@@ -214,7 +214,7 @@ EGO.nsteps <-function(model, fun, nsteps, lower, upper, parinit=NULL, control=NU
 	if (is.null(kmcontrol$optim.method)) kmcontrol$optim.method <- model@optim.method 
 	if (is.null(kmcontrol$parinit)) kmcontrol$parinit <- model@parinit
 	if (is.null(kmcontrol$control)) kmcontrol$control <- model@control
-		
+	if (is.null(kmcontrol$nugget)) kmcontrol$control <- NULL	
 
 	for (i in 1:nsteps) {
 		oEGO<-max_EI(model=model, lower=lower, upper=upper, parinit=parinit, control=control)
@@ -228,12 +228,12 @@ EGO.nsteps <-function(model, fun, nsteps, lower, upper, parinit=NULL, control=NU
 		if (model@param.estim) {
 			model <- km(formula=model@trend.formula, design=model@X, response=model@y, 
 		   		 covtype=model@covariance@name, lower=model@lower, upper=model@upper, 
-                 nugget=NULL, penalty=kmcontrol$penalty, optim.method=kmcontrol$optim.method, 
+                 nugget=kmcontrol@nugget, penalty=kmcontrol$penalty, optim.method=kmcontrol$optim.method, 
 		    	parinit=kmcontrol$parinit, control=kmcontrol$control, gr=model@gr, iso=is(model@covariance,"covIso"))
 		} else {
 			coef.cov <- covparam2vect(model@covariance)
 			model <- km(formula=model@trend.formula, design=model@X, response=model@y, 
-		   		 covtype=model@covariance@name, coef.trend=model@trend.coef, coef.cov=coef.cov, coef.var=model@covariance@sd2, nugget=NULL, iso=is(model@covariance,"covIso"))
+		   		 covtype=model@covariance@name, coef.trend=model@trend.coef, coef.cov=coef.cov, coef.var=model@covariance@sd2, nugget=kmcontrol@nugget, iso=is(model@covariance,"covIso"))
 		}
 	}
 	
