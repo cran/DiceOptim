@@ -1,4 +1,4 @@
-##' Modification of the function  \code{\link[KrigInv]{integration_design}} from the package \code{\link[KrigInv]{KrigInv}} to 
+##' Modification of the function  \code{\link[KrigInv]{integration_design}} from the package \code{KrigInv} to 
 ##' be usable for SUR-based optimization with constraints.
 
 ##' @title Generic function to build integration points (for the SUR criterion)
@@ -25,10 +25,10 @@
 ##' @param lower Vector containing the lower bounds of the design space.
 ##' @param upper Vector containing the upper bounds of the design space.
 ##' @param model.fun object of class \code{\link[DiceKriging]{km}} corresponding to the objective functions,
-##' or, if the objective function is fast-to-evaluate, a \code{\link[DOlab]{fastfun}} object,
+##' or, if the objective function is fast-to-evaluate, a \code{\link[DiceOptim]{fastfun}} object,
 ##' @param model.constraint either one or a list of objects of class \code{\link[DiceKriging]{km}}, one for each constraint function,
 ##' @param equality either \code{FALSE} if all constraints are for inequalities, else a vector of boolean indicating which are equalities 
-##' @param critcontrol optional list of parameters (see \code{\link[DOlab]{crit_SUR_cst}}); here only the component \code{tolConstraints} is used.
+##' @param critcontrol optional list of parameters (see \code{\link[DiceOptim]{crit_SUR_cst}}); here only the component \code{tolConstraints} is used.
 ##' @param min.prob This argument applies only when importance sampling distributions are chosen. 
 ##'       For numerical reasons we give a minimum probability for a point to
 ##'       belong to the importance sample. This avoids probabilities equal to zero and importance sampling
@@ -53,7 +53,7 @@
 ##' A stepwise uncertainty reduction approach to constrained global optimization,
 ##' \emph{Proceedings of the 17th International Conference on Artificial Intelligence and Statistics}, JMLR W&CP 33, 787-795.
 ##' 
-##' @seealso \code{\link[DOlab]{crit_SUR_cst}} \code{\link[KrigInv]{integration_design}}
+##' @seealso \code{\link[DiceOptim]{crit_SUR_cst}} \code{KrigInv integration_design}
 ##' @return 
 ##' A list with components:
 ##' \itemize{
@@ -67,7 +67,7 @@ integration_design_cst <- function(integcontrol = NULL, lower, upper, model.fun=
   result <- NULL
   d <- length(lower)
   if (length(lower) != length(upper)) {
-    print("Error in integration_Parameters: 'lower' and 'upper' must have the same length")
+    message("Error in integration_Parameters: 'lower' and 'upper' must have the same length")
     return(NULL)
   }
   
@@ -87,7 +87,7 @@ integration_design_cst <- function(integcontrol = NULL, lower, upper, model.fun=
   if(!is.null(integcontrol$integration.points)){
     #integration points pre-specified
     #     if(!is.null(model.fun) && d>1) colnames(integcontrol$integration.points) <- colnames(model.fun@X)
-    if (class(integcontrol$integration.points)=="data.frame") integcontrol$integration.points <- as.matrix(integcontrol$integration.points)
+    if (class(integcontrol$integration.points)[1]=="data.frame") integcontrol$integration.points <- as.matrix(integcontrol$integration.points)
     result$integration.points  <- integcontrol$integration.points
     result$integration.weights <- integcontrol$integration.weights
     return(result)
@@ -129,7 +129,7 @@ integration_design_cst <- function(integcontrol = NULL, lower, upper, model.fun=
     
     #prediction on these initial candidate points
     if(is.null(model.fun || model.constraint)){
-      print("Error in integration_Parameters: for the 'SUR' importance sampling distribution, 
+      message("Error in integration_Parameters: for the 'SUR' importance sampling distribution,
             you must set the arguments 'model.fun' and 'model.constraint'")
       return(NULL)
     }

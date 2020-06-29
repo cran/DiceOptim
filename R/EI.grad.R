@@ -28,7 +28,6 @@
 ##' D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et
 ##' l'optimisation de fonctions numeriques multivariables}, Ph.D. thesis, Ecole
 ##' Nationale Superieure des Mines de Saint-Etienne, 2009.
-##' \url{http://www.ginsbourger.ch/recherche/these.php}
 ##' 
 ##' J. Mockus (1988), \emph{Bayesian Approach to Global Optimization}. Kluwer
 ##' academic publishers.
@@ -41,7 +40,6 @@
 ##' @keywords models optimize
 ##' @examples
 ##' 
-##' \dontrun{
 ##' set.seed(123)
 ##' # a 9-points factorial design, and the corresponding response
 ##' d <- 2; n <- 9
@@ -58,7 +56,7 @@
 ##' covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 ##' 
 ##' # graphics
-##' n.grid <- 50
+##' n.grid <- 9  # Increase to 50 for a nicer picture
 ##' x.grid <- y.grid <- seq(0,1,length=n.grid)
 ##' design.grid <- expand.grid(x.grid, y.grid)
 ##' #response.grid <- apply(design.grid, 1, branin)
@@ -72,16 +70,15 @@
 ##' points(design.fact[,1], design.fact[,2], pch=17, col="blue")
 ##' 
 ##' # graphics
-##' n.gridx <- 15
-##' n.gridy <- 20
+##' n.gridx <- 5  # increase to 15 for nicer picture
+##' n.gridy <- 5  # increase to 15 for nicer picture
 ##' x.grid2 <- seq(0,1,length=n.gridx) 
 ##' y.grid2 <- seq(0,1,length=n.gridy) 
 ##' design.grid2 <- expand.grid(x.grid2, y.grid2)
 ##' 
 ##' EI.envir <- new.env()	
 ##' 	environment(EI) <- environment(EI.grad) <- EI.envir 
-##' 
-##' options(warn=-1)
+##'
 ##' for(i in seq(1, nrow(design.grid2)) )
 ##' {
 ##' 	x <- design.grid2[i,]
@@ -89,11 +86,10 @@
 ##' 	eigrad <- EI.grad(x , model=fitted.model1, envir=EI.envir)
 ##' 	if(!(is.null(ei)))
 ##' 	{
-##' 	arrows(x$Var1,x$Var2,
+##' 	suppressWarnings(arrows(x$Var1,x$Var2,
 ##' 	x$Var1 + eigrad[1]*2.2*10e-5, x$Var2 + eigrad[2]*2.2*10e-5, 
-##' 	length = 0.04, code=2, col="orange", lwd=2)
+##' 	length = 0.04, code=2, col="orange", lwd=2))
 ##' 	}
-##' }
 ##' }
 ##' 
 ##' @export EI.grad

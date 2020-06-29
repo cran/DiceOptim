@@ -15,9 +15,9 @@
 ##' 
 ##' Available infill criteria with \code{crit} are: \cr
 ##' \itemize{
-##' \item Expected Probability of Feasibily (\code{EFI}) \code{\link[DOlab]{crit_EFI}},
-##' \item Augmented Lagrangian (\code{AL}) \code{\link[DOlab]{crit_AL}},
-##' \item Stepwise Uncertainty Reduction of the excursion volume (\code{SUR}) \code{\link[DOlab]{crit_SUR_cst}}.
+##' \item Expected Probability of Feasibily (\code{EFI}) \code{\link[DiceOptim]{crit_EFI}},
+##' \item Augmented Lagrangian (\code{AL}) \code{\link[DiceOptim]{crit_AL}},
+##' \item Stepwise Uncertainty Reduction of the excursion volume (\code{SUR}) \code{\link[DiceOptim]{crit_SUR_cst}}.
 ##' }
 ##' Depending on the selected criterion, various parameters are available.
 ##' More precisions are given in the corresponding help pages.\cr 
@@ -27,7 +27,7 @@
 ##' 
 ##' @param model.fun object of class \code{\link[DiceKriging]{km}} corresponding to the objective function,
 ##' @param fun scalar function to be minimized, corresponding to \code{model.fun} found by a call to \code{\link[base]{match.fun}},
-##' @param cheapfun optional scalar function to use if the objective is a fast-to-evaluate function (handled next with class \code{\link[DOlab]{fastfun}},
+##' @param cheapfun optional scalar function to use if the objective is a fast-to-evaluate function (handled next with class \code{\link[DiceOptim]{fastfun}},
 ##' through the use of \code{\link[base]{match.fun}}), 
 ##' which does not need a kriging model, see details below,
 ##' @param constraint vectorial function corresponding to the constraints, see details below,
@@ -45,7 +45,7 @@
 ##' \itemize{
 ##' \item{\code{method} can be set to "\code{discrete}" or "\code{genoud}". For "\code{discrete}", a matrix \code{candidate.points} must be given,
 ##' For "\code{genoud}", specific parameters to the chosen method can also be specified  (see \code{\link[rgenoud]{genoud}}).}
-##' \item{Options for the \code{\link[DOlab]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) are used to avoid 
+##' \item{Options for the \code{\link[DiceOptim]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) are used to avoid 
 ##' numerical issues occuring when adding points too close to the existing ones.}
 ##' \item{\code{notrace} can be set to \code{TRUE} to suppress printing of the optimization progresses.}
 ##' }
@@ -175,7 +175,7 @@
 ##'                    crit = "AL", constraint = cstfun, equality = c(TRUE, FALSE), lower = lower,  
 ##'                    upper = upper, nsteps = 10,
 ##'                    critcontrol = list(tolConstraints = c(2, 0), always.update=TRUE),
-##'                    optimcontrol=list(method="discrete", candidate.points=test.grid))
+##'                    optimcontrol=list(method="discrete", candidate.points=as.matrix(test.grid)))
 ##' 
 ##' # Plots: objective function in colour, inequality constraint boundary in red,
 ##' # equality constraint in orange
@@ -240,7 +240,7 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
   ##########################################################################################
 
   if(!is.null(model.fun) && !is.null(cheapfun)){
-    cat("Either model.fun or cheapfun should be set to null.")
+    warning("Either model.fun or cheapfun should be set to null.")
     return(0)
   }
   
@@ -250,7 +250,7 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
   n.ineq <- sum(!equality)
   
   if(crit == "SUR" && n.cst > 3){
-    cat("crit_SUR_cst does not take more than 3 constraints \n")
+    warning("crit_SUR_cst does not take more than 3 constraints \n")
     return(NA)
   }
   
@@ -259,10 +259,10 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
   # Build fastfun if necessary  
   if (!is.null(cheapfun)){
     if(!is.null(model.fun) && !is.null(fun)){
-      cat("model.fun and fun should be set to NULL for fast-to-evaluate objective mode \n")
+      warning("model.fun and fun should be set to NULL for fast-to-evaluate objective mode \n")
       return(NA)
     }else{
-      cat("Fastfun-Mode on \n")
+      warning("Fastfun-Mode on \n")
       cheapfun <- match.fun(cheapfun)
       fastobs <- apply(model.constraint[[1]]@X, 1, cheapfun)
       model.fun <- fastfun(fn = cheapfun, design = model.constraint[[1]]@X, response = fastobs)
@@ -318,7 +318,7 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
     mu <- 1/2/critcontrol$rho
     if (!is.null(critcontrol$optimslack)){
       if (critcontrol$optimslack==TRUE && optimcontrol$method=="discrete") {
-        cat("optimslack option incompatible with discrete optimization - set to FALSE \n")
+        warning("optimslack option incompatible with discrete optimization - set to FALSE \n")
         critcontrol$optimslack <- NULL
       }
       if (critcontrol$optimslack!=TRUE) critcontrol$optimslack <- NULL
@@ -336,10 +336,10 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
     cat("Starting optimization with : \n The criterion", crit, "\n The solver",  optimcontrol$method, "\n")
     cat("----------------------------\n")
     if (crit=="AL"){
-      if (is.null(critcontrol$slack)) cat("Ite | Crit ||  x |  obj |  cst || rho | lambda \n")
-      else                            cat("Ite | Crit ||  x |  obj |  cst ||  slack | rho | lambda \n")
+      if (is.null(critcontrol$slack)) message("Ite | Crit ||  x |  obj |  cst || rho | lambda \n")
+      else                            message("Ite | Crit ||  x |  obj |  cst ||  slack | rho | lambda \n")
     } else {
-      cat("Ite | Crit ||  x |  obj |  cst \n")
+      message("Ite | Crit ||  x |  obj |  cst \n")
     }
   }
   
@@ -382,8 +382,8 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
     ## Exit if optimization failed
     if (typeof(sol) == "character") {
       if(!notrace){
-        cat("Unable to maximize criterion at iteration ", i, "- optimization stopped \n")
-        cat("Last model returned \n")
+        warning("Unable to maximize criterion at iteration ", i, "- optimization stopped \n")
+        warning("Last model returned \n")
       }
       
       par <- values <- c()
@@ -400,7 +400,7 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
     if (sol$value==0 && crit=="AL") {
       # Restart optimization with a proxy criterion
       if(!notrace)
-        cat("Optimization failed, restarted with proxy criterion.\n")
+        warning("Optimization failed, restarted with proxy criterion.\n")
      
       sol <- try(critcst_optimizer(crit=crit, model.fun = model.fun, model.constraint = model.constraint,
                                    equality = equality, lower=lower, upper=upper,
@@ -409,8 +409,8 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
       ## Exit if optimization failed
       if (typeof(sol) == "character") {
         if(!notrace){
-          cat("Unable to maximize criterion at iteration ", i, "- optimization stopped \n")
-          cat("Last model returned \n")
+          warning("Unable to maximize criterion at iteration ", i, "- optimization stopped \n")
+          warning("Last model returned \n")
         }
         
         par <- values <- c()
@@ -426,10 +426,10 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
     }
     
     ## Check if optimization do not return already known point
-    if(checkPredict(sol$par, model= c(model.constraint, model.fun), type = type, 
+    if(checkPredict(x = sol$par, model= c(model.constraint, model.fun), type = type, 
                     distance = critcontrol$distance, threshold = critcontrol$threshold) || sol$value <=0){
       if(!notrace)
-        cat("Optimization failed, so a random point is selected (consider increasing the inner optimization budget).\n")
+        warning("Optimization failed, so a random point is selected (consider increasing the inner optimization budget).\n")
       sol$par <- matrix(runif(d), nrow = 1)
     }
     
@@ -440,9 +440,9 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
     
     if (typeof(Y.new) == "character") {
       if(!notrace){
-        cat("Unable to compute objective function at iteration ", i, "- optimization stopped \n")
-        cat("Problem occured for the design: ", X.new, "\n")
-        cat("Last model returned \n")
+        warning("Unable to compute objective function at iteration ", i, "- optimization stopped \n")
+        warning("Problem occured for the design: ", X.new, "\n")
+        warning("Last model returned \n")
       }
       
       par <- values <- c()
@@ -458,9 +458,9 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
     }
     if (typeof(Y.cst.new) == "character") {
       if(!notrace){
-        cat("Unable to compute constraint function at iteration ", i, "- optimization stopped \n")
-        cat("Problem occured for the design: ", X.new, "\n")
-        cat("Last model returned \n")
+        warning("Unable to compute constraint function at iteration ", i, "- optimization stopped \n")
+        warning("Problem occured for the design: ", X.new, "\n")
+        warning("Last model returned \n")
       }
       
       par <- values <- c()
@@ -481,14 +481,14 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
         }
         
         if (!is.null(critcontrol$slack) && !is.null(sol$slack)) {
-          cat( i, "|", signif(sol$val,3), "||", signif(X.new,3), "|", signif(Y.new,3), "|", signif(Y.cst.new,3), 
+          message( i, "|", signif(sol$val,3), "||", signif(X.new,3), "|", signif(Y.new,3), "|", signif(Y.cst.new,3),
                "||", signif(sol$slack,3), "|", signif(critcontrol$rho,3), "|", signif(critcontrol$lambda,3),  "\n")
         } else {
-          cat( i, "|", signif(sol$val,3), "||", signif(X.new,3), "|", signif(Y.new,3), "|", signif(Y.cst.new,3), 
+          message( i, "|", signif(sol$val,3), "||", signif(X.new,3), "|", signif(Y.new,3), "|", signif(Y.cst.new,3),
                "||", signif(critcontrol$rho,3), "|", signif(critcontrol$lambda,3),  "\n")
         }                           
       } else {
-        cat( i, "|", signif(sol$val,3), "||", signif(X.new,3), "|", signif(Y.new,3), "|", signif(Y.cst.new,3), "\n")
+        message( i, "|", signif(sol$val,3), "||", signif(X.new,3), "|", signif(Y.new,3), "|", signif(Y.cst.new,3), "\n")
       }
     }
     
@@ -515,13 +515,13 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
                                cov.reestim = cov.reestim, kmcontrol = list(control = list(trace = FALSE))), silent = TRUE)
     
     if (typeof(newmodel.fun) == "character" && cov.reestim) {
-      cat("Error in hyperparameter estimation - old hyperparameter values used instead for the objective model \n")
+      warning("Error in hyperparameter estimation - old hyperparameter values used instead for the objective model \n")
       newmodel.fun <- try(update(object = model.fun, newX = X.new, newy=Y.new, newX.alreadyExist=FALSE, cov.reestim = FALSE), silent = TRUE)
     }
     if (typeof(newmodel.fun) == "character") {
-      cat("Unable to udpate kriging model at iteration", i-1, "- optimization stopped \n")
-      cat("lastmodel is the model at iteration", i-1, "\n")
-      cat("par and values contain the ",i, "th observation \n \n")
+      warning("Unable to udpate kriging model at iteration", i-1, "- optimization stopped \n")
+      warning("lastmodel is the model at iteration", i-1, "\n")
+      warning("par and values contain the ",i, "th observation \n \n")
       if (i > 1) allX.new <- rbind(model.fun@X[(n+1):(n+i-1),, drop=FALSE], X.new)
       return(list(
         par    = allX.new,
@@ -541,13 +541,13 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
       newmodel.constraint[[j]] <- try(update(object = model.constraint[[j]], newX = X.new, newy=Y.cst.new[j], newX.alreadyExist=FALSE,
                                              cov.reestim = cov.reestim, kmcontrol = list(control = list(trace = FALSE))), silent = TRUE)
       if (typeof(newmodel.constraint[[j]]) == "character" && cov.reestim) {
-        cat("Error in hyperparameter estimation - old hyperparameter values used instead for model ", j, "\n")
+        warning("Error in hyperparameter estimation - old hyperparameter values used instead for model ", j, "\n")
         newmodel.constraint[[j]] <- try(update(object = model.constraint[[j]], newX = X.new, newy=Y.cst.new[j], newX.alreadyExist=FALSE, cov.reestim = FALSE), silent = TRUE)
       }
       if (typeof(newmodel.constraint[[j]]) == "character") {
-        cat("Unable to udpate constraint kriging model at iteration", i-1, "- optimization stopped \n")
-        cat("lastmodel.constraint is the model at iteration", i-1, "\n")
-        cat("par and values contain the ",i, "th observation \n \n")
+        warning("Unable to udpate constraint kriging model at iteration", i-1, "- optimization stopped \n")
+        warning("lastmodel.constraint is the model at iteration", i-1, "\n")
+        warning("par and values contain the ",i, "th observation \n \n")
         if (i > 1) allX.new <- rbind(model.constraint[[1]]@X[(n+1):(n+i-1),, drop=FALSE], X.new)
         else       allX.new <- X.new
         return(list(
@@ -564,7 +564,7 @@ EGO.cst <- function (model.fun=NULL, fun, cheapfun = NULL, model.constraint, con
     }
   }
   
-  if(!notrace) cat("\n")
+  if(!notrace) message("\n")
   #### End of main loop ################
   
   

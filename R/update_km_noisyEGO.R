@@ -55,7 +55,7 @@ update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.
     
     # if km crashes: update model with new observation and old hyperparameters
     if (typeof(new.estim.model)=="character")
-    { print("Error in hyperparameter estimation of estim.model - old hyperparameter values used instead",quote=FALSE)
+    { message("Error in hyperparameter estimation of estim.model - old hyperparameter values used instead",quote=FALSE)
       new.estim.model <- try(update(object=estim.model, newX=as.matrix(x.new),newy=as.matrix(y.new),newX.alreadyExist=FALSE,
                                        cov.reestim=FALSE, newnoise.var=NULL, kmcontrol=model@control, trend.reestim=trend.reestim))
     }
@@ -76,7 +76,7 @@ update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.
       
       # If km crashes: update model with new observation and old hyperparameters
       if (typeof(newmodel)=="character")
-      { print("Error occured during hyperparameter reestimation - old hyperparameter values used instead",quote=FALSE)
+      { message("Error occured during hyperparameter reestimation - old hyperparameter values used instead",quote=FALSE)
         newmodel <- update(object=model, newX=as.matrix(x.new), newy=as.matrix(y.new), cov.reestim=FALSE, newnoise.var=old.noise.var, kmcontrol=model@control, trend.reestim=trend.reestim)
       }
     } else
@@ -94,7 +94,7 @@ update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.
       # If km crashes: try to build it again with a noise variance multiplied by 2
       n.try <- 0
       while (typeof(newmodel)=="character" & n.try < 10)
-      {  print("Error in model building - noise variance multiplied by 2",quote=FALSE)
+      {  message("Error in model building - noise variance multiplied by 2",quote=FALSE)
          noise.var <- 2*noise.var
          newmodel <- model
          newmodel@noise.var <- noise.var*c(1/obs.n.rep)
@@ -105,7 +105,7 @@ update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.
       }
     }
     model <- newmodel
-    cat(c("New model nugget: ", noise.var, "\n")) 
+    message(c("New model nugget: ", noise.var, "\n"))
     
   } else
   {  
@@ -120,7 +120,7 @@ update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.
 
     # If km crashes: update model with new observation and old hyperparameters
     if (typeof(newmodel)=="character")
-    { print("Error occured during hyperparameter reestimation - old hyperparameter values used instead")
+    { message("Error occured during hyperparameter reestimation - old hyperparameter values used instead")
       newmodel <- update(object=model, newX=as.matrix(x.new), newy=as.matrix(y.new), cov.reestim=FALSE, newnoise.var=noise.var, trend.reestim=trend.reestim)
     }
   } else
@@ -145,7 +145,7 @@ update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.
       
       # If km crashes: try to build it again with old hyperparameters
       if (typeof(newmodel)=="character")
-      { print("Error occured during hyperparameter reestimation - old hyperparameter values used instead")
+      { message("Error occured during hyperparameter reestimation - old hyperparameter values used instead")
         newmodel <- km(formula=model@trend.formula, design=model@X, response=model@y, covtype=model@covariance@name, 
                        noise.var=model@noise.var, control=model@control,
                        coef.trend=model@trend.coef, coef.cov=covparam2vect(model@covariance), 

@@ -9,68 +9,7 @@
 ##' @import methods 
 ##' @export
 ##' @examples
-##' ########################################################
-##' ## Example with a fast to evaluate objective
-##' ########################################################
-##' \dontrun{
-##' set.seed(25468)
-##' library(DiceDesign)
-##' 
-##' d <- 2 
-##' 
-##' fname <- P1
-##' n.grid <- 21
-##' nappr <- 11 
-##' design.grid <- maximinESE_LHS(lhsDesign(nappr, d, seed = 42)$design)$design
-##' response.grid <- t(apply(design.grid, 1, fname))
-##' Front_Pareto <- t(nondominated_points(t(response.grid)))
-##' 
-##' mf1 <- km(~., design = design.grid, response = response.grid[,1])
-##' mf2 <- km(~., design = design.grid, response = response.grid[,2])
-##' model <- list(mf1, mf2)
-##' 
-##' nsteps <- 5 
-##' lower <- rep(0, d)
-##' upper <- rep(1, d)
-##' 
-##' # Optimization reference: SMS with discrete search
-##' optimcontrol <- list(method = "pso")
-##' omEGO1 <- GParetoptim(model = model, fn = fname, crit = "SMS", nsteps = nsteps,
-##'                      lower = lower, upper = upper, optimcontrol = optimcontrol)
-##' print(omEGO1$par)
-##' print(omEGO1$values)
-##' plot(response.grid, xlim = c(0,300), ylim = c(-40,0), pch = 17, col = "blue")
-##' points(omEGO1$values, pch = 20, col ="green") 
-##' 
-##' # Optimization with fastfun: SMS with discrete search
-##' # Separation of the problem P1 in two objectives: 
-##' # the first one to be kriged, the second one with fastobj
-##' f1 <-   function(x){
-##'   if(is.null(dim(x))) x <- matrix(x, nrow = 1) 
-##'   b1 <- 15*x[,1] - 5
-##'   b2 <- 15*x[,2]
-##'   return(  (b2 - 5.1*(b1/(2*pi))^2 + 5/pi*b1 - 6)^2 +10*((1 - 1/(8*pi))*cos(b1) + 1))
-##' }
-##' 
-##' f2 <-   function(x){
-##'   if(is.null(dim(x))) x <- matrix(x, nrow = 1) 
-##'   b1<-15*x[,1] - 5
-##'   b2<-15*x[,2]
-##'   return(-sqrt((10.5 - b1)*(b1 + 5.5)*(b2 + 0.5))
-##'          - 1/30*(b2 - 5.1*(b1/(2*pi))^2 - 6)^2
-##'          - 1/3*((1 - 1/(8*pi))*cos(b1) + 1)) 
-##' }
-##' 
-##' optimcontrol <- list(method = "pso")
-##' model2 <- list(mf1)
-##' omEGO2 <- GParetoptim(model = model2, fn = f1, cheapfn = f2, crit = "SMS", nsteps = nsteps,
-##'                      lower = lower, upper = upper, optimcontrol = optimcontrol)
-##' print(omEGO2$par)
-##' print(omEGO2$values)
-##' 
-##' points(omEGO2$values, col = "red", pch = 15)
-##' }
-##' @return An object of class  \code{\link[DOlab]{fastfun-class}}.
+##' @return An object of class  \code{\link[DiceOptim]{fastfun-class}}.
 `fastfun` <-
   function(fn, design, response = NULL) {
     
@@ -106,7 +45,7 @@
 ##' @slot X the design of experiments, size \code{n x d},
 ##' @slot y  the observations, size \code{n x 1},
 ##' @slot fun the evaluator function.
-##' @section Objects from the Class : To create a \code{fastfun} object, use \code{\link[DOlab]{fastfun}}. See also this function for more details and examples.
+##' @section Objects from the Class : To create a \code{fastfun} object, use \code{\link[DiceOptim]{fastfun}}. See also this function for more details and examples.
 ##' @export
 setClass("fastfun", 		
          representation( 
@@ -187,7 +126,7 @@ if(!isGeneric("update")) {
   )
 }
 
-##' @param object \code{\link[DOlab]{fastfun}} object
+##' @param object \code{\link[DiceOptim]{fastfun}} object
 ##' @param newX Matrix of the new location for the design
 ##' @param newy Matrix of the responses at \code{newX}
 ##' @param ... further arguments (not used)
@@ -220,7 +159,7 @@ if(!isGeneric("simulate")) {
   )
 }
 
-##' @param object \code{\link[DOlab]{fastfun}} object
+##' @param object \code{\link[DiceOptim]{fastfun}} object
 ##' @param nsim an optional number specifying the number of response vectors to simulate. Default is 1.
 ##' @param seed usual seed argument of method simulate. Not used.
 ##' @param newdata an optional vector, matrix or data frame containing the points where to perform predictions.
@@ -229,7 +168,7 @@ if(!isGeneric("simulate")) {
 ##' @param nugget.sim	an optional number corresponding to a numerical nugget effect. Not used.
 ##' @param checkNames an optional boolean. Not used.
 ##' @param ... further arguments (not used)
-##' @describeIn fastfun Simulate responses values (for compatibility with methods using \code{\link[DiceKriging]{simulate}})
+##' @describeIn fastfun Simulate responses values (for compatibility with methods using \code{DiceKriging simulate})
 ##' @keywords internal
 setMethod("simulate", "fastfun", 
           function(object, nsim, seed, newdata, cond, nugget.sim, checkNames, ...) {

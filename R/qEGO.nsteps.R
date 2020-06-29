@@ -137,10 +137,9 @@
 ##' @examples
 ##' 
 ##' 
-##' \dontrun{
 ##' set.seed(123)
 ##' #####################################################
-##' ### 4 ITERATIONS OF EGO ON THE BRANIN FUNCTION,   ###
+##' ### 2 ITERATIONS OF EGO ON THE BRANIN FUNCTION,   ###
 ##' ### STARTING FROM A 9-POINTS FACTORIAL DESIGN     ###
 ##' #####################################################
 ##' 
@@ -161,7 +160,7 @@
 ##' 
 ##' # EGO n steps
 ##' library(rgenoud)
-##' nsteps <- 4 # Was 10, reduced to 4 for speeding up execution
+##' nsteps <- 2 # increase to 10 for a more meaningful example
 ##' lower <- rep(0,d) 
 ##' upper <- rep(1,d)
 ##' npoints <- 3 # The batchsize
@@ -171,8 +170,9 @@
 ##' print(oEGO$value)
 ##' plot(c(1:nsteps),oEGO$history,xlab='step',ylab='Current known minimum')
 ##' 
+##' \dontrun{
 ##' # graphics
-##' n.grid <- 15 # Was 20, reduced to 15 for speeding up compilation
+##' n.grid <- 15 # increase to 21 for better picture
 ##' x.grid <- y.grid <- seq(0,1,length=n.grid)
 ##' design.grid <- expand.grid(x.grid, y.grid)
 ##' response.grid <- apply(design.grid, 1, branin)
@@ -192,7 +192,7 @@ qEGO.nsteps <- function (fun, model, npoints, nsteps, lower = rep(0, model@d), u
     n <- nrow(model@X)
     parinit <- optimcontrol$parinit
     for (i in 1:nsteps) {
-	    print(paste("step :",i,"/",nsteps))
+	    message(paste("step :",i,"/",nsteps))
 	    history[i] <- min(model@y)*minimization + max(model@y)*(!minimization)
 	    res <- max_qEI(model=model, npoints = npoints, lower = lower, upper = upper,crit=crit, minimization = minimization, optimcontrol = optimcontrol)
 	    model <- update(object = model, newX = res$par, newy=as.matrix(apply(res$par,1, fun, ...), npoints), newX.alreadyExist=FALSE,

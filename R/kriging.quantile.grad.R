@@ -22,17 +22,15 @@
 ##' 
 ##' O. Roustant, D. Ginsbourger, Y. Deville, \emph{DiceKriging, DiceOptim: Two
 ##' R packages for the analysis of computer experiments by kriging-based
-##' metamodeling and optimization}, submitted to J. Stat. Soft., 2010.
-##' \url{http://hal.archives-ouvertes.fr/hal-00495766_v2/}
+##' metamodeling and optimization}, J. Stat. Soft., 2010.
+##' \url{https://www.jstatsoft.org/article/view/v051i01}
 ##' 
 ##' D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et
 ##' l'optimisation de fonctions numeriques multivariables}, Ph.D. thesis, Ecole
 ##' Nationale Superieure des Mines de Saint-Etienne, 2009.
-##' \url{http://www.ginsbourger.ch/recherche/these.php}
 ##' @keywords models optimize
 ##' @examples
 ##' 
-##' \dontrun{
 ##' ##########################################################################
 ##' ###    KRIGING QUANTILE SURFACE AND ITS GRADIENT FOR                  ####
 ##' ###    THE BRANIN FUNCTION KNOWN AT A 12-POINT LATIN HYPERCUBE DESIGN ####
@@ -61,7 +59,7 @@
 ##' 	lower=rep(.1,dim), upper=rep(1,dim), control=list(trace=FALSE))
 ##' 
 ##' # Compute actual function and criterion on a grid
-##' n.grid <- 12 # Change to 21 for a nicer picture
+##' n.grid <- 9 # Change to 21 for a nicer picture
 ##' x.grid <- y.grid <- seq(0,1,length=n.grid)
 ##' design.grid <- expand.grid(x.grid, y.grid)
 ##' nt <- nrow(design.grid)
@@ -79,7 +77,6 @@
 ##'  x <- design.grid[i,]
 ##'  arrows(x$Var1,x$Var2, x$Var1+crit.grad[i,1]*.01,x$Var2+crit.grad[i,2]*.01, 
 ##' length=0.04,code=2,col="orange",lwd=2)
-##' }
 ##' }
 ##' 
 ##' @export

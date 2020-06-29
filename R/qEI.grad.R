@@ -205,24 +205,25 @@ krigingDeriv <- function(x, model, type="UK", envir=NULL){
 ##' @keywords models optimize
 ##' @examples
 ##' 
-##' \dontrun{
 ##' set.seed(15)
 ##' # Example 1 - validation by comparison to finite difference approximations
 ##' 
-##' # a 10-points optimum LHS design and the corresponding responses
-##' d <- 2;n <- d*5
-##' design <- maximinESE_LHS(lhsDesign(n,d)$design,1)$design
-##' colnames(design)<-c("x1", "x2")
-##' lower <- c(0,0)
-##' upper <- c(1,1)
-##' y <- data.frame(apply(design, 1, branin))
-##' names(y) <- "y"
+##' # a 9-points factorial design, and the corresponding response
+##' d <- 2
+##' n <- 9
+##' design <- expand.grid(seq(0,1,length=3), seq(0,1,length=3)) 
+##' names(design)<-c("x1", "x2")
+##' design <- data.frame(design) 
+##' names(design)<-c("x1", "x2")
+##' y <- apply(design, 1, branin)
+##'y <- data.frame(y) 
+##' names(y) <- "y" 
 ##' 
 ##' # learning
 ##' model <- km(~1, design=design, response=y)
 ##' 
-##' # pick up 4 points sampled from the simple expected improvement
-##' q <- 4
+##' # pick up 2 points sampled from the simple expected improvement
+##' q <- 2  # increase to 4 for a more meaningful test
 ##' X <- sampleFromEI(model,n=q)
 ##' 
 ##' # compute the gradient at the 4-point batch
@@ -241,6 +242,7 @@ krigingDeriv <- function(x, model, type="UK", envir=NULL){
 ##' print(grad.numeric)
 ##' print(grad.analytic)
 ##' 
+##' \dontrun{
 ##' # graphics: displays the EI criterion, the design points in black, 
 ##' # the batch points in red and the gradient in blue.
 ##' nGrid <- 15

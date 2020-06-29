@@ -48,7 +48,8 @@
 ##' thesis, Mines Saint-Etienne (France) and University of Bern (Switzerland).
 ##' 
 ##' D. Ginsbourger, R. Le Riche, and L. Carraro. Kriging is well-suited to
-##' parallelize optimization (2010), In Lim Meng Hiot, Yew Soon Ong, Yoel
+##' parallelize optimization (2010), 
+##' In Lim Meng Hiot, Yew Soon Ong, Yoel
 ##' Tenne, and Chi-Keong Goh, editors, \emph{Computational Intelligence in
 ##' Expensive Optimization Problems}, Adaptation Learning and Optimization,
 ##' pages 131-162. Springer Berlin Heidelberg.
@@ -58,7 +59,7 @@
 ##' 
 ##' M. Schonlau (1997), \emph{Computer experiments and global optimization},
 ##' Ph.D. thesis, University of Waterloo.
-##' @keywords models, parallel optimization
+##' @keywords models parallel optimization
 ##' 
 ##' @examples
 ##' 

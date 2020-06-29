@@ -5,19 +5,19 @@
 ##' 
 ##' @param x a vector representing the input for which one wishes to calculate \code{EFI},
 ##' @param model.fun object of class \code{\link[DiceKriging]{km}} corresponding to the objective function,
-##' or, if the objective function is fast-to-evaluate, a \code{\link[DOlab]{fastfun}} object,
+##' or, if the objective function is fast-to-evaluate, a \code{\link[DiceOptim]{fastfun}} object,
 ##' @param model.constraint either one or a list of objects of class \code{\link[DiceKriging]{km}}, one for each constraint function,
 ##' @param equality either \code{FALSE} if all constraints are for inequalities, else a vector of boolean indicating which are equalities, 
 ##' @param critcontrol optional list with argument \code{tolConstraints}, an optional vector giving a tolerance (> 0) for each of the constraints (equality or inequality).
 ##' It is highly recommended to use it when there are equality constraints since the default tolerance of 0.05 in such case might not be suited.\cr
 ##' 
-##' Options for the \code{\link[DOlab]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) are used to avoid numerical issues occuring when adding points too close to the existing ones.
+##' Options for the \code{\link[DiceOptim]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) are used to avoid numerical issues occuring when adding points too close to the existing ones.
 ##' @param plugin optional scalar: if provided, it replaces the feasible minimum of the current observations.
 ##' If set to \code{Inf}, e.g. when their is no feasible solution, then the criterion is equal to the probability of feasibility,
 ##' @param type "\code{SK}" or "\code{UK}" (by default), depending whether uncertainty related to trend estimation 
 ##'        has to be taken into account. 
 ##' @return The Expected Feasible Improvement at \code{x}.
-##' @seealso \code{\link[DiceOptim]{EI}} from package DiceOptim, \code{\link[DOlab]{crit_AL}}, \code{\link[DOlab]{crit_SUR_cst}}.
+##' @seealso \code{\link[DiceOptim]{EI}} from package DiceOptim, \code{\link[DiceOptim]{crit_AL}}, \code{\link[DiceOptim]{crit_SUR_cst}}.
 ##' 
 ##' @export
 ##' 
@@ -177,7 +177,7 @@ crit_EFI <- function(x, model.fun, model.constraint, equality = FALSE,
       tolvec <- rep(0, n.cst)
       if(any(equality != FALSE)){
         tolvec[equality] <- 0.05
-        cat("No tolerance for equality constraints provided, 0.05 is used \n")
+        warning("No tolerance for equality constraints provided, 0.05 is used \n")
       }
     }else{
       tolvec <- critcontrol$tolConstraints
