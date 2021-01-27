@@ -95,7 +95,7 @@ krigingDeriv <- function(x, model, type="UK", envir=NULL){
   } else
   {  # If uploaded through "envir", no prediction computation is necessary 
     toget <- matrix(c("kriging.mean","kriging.cov","Tinv.c","c"), 4, 1)
-    apply(toget, 2, get, envir=envir)
+    apply(toget, 1, get, envir=envir)
     kriging.mean <- envir$kriging.mean
     kriging.cov  <- envir$kriging.cov
     v            <- envir$Tinv.c
@@ -305,11 +305,11 @@ qEI.grad <- function(x, model, plugin=NULL, type="UK", minimization = TRUE, fast
     
     if (fastCompute == TRUE) {
       toget <- matrix(c("pk"), 1, 1)
-      apply(toget, 2, get, envir=envir)
+      apply(toget, 1, get, envir=envir)
       pk <- envir$pk
     } else {
       toget <- matrix(c("pk","symetric_term"), 2, 1)
-      apply(toget, 2, get, envir=envir)
+      apply(toget, 1, get, envir=envir)
       pk <- envir$pk
       symetric_term <- envir$symetric_term
    }

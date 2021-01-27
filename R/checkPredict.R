@@ -1,4 +1,4 @@
-  ##' Check that the new point is not too close to already known observations to avoid numerical issues.
+##' Check that the new point is not too close to already known observations to avoid numerical issues.
 ##' Closeness can be estimated with several distances.
 ##' @title Prevention of numerical instability for a new observation
 ##' @param x a vector representing the input to check,

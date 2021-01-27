@@ -205,7 +205,7 @@ Optimization}, 13, 455-492.
 
 W.R. Jr. Mebane and J.S. Sekhon (2011), Genetic optimization
 using derivatives: The rgenoud package for R, \emph{Journal of Statistical
-Software}, \bold{51}(1), 1-55, \url{http://www.jstatsoft.org/v51/i01/}.
+Software}, \bold{51}(1), 1-55, \url{https://www.jstatsoft.org/v51/i01/}.
 
 J. Mockus (1988), \emph{Bayesian Approach to Global Optimization}. Kluwer
 academic publishers.
@@ -215,7 +215,7 @@ methods: A unified implementation within the DiceOptim package,
 \emph{Computational Statistics & Data Analysis}, 71, 1035-1053. 
 
 C.E. Rasmussen and C.K.I. Williams (2006), \emph{Gaussian Processes for
-Machine Learning}, the MIT Press, \url{http://www.GaussianProcess.org/gpml}
+Machine Learning}, the MIT Press, \url{http://www.gaussianprocess.org/gpml/}
 
 B.D. Ripley (1987), \emph{Stochastic Simulation}, Wiley.
 

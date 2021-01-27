@@ -10,7 +10,8 @@ EI.grad(
   plugin = NULL,
   type = "UK",
   minimization = TRUE,
-  envir = NULL
+  envir = NULL,
+  proxy = FALSE
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ maximization,}
 
 \item{envir}{an optional environment specifying where to get intermediate
 values calculated in \code{\link{EI}}.}
+
+\item{proxy}{an optional Boolean, if TRUE EI is replaced by the kriging mean (to minimize)}
 }
 \value{
 The gradient of the expected improvement criterion with respect to

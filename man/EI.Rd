@@ -4,7 +4,15 @@
 \alias{EI}
 \title{Analytical expression of the Expected Improvement criterion}
 \usage{
-EI(x, model, plugin = NULL, type = "UK", minimization = TRUE, envir = NULL)
+EI(
+  x,
+  model,
+  plugin = NULL,
+  type = "UK",
+  minimization = TRUE,
+  envir = NULL,
+  proxy = FALSE
+)
 }
 \arguments{
 \item{x}{a vector representing the input for which one wishes to calculate
@@ -23,6 +31,8 @@ maximization,}
 
 \item{envir}{an optional environment specifying where to assign
 intermediate values for future gradient calculations. Default is NULL.}
+
+\item{proxy}{an optional Boolean, if TRUE EI is replaced by the kriging mean (to minimize)}
 }
 \value{
 The expected improvement, defined as \deqn{EI(x) := E[( min(Y(X)) -

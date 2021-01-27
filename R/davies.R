@@ -1,4 +1,4 @@
-#' @useDynLib DOlab davies
+#' @useDynLib DiceOptim davies
 MYdavies <- function(q,lambda,h = rep(1,length(lambda)),
 	delta = rep(0,length(lambda)),sigma=0,lim=10000,acc=0.0001) {
 
