@@ -258,7 +258,9 @@ TREGO.nsteps <- function(model, fun, nsteps, lower, upper, control=NULL, kmcontr
         par <- model@X[(n+1):(n+i-1),, drop = FALSE]
         values <- model@y[(n+1):(n+i-1)] 
       }
-      return(list(par=par, values=values, nsteps = i-1, lastmodel = model))
+      return(list(par=par, 
+                  value=values, npoints=1, nsteps=i-1, lastmodel=model, local.model=optim.model,
+                  all.success=all.success, all.steps=all.steps, all.sigma=all.sigma, all.x0=all.x0))
     }
     
     # Early stop for TRIKE
@@ -270,7 +272,9 @@ TREGO.nsteps <- function(model, fun, nsteps, lower, upper, control=NULL, kmcontr
         par <- model@X[(n+1):(n+i-1),, drop = FALSE]
         values <- model@y[(n+1):(n+i-1)]
       }
-      return(list(par=par, values=values, nsteps = i-1, lastmodel = model))
+      return(list(par=par, 
+                  value=values, npoints=1, nsteps=i-1, lastmodel=model, local.model=optim.model,
+                  all.success=all.success, all.steps=all.steps, all.sigma=all.sigma, all.x0=all.x0))
     }
     
     if (sol$value < max(1e-16, optim.model@covariance@sd2/1e12) && (!trcontrol$inTR || (trcontrol$inTR && trcontrol$crit=="EI") )  ) {
@@ -289,7 +293,9 @@ TREGO.nsteps <- function(model, fun, nsteps, lower, upper, control=NULL, kmcontr
           par <- model@X[(n+1):(n+i-1),, drop = FALSE]
           values <- model@y[(n+1):(n+i-1)]
         }
-        return(list(par=par, values=values, nsteps = i-1, lastmodel = model))
+        return(list(par=par, 
+                    value=values, npoints=1, nsteps=i-1, lastmodel=model, local.model=optim.model,
+                    all.success=all.success, all.steps=all.steps, all.sigma=all.sigma, all.x0=all.x0))
       }
     }
     
@@ -312,7 +318,9 @@ TREGO.nsteps <- function(model, fun, nsteps, lower, upper, control=NULL, kmcontr
         par <- model@X[(n+1):model@n,, drop=FALSE]
         values <- added.obs
       }
-      return(list(par=par, values=values, nsteps = i-1, lastmodel = model))
+      return(list(par=par, 
+                  value=values, npoints=1, nsteps=i-1, lastmodel=model, local.model=optim.model,
+                  all.success=all.success, all.steps=all.steps, all.sigma=all.sigma, all.x0=all.x0))
     }
     
     # Transform Ynew if needed
@@ -373,7 +381,7 @@ TREGO.nsteps <- function(model, fun, nsteps, lower, upper, control=NULL, kmcontr
     }
     
     if (typeof(newmodel) == "character") {
-      warning("Unable to udpate kriging model at iteration", i-1, "- optimization stopped \n")
+      warning("Unable to update kriging model at iteration", i-1, "- optimization stopped \n")
       warning("lastmodel is the model at iteration", i-1, "\n")
       warning("par and values contain the ",i, "th observation \n \n")
       if (i > 1) allX.new <- rbind(model@X[(n+1):(n+i-1),, drop=FALSE], X.new)
@@ -381,7 +389,10 @@ TREGO.nsteps <- function(model, fun, nsteps, lower, upper, control=NULL, kmcontr
         par    = allX.new,
         values = added.obs,
         nsteps = i, 
-        lastmodel = model))
+        npoints=1, 
+        nsteps=i-1, 
+        lastmodel=model, local.model=optim.model,
+        all.success=all.success, all.steps=all.steps, all.sigma=all.sigma, all.x0=all.x0))
     } else {
       model <- newmodel
     }

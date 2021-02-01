@@ -1,7 +1,7 @@
 Package: DiceOptim
-Version: 2.1.0
+Version: 2.1.1
 Title: Kriging-Based Optimization for Computer Experiments
-Date: 2021-01-05
+Date: 2021-01-29
 Authors@R: c(person("Victor", "Picheny", role = c("aut", "cre"),
                       email = "victor.picheny@toulouse.inra.fr"),
                person("David Ginsbourger", "Green", role = "aut"),
@@ -17,9 +17,9 @@ License: GPL-2 | GPL-3
 URL: http://dice.emse.fr/
 RoxygenNote: 7.1.1
 NeedsCompilation: yes
-Packaged: 2021-01-26 17:33:52 UTC; victor
+Packaged: 2021-02-01 08:25:48 UTC; victor
 Repository: CRAN
-Date/Publication: 2021-01-27 09:30:24 UTC
+Date/Publication: 2021-02-02 00:10:23 UTC
 Author: Victor Picheny [aut, cre],
   David Ginsbourger Green [aut],
   Olivier Roustant [aut],

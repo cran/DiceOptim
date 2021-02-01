@@ -1,10 +1,10 @@
-f1506d86e8dd46396dc6db8afeaa853e *DESCRIPTION
+54d9130127b6925d7c4b6814dfec7bd6 *DESCRIPTION
 8148e5b9578d4bc6c5a13caa0ea46a2e *NAMESPACE
 4b7146696264c8e560a78ce263b1c04d *R/AEI.R
 4197e58679c7a3162206493822cc699c *R/AEI.grad.R
 d5bebc92e0ee265448584394b4f01469 *R/AKG.R
 ace4917b43597fc2bb964a0ce341155c *R/AKG.grad.R
-8c571f22d50dea4c57f8bf965025948c *R/DiceOptim-package.R
+2463a252dde7f9415d172924f59ccb43 *R/DiceOptim-package.R
 8ed1331a8d9a15dfa966e2386da6ccad *R/EGO.cst.R
 f167241c7e8614763f6f19b1900e9bd7 *R/EGO.nsteps.R
 c36c23071589075c4b9eb43d0cafbc49 *R/EI.R
@@ -12,7 +12,7 @@ c36c23071589075c4b9eb43d0cafbc49 *R/EI.R
 bca89eade41f3daac617d11e25102b48 *R/EQI.R
 7c5e3e182c76688bf5492df982c49bc7 *R/EQI.grad.R
 8dbc08748013c10e38cdd960d704e880 *R/ParrConstraint.R
-70081a19380edb742d1ca06b1be8398d *R/TREGO.nsteps.R
+00e179aca9aa2631f2b9db4b95e6c6ac *R/TREGO.nsteps.R
 114ada3d7beb537e970fa2305f91b9bb *R/branin2.R
 2da9da5da302c2930c2d08e3b7cf322c *R/checkPredict.R
 8f36a6eff5ea2b5cceef0dc89e932a2c *R/computeQuickKrigcov2.R
@@ -21,7 +21,7 @@ c7f17ce1f1860167e6a43a8a2d4e1164 *R/crit_AL.R
 8bab0b81e436ef1540fce5bbbc3185ae *R/crit_SUR_cst.R
 bca9e7b0fb3d1b7a298d6148194ba465 *R/critcst_optimizer.R
 94e2d1892f302e650f082a40b509243b *R/davies.R
-97cacf0caf8b2346a9590e2f6fc44e04 *R/easyEGO.R
+29e8f5abe5765f6f56e700bc132f6f38 *R/easyEGO.R
 94530305d78307da991b58d848d1450d *R/easyEGO.cst.R
 6cedc54879f6cee3d88143e2cdf15af1 *R/fastEGO.nsteps.R
 3f73b91b94bd134763117206bc37aa87 *R/fastfun.R
@@ -68,7 +68,7 @@ b5bd5d5d9b5c15d99533733d8050a768 *man/crit_AL.Rd
 e85917e8f881814d7f3cdda91e8b029d *man/crit_EFI.Rd
 4cd4faaacba510eaad38a5ac4615055d *man/crit_SUR_cst.Rd
 581386292e906ac70b3f32f63ec9aa85 *man/critcst_optimizer.Rd
-4eb0d38366b55f227e8e830599d711e4 *man/easyEGO.Rd
+7e5b95f15df32afab2853a105dd14daa *man/easyEGO.Rd
 b67d0e3dad9018300567c34fa44e0b0c *man/easyEGO.cst.Rd
 85393dc806c90c8bbb61854b75032fdf *man/fastEGO.nsteps.Rd
 6d4f728a3418fb77914cd900e68fb4c6 *man/fastfun-class.Rd
@@ -95,4 +95,4 @@ d2af08796d6a118989ab58dc725fa7ef *man/sphere6.Rd
 dae13fefebbc1eada5a94f728a2b16b8 *man/test_feas_vec.Rd
 a36e65f4c460f5b65dd07ce264a31b85 *man/update_km_noisyEGO.Rd
 89afcf690dad21074700d26afad5c3b3 *src/davies.c
-3f40f7a8f2d5c8f4aeb517012d946759 *src/packagename_init.c
+e35636fd7eb9782a552fd5b821713a6c *src/packagename_init.c

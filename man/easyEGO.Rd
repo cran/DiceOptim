@@ -113,15 +113,15 @@ plot(y, col=col2, ylim=ylim, pch=pch2, lwd=2, xlim=c(0, budget))
 lines(ymin, col="darkgreen")
 abline(v=n.init+.5)
 
-plot((n.init+1):budget, sigma, xlim=c(0, budget), ylim=c(0, max(sigma)), 
+plot(n.init + (1:length(sigma)), sigma, xlim=c(0, budget), ylim=c(0, max(sigma)), 
 pch=pch, col=col, lwd=2, main="TR size") 
-lines((n.init+1):budget, sigma, xlim=c(0, budget)) 
+lines(n.init + (1:length(sigma)), sigma, xlim=c(0, budget)) 
 abline(v=n.init+.5)
 
 plot(NA, xlim=c(0, budget), ylim=c(0, 1), main="x0 (coordinates)")
 for (i in 1:d) {
-  lines((n.init+1):budget, res1$res$all.x0[,i]) 
-  points((n.init+1):budget, res1$res$all.x0[,i], pch=pch, col=col, lwd=2) 
+  lines(n.init + (1:nrow(res1$res$all.x0)), res1$res$all.x0[,i]) 
+  points(n.init + (1:nrow(res1$res$all.x0)), res1$res$all.x0[,i], pch=pch, col=col, lwd=2) 
 }
 abline(v=n.init+.5)
 
