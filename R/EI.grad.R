@@ -15,6 +15,7 @@
 ##' maximization,
 ##' @param envir an optional environment specifying where to get intermediate
 ##' values calculated in \code{\link{EI}}.
+##' @param proxy an optional Boolean, if TRUE EI is replaced by the kriging mean (to minimize)
 ##' @return The gradient of the expected improvement criterion with respect to
 ##' x.  Returns 0 at design points (where the gradient does not exist).
 ##' @author David Ginsbourger 
@@ -28,7 +29,6 @@
 ##' D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et
 ##' l'optimisation de fonctions numeriques multivariables}, Ph.D. thesis, Ecole
 ##' Nationale Superieure des Mines de Saint-Etienne, 2009.
-##' \url{http://www.ginsbourger.ch/recherche/these.php}
 ##' 
 ##' J. Mockus (1988), \emph{Bayesian Approach to Global Optimization}. Kluwer
 ##' academic publishers.
@@ -41,7 +41,6 @@
 ##' @keywords models optimize
 ##' @examples
 ##' 
-##' \dontrun{
 ##' set.seed(123)
 ##' # a 9-points factorial design, and the corresponding response
 ##' d <- 2; n <- 9
@@ -58,7 +57,7 @@
 ##' covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
 ##' 
 ##' # graphics
-##' n.grid <- 50
+##' n.grid <- 9  # Increase to 50 for a nicer picture
 ##' x.grid <- y.grid <- seq(0,1,length=n.grid)
 ##' design.grid <- expand.grid(x.grid, y.grid)
 ##' #response.grid <- apply(design.grid, 1, branin)
@@ -72,16 +71,15 @@
 ##' points(design.fact[,1], design.fact[,2], pch=17, col="blue")
 ##' 
 ##' # graphics
-##' n.gridx <- 15
-##' n.gridy <- 20
+##' n.gridx <- 5  # increase to 15 for nicer picture
+##' n.gridy <- 5  # increase to 15 for nicer picture
 ##' x.grid2 <- seq(0,1,length=n.gridx) 
 ##' y.grid2 <- seq(0,1,length=n.gridy) 
 ##' design.grid2 <- expand.grid(x.grid2, y.grid2)
 ##' 
 ##' EI.envir <- new.env()	
 ##' 	environment(EI) <- environment(EI.grad) <- EI.envir 
-##' 
-##' options(warn=-1)
+##'
 ##' for(i in seq(1, nrow(design.grid2)) )
 ##' {
 ##' 	x <- design.grid2[i,]
@@ -89,16 +87,15 @@
 ##' 	eigrad <- EI.grad(x , model=fitted.model1, envir=EI.envir)
 ##' 	if(!(is.null(ei)))
 ##' 	{
-##' 	arrows(x$Var1,x$Var2,
+##' 	suppressWarnings(arrows(x$Var1,x$Var2,
 ##' 	x$Var1 + eigrad[1]*2.2*10e-5, x$Var2 + eigrad[2]*2.2*10e-5, 
-##' 	length = 0.04, code=2, col="orange", lwd=2)
+##' 	length = 0.04, code=2, col="orange", lwd=2))
 ##' 	}
-##' }
 ##' }
 ##' 
 ##' @export EI.grad
-EI.grad <- function(x, model, plugin=NULL, type="UK", minimization = TRUE, envir=NULL){ 
-	
+EI.grad <- function(x, model, plugin=NULL, type="UK", minimization = TRUE, envir=NULL, proxy=FALSE){ 
+
   ########################################################################################
   if (is.null(plugin)){ 
     if (minimization) {
@@ -128,25 +125,25 @@ EI.grad <- function(x, model, plugin=NULL, type="UK", minimization = TRUE, envir
   if (is.null(envir))
   {  
     predx <- predict(object=model, newdata=newdata, type=type, checkNames = FALSE,se.compute=TRUE,cov.compute=FALSE)
-     kriging.mean <- predx$mean
-     if(!minimization) kriging.mean <- -kriging.mean
-     kriging.sd <- predx$sd
-     v <- predx$Tinv.c
-     c <- predx$c
-  
-     xcr <- (m - kriging.mean)/kriging.sd
-     xcr.prob <- pnorm(xcr)
-     xcr.dens <- dnorm(xcr)    
+    kriging.mean <- predx$mean
+    if(!minimization) kriging.mean <- -kriging.mean
+    kriging.sd <- predx$sd
+    v <- predx$Tinv.c
+    c <- predx$c
+    
+    xcr <- (m - kriging.mean)/kriging.sd
+    xcr.prob <- pnorm(xcr)
+    xcr.dens <- dnorm(xcr)    
   } else
   {  # If uploaded through "envir", no prediction computation is necessary 
-     toget <- matrix(c("xcr", "xcr.prob", "xcr.dens", "kriging.sd", "c", "Tinv.c"), 1, 6)
-     apply(toget, 2, get, envir=envir)
-     xcr        <- envir$xcr
-     xcr.prob   <- envir$xcr.prob
-     xcr.dens   <- envir$xcr.dens
-     kriging.sd <- envir$kriging.sd
-     c          <- envir$c
-     v          <- envir$Tinv.c
+    toget <- matrix(c("xcr", "xcr.prob", "xcr.dens", "kriging.sd", "c", "Tinv.c"), 1, 6)
+    apply(toget, 2, get, envir=envir)
+    xcr        <- envir$xcr
+    xcr.prob   <- envir$xcr.prob
+    xcr.dens   <- envir$xcr.dens
+    kriging.sd <- envir$kriging.sd
+    c          <- envir$c
+    v          <- envir$Tinv.c
   }
 
   F.newdata <- model.matrix(model@trend.formula, data=newdata)
@@ -164,19 +161,26 @@ EI.grad <- function(x, model, plugin=NULL, type="UK", minimization = TRUE, envir
     W <- backsolve(t(T), dc, upper.tri=FALSE)
     kriging.mean.grad <- t(W)%*%z + t(model@trend.coef%*%f.deltax)
     if (!minimization) kriging.mean.grad <- -kriging.mean.grad
-    if (type=="UK")
-    { tuuinv <- solve(t(u)%*%u)
-      kriging.sd2.grad <-  t( -2*t(v)%*%W +
-                            2*(F.newdata - t(v)%*%u )%*% tuuinv %*%
-                            (f.deltax - t(t(W)%*%u) ))
-    } else
-    { kriging.sd2.grad <-  t( -2*t(v)%*%W) }
     
-    kriging.sd.grad <- kriging.sd2.grad / (2*kriging.sd)
-
-    # Compute gradient of EI
-    ei.grad <- - kriging.mean.grad * xcr.prob + kriging.sd.grad * xcr.dens
+    if (proxy) {
+      ei.grad <- - kriging.mean.grad
+    } else {
+      
+      if (type=="UK")
+      { tuuinv <- solve(t(u)%*%u)
+      kriging.sd2.grad <-  t( -2*t(v)%*%W +
+                                2*(F.newdata - t(v)%*%u )%*% tuuinv %*%
+                                (f.deltax - t(t(W)%*%u) ))
+      } else
+      { kriging.sd2.grad <-  t( -2*t(v)%*%W) }
+      
+      kriging.sd.grad <- kriging.sd2.grad / (2*kriging.sd)
+      
+      # Compute gradient of EI
+      ei.grad <- - kriging.mean.grad * xcr.prob + kriging.sd.grad * xcr.dens
+    }
   }
+
   ########################################################################################  
   return(ei.grad)
 }

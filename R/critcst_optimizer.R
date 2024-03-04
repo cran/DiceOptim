@@ -13,14 +13,14 @@
 ##' @param crit sampling criterion. Three choices are available : "\code{EFI}", "\code{AL}" and "\code{SUR}",
 ##' @param model.fun object of class \code{\link[DiceKriging]{km}} corresponding to the objective function,
 ##' or, if the objective function is fast-to-evaluate, either the objective function to be minimized or a 
-##' \code{\link[DOlab]{fastfun}} object, see details and examples below, 
+##' \code{\link[DiceOptim]{fastfun}} object, see details and examples below, 
 ##' @param model.constraint either one or a list of models of class \code{\link[DiceKriging]{km}}, one for each constraint, 
 ##' @param equality either \code{FALSE} if all constraints are inequalities, or a Boolean vector indicating which are equalities, 
 ##' @param lower vector of lower bounds for the variables to be optimized over,
 ##' @param upper vector of upper bounds for the variables to be optimized over,
 ##' @param type "\code{SK}" or "\code{UK}" (default), depending whether uncertainty related to trend estimation has to be taken into account.
 ##' @param critcontrol optional list of control parameters for criterion \code{crit}, see details.\cr
-##' Options for the \code{\link[DOlab]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) are used to avoid numerical issues occuring when adding points too close to the existing ones.
+##' Options for the \code{\link[DiceOptim]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) are used to avoid numerical issues occuring when adding points too close to the existing ones.
 ##' @param optimcontrol optional list of control parameters for optimization of the selected infill criterion. 
 ##'       "\code{method}" set the optimization method; one can 
 ##'        choose between "\code{discrete}" and "\code{genoud}". For each method, further parameters can be set.\cr 
@@ -39,16 +39,16 @@
 ##' 
 ##' Available infill criteria with \code{crit} are : \cr
 ##' \itemize{
-##' \item Expected Probability of Feasibily (\code{EFI}) \code{\link[DOlab]{crit_EFI}},
-##' \item Augmented Lagrangian (\code{AL}) \code{\link[DOlab]{crit_AL}},
-##' \item Stepwise Uncertainty Reduction of the excursion volume (\code{SUR}) \code{\link[DOlab]{crit_SUR_cst}}.
+##' \item Expected Probability of Feasibily (\code{EFI}) \code{\link[DiceOptim]{crit_EFI}},
+##' \item Augmented Lagrangian (\code{AL}) \code{\link[DiceOptim]{crit_AL}},
+##' \item Stepwise Uncertainty Reduction of the excursion volume (\code{SUR}) \code{\link[DiceOptim]{crit_SUR_cst}}.
 ##' }
 ##' Depending on the selected criterion, parameters  can be given with \code{critcontrol}.
-##' Also options for \code{\link[DOlab]{checkPredict}} are available.
+##' Also options for \code{\link[DiceOptim]{checkPredict}} are available.
 ##' More precisions are given in the corresponding help pages. \cr
 ##' 
 ##' If the objective function to minimize is inexpensive, i.e. no need of a kriging model,
-##'  then one can provide it in \code{model.obj}, which is handled next with class \code{\link[DOlab]{fastfun}} (or directly as a \code{\link[DOlab]{fastfun}} object). 
+##'  then one can provide it in \code{model.obj}, which is handled next with class \code{\link[DiceOptim]{fastfun}} (or directly as a \code{\link[DiceOptim]{fastfun}} object). 
 ##' See example below.
 ##' 
 ##' In the case of equality constraints, it is possible to define them with \code{equality}.
@@ -183,7 +183,7 @@ critcst_optimizer <- function(crit = "EFI", model.fun, model.constraint, equalit
   n.ineq <- sum(!equality)
   
   if(crit == "SUR" && n.cst > 3){
-    cat("crit_SUR_cst does not take more than 3 constraints \n")
+    warning("crit_SUR_cst does not take more than 3 constraints \n")
     return(NA)
   }
   
@@ -200,7 +200,7 @@ critcst_optimizer <- function(crit = "EFI", model.fun, model.constraint, equalit
   }else if(class(model.fun) == "fastfun"){
     # cat("Fastfun-Mode on \n")
   }else{
-    cat("model.fun should be either a km, fonction or fastfun object \n")
+    warning("model.fun should be either a km, fonction or fastfun object \n")
     return(NA)
   }
   #   if((!is.null(model.fun) && class(model.fun) != "fastfun") && !is.null(cheapfun)){
@@ -216,7 +216,7 @@ critcst_optimizer <- function(crit = "EFI", model.fun, model.constraint, equalit
   
   if(!is.null(critcontrol) && !is.null(critcontrol$tolConstraints)){
     if(min(critcontrol$tolConstraints) < 0){
-      cat("tolConstraints has negative components, this may not work with equality contraints \n")
+      warning("tolConstraints has negative components, this may not work with equality contraints \n")
     }
   }
   

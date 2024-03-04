@@ -18,7 +18,6 @@
 ##' David Ginsbourger 
 ##' @examples
 ##' 
-##' \dontrun{
 ##' set.seed(421)
 ##' 
 ##' # Set test problem parameters
@@ -43,7 +42,7 @@
 ##' 	lower=rep(.1,dim), upper=rep(1,dim), control=list(trace=FALSE))
 ##' 
 ##' # Compute actual function and criterion on a grid
-##' n.grid <- 12
+##' n.grid <- 9  # change to 21 for nicer visuals
 ##' x.grid <- y.grid <- seq(0,1,length=n.grid)
 ##' design.grid <- expand.grid(x.grid, y.grid)
 ##' nt <- nrow(design.grid)
@@ -55,14 +54,12 @@
 ##' contour(x.grid,y.grid, z.grid, 30)
 ##' title("EQI and its gradient")
 ##' points(model@@X[,1],model@@X[,2],pch=17,col="blue")
-##' 
-##' options(warn=-1)
+##'
 ##' for (i in 1:nt)
 ##' {
 ##'  x <- design.grid[i,]
-##'  arrows(x$Var1,x$Var2, x$Var1+crit.grad[i,1]*.2,x$Var2+crit.grad[i,2]*.2, 
-##' length=0.04,code=2,col="orange",lwd=2)
-##' }
+##'  suppressWarnings(arrows(x$Var1,x$Var2, x$Var1+crit.grad[i,1]*.2,x$Var2+crit.grad[i,2]*.2,
+##' length=0.04,code=2,col="orange",lwd=2))
 ##' }
 ##' 
 ##' @export

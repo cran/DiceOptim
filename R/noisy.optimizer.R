@@ -225,10 +225,10 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
   #
   ############################################################################################################
   
-  cat("Starting noisy optimization with the following criterion and parameters \n")
-  cat(optim.crit, "\n")
-  if(!is.null(optim.param))  print(optim.param,quote=FALSE)
-  cat("----------------- \n")
+  message("Starting noisy optimization with the following criterion and parameters \n")
+  message(optim.crit, "\n")
+  if(!is.null(optim.param))  message(optim.param,quote=FALSE)
+  message("----------------- \n")
   optim.result <- list()
   
   #---------------------------------------------------------------------------------------------------------
@@ -236,8 +236,8 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
   #---------------------------------------------------------------------------------------------------------
   if (NoiseReEstimate)
   { if (!CovReEstimate)
-  { cat("Noise variance cannot be re-estimated without re-estimating the covariance parameters \n")
-    cat("covReEstimate switched to TRUE \n")
+  { warning("Noise variance cannot be re-estimated without re-estimating the covariance parameters \n")
+    warning("covReEstimate switched to TRUE \n")
     CovReEstimate = TRUE
   }
     
@@ -260,7 +260,7 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
         if (type=="SK"){ estim.model@trend.coef=model@trend.coef }
         estim.model@covariance@nugget.estim =TRUE
       } else 
-      { cat("Unless estim.model is provided, noisy.EGO cannot estimate the noise variance when the initial 
+      { warning("Unless estim.model is provided, noisy.EGO cannot estimate the noise variance when the initial
             model has heterogeneous noise variance. NoiseReEstimate switched to FALSE. \n")
         NoiseReEstimate <- FALSE
       }
@@ -293,7 +293,7 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
 
       # If km crashes: add nugget to the interpolating model
       if(!exists("optim.model"))
-      { print("Error occured during model update - small nugget added to the reinterpolating model")
+      { message("Error occured during model update - small nugget added to the reinterpolating model")
         optim.model <- km(formula=model@trend.formula, design=model@X, response=mk,
     	            covtype=model@covariance@name, coef.trend=model@trend.coef, coef.cov=covparam2vect(model@covariance),
     	            coef.var=model@covariance@sd2, nugget=1e-8,control=model@control)
@@ -311,7 +311,7 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
     {
       # Set plugin value (depending on "optim.param$plugin.type": "quantile", "ytilde" or "other")
       if (is.null(optim.param$plugin.type))
-      { cat("Plugin type not provided: default value ytilde is used \n")
+      { warning("Plugin type not provided: default value ytilde is used \n")
         optim.param$plugin.type <- "ytilde"}
       
       if (optim.param$plugin.type=="quantile")
@@ -319,7 +319,7 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
          mk <- pred$mean
          sk <- pred$sd
          if (is.null(optim.param$quantile))
-         { cat("Quantile level not provided: default value 0.5 is used \n")
+         { warning("Quantile level not provided: default value 0.5 is used \n")
            optim.param$quantile <- 0.5
          }
          qk <- mk + qnorm(optim.param$quantile)*sk
@@ -329,7 +329,7 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
       } else if (optim.param$plugin.type=="fixed")
       {  plugin <- optim.param$plugin
       } else 
-      { cat("Unknown plugin type: default value ytilde is used \n")
+      { warning("Unknown plugin type: default value ytilde is used \n")
         optim.param$plugin.type="ytilde"
         plugin <- min(model@y)
       }
@@ -472,9 +472,9 @@ noisy.optimizer <- function(optim.crit, optim.param=NULL, model, n.ite, noise.va
 
     # Update model
     if (add.obs)
-    { cat(c("Creating obs:", as.numeric(x.new),"\n"))
+    { message(c("Creating obs:", as.numeric(x.new),"\n"))
     } else
-    { cat(c("Repeating obs:", as.numeric(x.new),"\n"))}
+    { message(c("Repeating obs:", as.numeric(x.new),"\n"))}
  
     upmod <- update_km_noisyEGO(model=model, x.new=x.new, y.new=y.new, noise.var=noise.var, type=type,
                                 add.obs=add.obs, index.in.DOE=i.best, CovReEstimate=CovReEstimate, NoiseReEstimate=NoiseReEstimate, 

@@ -88,14 +88,14 @@ sampleFromEI <- function(model,minimization=TRUE,n= 1,initdistrib=NULL,lower=rep
   # T: the threshold used to compute the EI
   
   if(is.null(model)){
-    print("Error in samplefromEI. A km object needs to be given")
+    message("Error in samplefromEI. A km object needs to be given")
     return(NULL)
   }
   
   d <- model@d
   
   if (length(lower) != length(upper) ){
-    print("Error in samplefromEI : lower and upper must have the same length")
+    message("Error in samplefromEI : lower and upper must have the same length")
     return(NULL)
   }
   

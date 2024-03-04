@@ -129,7 +129,6 @@
 ##' @examples
 ##' 
 ##' 
-##' \dontrun{
 ##' 
 ##' set.seed(000)
 ##' # 3-points EI maximization.
@@ -158,18 +157,18 @@
 ##' # With a multistarted BFGS algorithm
 ##' maxBFGS <- max_qEI(model = fitted.model, npoints = batchSize, lower = lower, upper = upper, 
 ##' crit = "exact",optimcontrol=list(nStarts=3,method = "BFGS"))
+##' 
+##' # comparison
+##' print(maxBFGS$value)
+##' \dontrun{
 ##' # With a genetic algorithme using derivatives
 ##' maxGen  <- max_qEI(model = fitted.model, npoints = batchSize, lower = lower, upper = upper, 
 ##' crit = "exact", optimcontrol=list(nStarts=3,method = "genoud",pop.size=100,max.generations = 15))
 ##' # With the constant liar heuristic
 ##' maxCL   <- max_qEI(model = fitted.model, npoints = batchSize, lower = lower, upper = upper, 
 ##' crit = "CL",optimcontrol=list(pop.size=20))
-##' 
-##' # comparison
-##' print(maxBFGS$value)
 ##' print(maxGen$value)
 ##' print(maxCL$value)
-##' 
 ##' }
 ##' 
 ##' 

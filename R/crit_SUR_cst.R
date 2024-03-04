@@ -4,7 +4,7 @@
 ##' 
 ##' @param x a vector representing the input for which one wishes to calculate \code{SUR},
 ##' @param model.fun object of class \code{\link[DiceKriging]{km}} corresponding to the objective function,
-##' or, if the objective function is fast-to-evaluate, a \code{\link[DOlab]{fastfun}} object,
+##' or, if the objective function is fast-to-evaluate, a \code{\link[DiceOptim]{fastfun}} object,
 ##' @param model.constraint either one or a list of objects of class \code{\link[DiceKriging]{km}}, one for each constraint function,
 ##' @param equality either \code{FALSE} if all constraints are for inequalities, else a vector of boolean indicating which are equalities 
 ##' @param critcontrol optional list with arguments:
@@ -14,13 +14,13 @@
 ##' \item \code{integration.points} and \code{integration.weights}: optional matrix and vector of integration points;
 ##' \item \code{precalc.data.cst, precalc.data.obj, mn.X.cst, sn.X.cst, mn.X.obj, sn.X.obj}: useful quantities for the 
 ##' fast evaluation of the criterion. 
-##' \item Options for the \code{\link[DOlab]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) 
+##' \item Options for the \code{\link[DiceOptim]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) 
 ##' are used to avoid numerical issues occuring when adding points too close to the existing ones.
 ##' }
 ##' @param type "\code{SK}" or "\code{UK}" (by default), depending whether uncertainty related to trend estimation 
 ##'        has to be taken into account. 
 ##' @return The Stepwise Uncertainty Reduction criterion at \code{x}.
-##' @seealso \code{\link[DiceOptim]{EI}} from package DiceOptim, \code{\link[DOlab]{crit_EFI}}, \code{\link[DOlab]{crit_AL}}.
+##' @seealso \code{\link[DiceOptim]{EI}} from package DiceOptim, \code{\link[DiceOptim]{crit_EFI}}, \code{\link[DiceOptim]{crit_AL}}.
 ##' 
 ##' @export
 ##' @importFrom pbivnorm pbivnorm
@@ -132,7 +132,7 @@ crit_SUR_cst <- function(x, model.fun, model.constraint, equality = FALSE, critc
   n.cst <- length(model.constraint)
   
   if(n.cst > 3){
-    cat("crit_SUR_cst does not take more than 3 constraints \n")
+    warning("crit_SUR_cst does not take more than 3 constraints \n")
     return(NA)
   }
   
@@ -221,7 +221,7 @@ crit_SUR_cst <- function(x, model.fun, model.constraint, equality = FALSE, critc
     n.integration.points <- nrow(integration.points)
     X.new <- as.matrix(x)
     if (is.null(n.integration.points)) {
-      cat("No valid integration point \n")
+      warning("No valid integration point \n")
       return(0)
     }
     

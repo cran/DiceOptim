@@ -6,7 +6,7 @@
 ##' 
 ##' @param x either a vector representing the design or the design AND slack variables (see details)
 ##' @param model.fun object of class \code{\link[DiceKriging]{km}} correspostnding to the objective function,
-##' or, if the objective function is fast-to-evaluate, a \code{\link[DOlab]{fastfun}} object,
+##' or, if the objective function is fast-to-evaluate, a \code{\link[DiceOptim]{fastfun}} object,
 ##' @param model.constraint either one or a list of objects of class \code{\link[DiceKriging]{km}}, one for each constraint function,
 ##' @param equality either \code{FALSE} if all constraints are for inequalities, or a vector of Booleans indicating which are equalities 
 ##' @param critcontrol optional list with the following arguments:
@@ -21,12 +21,12 @@
 ##' It is highly recommended to use it when there are equality constraints since the default tolerance of 0.05 in such case might not be suited.
 ##'  }
 ##'  
-##' Options for the \code{\link[DOlab]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) 
+##' Options for the \code{\link[DiceOptim]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) 
 ##' are used to avoid numerical issues occuring when adding points too close to the existing ones.
 ##' @param type "\code{SK}" or "\code{UK}" (by default), depending whether uncertainty related to trend estimation 
 ##'        has to be taken into account. 
 ##' @return The Expected Augmented Lagrangian Improvement at \code{x}.
-##' @seealso \code{\link[DiceOptim]{EI}} from package DiceOptim, \code{\link[DOlab]{crit_EFI}}, \code{\link[DOlab]{crit_SUR_cst}}.
+##' @seealso \code{\link[DiceOptim]{EI}} from package DiceOptim, \code{\link[DiceOptim]{crit_EFI}}, \code{\link[DiceOptim]{crit_SUR_cst}}.
 ##' 
 ##' @details
 ##' The AL can be used with or without the help of slack variables for the inequality constraints. 

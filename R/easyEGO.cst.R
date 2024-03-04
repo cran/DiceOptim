@@ -1,4 +1,4 @@
-##' User-friendly wrapper of the function \code{\link[DOlab]{EGO.cst}}
+##' User-friendly wrapper of the function \code{\link[DiceOptim]{EGO.cst}}
 ##' Generates initial DOEs and kriging models (objects of class \code{\link[DiceKriging]{km}}), 
 ##' and executes \code{nsteps} iterations of EGO methods integrating constraints.
 ##' @title EGO algorithm with constraints
@@ -11,14 +11,14 @@
 ##' The \code{control} argument is a list that can supply any of the following components: \cr
 ##' \itemize{
 ##' \item \code{method}{: choice of constrained improvement function: "\code{AL}", "\code{EFI}" or "\code{SUR}" 
-##' (see \code{\link[DOlab]{crit_EFI}}, \code{\link[DOlab]{crit_AL}}, \code{\link[DOlab]{crit_SUR_cst}})}
+##' (see \code{\link[DiceOptim]{crit_EFI}}, \code{\link[DiceOptim]{crit_AL}}, \code{\link[DiceOptim]{crit_SUR_cst}})}
 ##' \item \code{trace}{:  if positive, tracing information on the progress of the optimization is produced.}
 ##' \item \code{inneroptim}{: choice of the inner optimization algorithm: "\code{genoud}" or "\code{random}"
 ##'  (see \code{\link[rgenoud]{genoud}}).}
 ##' \item \code{maxit}{: maximum number of iterations of the inner loop. }
 ##' \item \code{seed}{: to fix the random variable generator}
 ##' }
-##' For additional details, see \code{\link[DOlab]{EGO.cst}}.
+##' For additional details, see \code{\link[DiceOptim]{EGO.cst}}.
 ##' 
 ##' @param  fun scalar function to be minimized,
 ##' @param  constraint vectorial function corresponding to the constraints, see details below,
@@ -120,7 +120,6 @@
 ##'                matrix(obj.grid, n.grid), main = "Two inequality constraints",
 ##'                xlab = expression(x[1]), ylab = expression(x[2]), color = terrain.colors, 
 ##'                plot.axes = {axis(1); axis(2);
-##'                             points(design.grid[,1], design.grid[,2], pch = 21, bg = "white")
 ##'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), 
 ##'                                     matrix(cst1.grid, n.grid), level = 0, add=TRUE,
 ##'                                     drawlabels=FALSE, lwd=1.5, col = "red")
@@ -151,7 +150,6 @@
 ##'                matrix(obj.grid, n.grid), xlab = expression(x[1]), ylab = expression(x[2]),
 ##'                main = "Inequality (red) and equality (orange) constraints", color = terrain.colors, 
 ##'                plot.axes = {axis(1); axis(2);
-##'                             points(design.grid[,1], design.grid[,2], pch = 21, bg = "white")
 ##'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), 
 ##'                                     matrix(cst1.grid, n.grid), level = 0, add=TRUE,
 ##'                                     drawlabels=FALSE,lwd=1.5, col = "orange")
@@ -212,7 +210,7 @@ easyEGO.cst <- function (fun, constraint, n.cst=1, budget, lower, upper,
   dim <- length(lower)
   
   if (length(lower) != length(upper)) {
-    cat("Bound values lower and upper are not consistent. Both should be vectors of size d.")
+    warning("Bound values lower and upper are not consistent. Both should be vectors of size d.")
     return(0)
   }
   
@@ -221,7 +219,7 @@ easyEGO.cst <- function (fun, constraint, n.cst=1, budget, lower, upper,
     temp <- dim(design.init)
     
     if (temp[2] != dim) {
-      cat("Bound values (lower and upper) and initial DOE (X) are not consistent. \n 
+      warning("Bound values (lower and upper) and initial DOE (X) are not consistent. \n
           lower and upper should be vectors of size d and \n 
           X either a matrix with d columns or a data frame of d variables.")
       return(0)
@@ -235,7 +233,7 @@ easyEGO.cst <- function (fun, constraint, n.cst=1, budget, lower, upper,
   if (!is.null(X) && !is.null(y)) {
     obs.obj.init <- as.numeric(y)
     if (length(obs.obj.init) != n.init) {
-      cat("Initial DOE (X) and objective (y) are not consistent.")
+      warning("Initial DOE (X) and objective (y) are not consistent.")
       return(0)
     }
   } else {
@@ -245,14 +243,14 @@ easyEGO.cst <- function (fun, constraint, n.cst=1, budget, lower, upper,
   if (!is.null(X) && !is.null(C)) {
     obs.cst.init <- matrix(C, ncol=n.cst)
     if (nrow(obs.cst.init) != n.init) {
-      cat("Initial DOE (X) and constraint (C) are not consistent, or n.cst is incorrect.")
+      warning("Initial DOE (X) and constraint (C) are not consistent, or n.cst is incorrect.")
       return(0)
     }
   } else {
     if (n.cst == 1) obs.cst.init <- matrix(apply(design.init, 1, constraint, ...),ncol=1)
     else           obs.cst.init <- t(apply(design.init, 1, constraint, ...))
     if (ncol(obs.cst.init) != n.cst || nrow(obs.cst.init) != n.init) {
-      cat("n.cst does not match the number of outputs of the constraint function.")
+      warning("n.cst does not match the number of outputs of the constraint function.")
       return(0)
     }
   }
@@ -319,7 +317,7 @@ easyEGO.cst <- function (fun, constraint, n.cst=1, budget, lower, upper,
     value <- c(min(ytemp), Ctemp[which.min(ytemp),])
   } else {
     # Return least infeasible points
-    if (control$trace>0) cat("No feasible point found - least violating point returned instead \n")
+    if (control$trace>0) warning("No feasible point found - least violating point returned instead \n")
     I <- which.min(colSums(allC^2))
     par   <- allX[I,]
     value <- c(ally[I], allC[I,])

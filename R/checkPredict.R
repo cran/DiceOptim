@@ -25,7 +25,9 @@ checkPredict <- function(x, model, threshold = 1e-4, distance = "covdist", type 
     distance <- "covdist"
   if(is.null(threshold))
     threshold <- 1e-4
-  
+
+  if(distance == "none") return(rep(FALSE, nrow(x)))
+    
   if(distance == "euclidean"){
     tp1 <- as.numeric(t(model[[1]]@X))
     tp2 <- matrix(tp1 - as.numeric(x), nrow = model[[1]]@n, byrow = TRUE)^2
@@ -37,8 +39,8 @@ checkPredict <- function(x, model, threshold = 1e-4, distance = "covdist", type 
       mindist <- Inf
       for(i in 1:length(model)){
         if(class(model[[i]]) != "fastfun"){
-          pred.sd <- predict(object = model[[i]], newdata = x, type = type, checkNames = FALSE)
-          mindist <- min(mindist, pred.sd$sd/sqrt(model[[i]]@covariance@sd2))
+          pred.sd <- predict(object = model[[i]], newdata = x, type = type, checkNames = FALSE, light.return = TRUE)
+          mindist <- pmin(mindist, pred.sd$sd/sqrt(model[[i]]@covariance@sd2))
         }
       }
     }else{
@@ -48,18 +50,19 @@ checkPredict <- function(x, model, threshold = 1e-4, distance = "covdist", type 
       mindist <- Inf
       for(i in 1:length(model)){
         if(class(model[[i]]) != "fastfun"){
-        kxx <- covMat1Mat2(model[[i]]@covariance, x, matrix(x, nrow = 1))
-        kxy <- covMat1Mat2(model[[i]]@covariance, x, model[[i]]@X)
-        kyy <- diag(covMat1Mat2(model[[i]]@covariance, model[[i]]@X, model[[i]]@X))
-        
-        mindist <- sqrt(pmax(0,min(mindist, min(kxx - 2*as.vector(kxy) + kyy) / model[[i]]@covariance@sd2)))
+          kn_xx <- (predict(model[[i]], newdata = x, type = type, checkNames = FALSE)$sd)^2 # k_n(x,x)
+          kn_yy <- (predict(model[[i]], newdata = model[[i]]@X, type = type, checkNames = FALSE)$sd)^2 # k_n(y,y)
+          
+          kxy <- covMat1Mat2(model[[i]]@covariance, x, model[[i]]@X)
+          kyy <- covMatrix(model[[i]]@covariance, model[[i]]@X)$C
+          kn_xy <- kxy - kxy %*% chol2inv(model[[i]]@T) %*% kyy # k_n(x,y)
+
+          mindist <- pmin(mindist,
+                          sqrt(pmax(0, kn_xx - 2 * apply(kn_xy - matrix(kn_yy, nrow(x), model[[i]]@n, byrow = T), 1, max))/model[[i]]@covariance@sd2))
         }
       } 
     }
   }
-  if(mindist < threshold){
-    return(TRUE)
-  }else{
-    return(FALSE)
-  }
+  
+  return(mindist < threshold)
 }
