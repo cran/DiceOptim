@@ -1,13 +1,13 @@
-##' Test whether a set of constraints are violated or not, depending on their nature (equality or inequality) and tolerance parameters
-##' 
-##' @title Test constraints violation (vectorized)
-##' @param cst matrix of constraints (one column for each constraint function)
-##' @param equality either FALSE or a Boolean vector defining which constraints are treated as equalities
-##' @param tolConstraints tolerance (vector) for all constraints. If not provided, set to zero for inequalities and 0.05 for equalities
-##' @return A Boolean vector, TRUE if the point if feasible, FALSE if at least one constraint is violated
-##' @author Mickael Binois 
-##' 
-##' Victor Picheny 
+#' Test whether a set of constraints are violated or not, depending on their nature (equality or inequality) and tolerance parameters
+#' 
+#' @title Test constraints violation (vectorized)
+#' @param cst matrix of constraints (one column for each constraint function)
+#' @param equality either FALSE or a Boolean vector defining which constraints are treated as equalities
+#' @param tolConstraints tolerance (vector) for all constraints. If not provided, set to zero for inequalities and 0.05 for equalities
+#' @return A Boolean vector, TRUE if the point if feasible, FALSE if at least one constraint is violated
+#' @author Mickael Binois 
+#' 
+#' Victor Picheny 
 test_feas_vec <- function(cst, equality=FALSE, tolConstraints = NULL){
   if(is.null(dim(cst))){
     cst <- matrix(cst, nrow = 1) 

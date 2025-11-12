@@ -94,7 +94,7 @@ the liar ; "min" takes \code{model@min}, "max" takes \code{model@max},
 "mean" takes the prediction of the model ; When L is \code{NULL}, "min" is
 taken if \code{minimization==TRUE}, else it is "max".
 
-+ The parameters of function \code{\link{genoud}}. Main parameters are :
++ The parameters of function \code{\link[rgenoud]{genoud}}. Main parameters are :
 \code{"pop.size"} (default : [N=3*2^model@d for dim<6 and N=32*model@d
 otherwise]), \code{"max.generations"} (default : 12),
 \code{"wait.generations"} (default : 2) and \code{"BFGSburnin"} (default :
@@ -128,7 +128,7 @@ details,
 + \code{optimcontrol$parinit} : optional matrix of candidate starting
 points (one row corresponds to one point),
 
-+ The parameters of the \code{\link{genoud}} function. Main parameters are
++ The parameters of the \code{\link[rgenoud]{genoud}} function. Main parameters are
 \code{"pop.size"} (default : \code{[50*(model@d)*(npoints)]}),
 \code{"max.generations"} (default : 5), \code{"wait.generations"} (default
 : 2), \code{"BFGSburnin"} (default : 2).

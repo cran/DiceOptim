@@ -51,10 +51,11 @@ easyEGO.cst(
 \value{
 A list with components:
 \itemize{
-\item{\code{par}}{: the best feasible point}
-\item{\code{values}}{: a vector of the objective and constraints at the point given in \code{par},}
-\item{\code{history}}{: a list containing all the points visited by the algorithm (\code{X}) and their corresponding objectives (\code{y}) and constraints (\code{C}) \cr \cr
-If no feasible point is found, \code{par} returns the most feasible point (in the least square sense).}
+\item \code{par}: the best feasible point
+\item \code{values}: a vector of the objective and constraints at the point given in \code{par},
+\item \code{history}: a list containing all the points visited by the algorithm (\code{X}) and their corresponding objectives (\code{y}) and constraints (\code{C}) 
+\cr \cr
+If no feasible point is found, \code{par} returns the most feasible point (in the least square sense).
 }
 }
 \description{
@@ -71,13 +72,13 @@ By default all its components are supposed to be inequalities, but one can use a
 to specify which are equality constraints, hence of the type \eqn{g(x) = 0}.
 The \code{control} argument is a list that can supply any of the following components: \cr
 \itemize{
-\item \code{method}{: choice of constrained improvement function: "\code{AL}", "\code{EFI}" or "\code{SUR}" 
-(see \code{\link[DiceOptim]{crit_EFI}}, \code{\link[DiceOptim]{crit_AL}}, \code{\link[DiceOptim]{crit_SUR_cst}})}
-\item \code{trace}{:  if positive, tracing information on the progress of the optimization is produced.}
-\item \code{inneroptim}{: choice of the inner optimization algorithm: "\code{genoud}" or "\code{random}"
- (see \code{\link[rgenoud]{genoud}}).}
-\item \code{maxit}{: maximum number of iterations of the inner loop. }
-\item \code{seed}{: to fix the random variable generator}
+\item \code{method}: choice of constrained improvement function: "\code{AL}", "\code{EFI}" or "\code{SUR}" 
+(see \code{\link[DiceOptim]{crit_EFI}}, \code{\link[DiceOptim]{crit_AL}}, \code{\link[DiceOptim]{crit_SUR_cst}})
+\item \code{trace}:  if positive, tracing information on the progress of the optimization is produced.
+\item \code{inneroptim}: choice of the inner optimization algorithm: "\code{genoud}" or "\code{random}"
+ (see \code{\link[rgenoud]{genoud}}).
+\item \code{maxit}: maximum number of iterations of the inner loop.
+\item \code{seed}: to fix the random variable generator
 }
 For additional details, see \code{\link[DiceOptim]{EGO.cst}}.
 }

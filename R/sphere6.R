@@ -1,27 +1,27 @@
-##' 6D sphere function
-##' 
-##' 6D Shifted and rotated weighted sphere test function.
-##' 
-##' The 6D Shifted and rotated weighted sphere (standardized version) function
-##' is here defined over the domain \code{[0,1]^6}. It has 1 global minimizer :
-##' x* = c(1,0.8,0.6,0.4,0.2,0), ), with minimum f(x*) = -1.941389. It has no
-##' further local minima.
-##' 
-##' @param x a 6-dimensional vector specifying the location where the function
-##' is to be evaluated.
-##' @return A real number equal to the sphere6 function values at \code{x}
-##' @author Tobias Wagner  
-##' 
-##' Victor Picheny 
-##' 
-##' David Ginsbourger 
-##' @keywords optimize internal
-##' @examples
-##'  
-##' design <- matrix(runif(400), 100, 4)
-##' response <- apply(design, 1, sphere6)
-##' 
-##' @export sphere6
+#' 6D sphere function
+#' 
+#' 6D Shifted and rotated weighted sphere test function.
+#' 
+#' The 6D Shifted and rotated weighted sphere (standardized version) function
+#' is here defined over the domain \code{[0,1]^6}. It has 1 global minimizer :
+#' x* = c(1,0.8,0.6,0.4,0.2,0), ), with minimum f(x*) = -1.941389. It has no
+#' further local minima.
+#' 
+#' @param x a 6-dimensional vector specifying the location where the function
+#' is to be evaluated.
+#' @return A real number equal to the sphere6 function values at \code{x}
+#' @author Tobias Wagner  
+#' 
+#' Victor Picheny 
+#' 
+#' David Ginsbourger 
+#' @keywords optimize internal
+#' @examples
+#'  
+#' design <- matrix(runif(400), 100, 4)
+#' response <- apply(design, 1, sphere6)
+#' 
+#' @export sphere6
 sphere6 <- function(x)
 {
 # 6D Shifted and rotated weighted sphere (standardized version)

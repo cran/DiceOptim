@@ -1,37 +1,37 @@
-##' Update of one or two Kriging models when adding new observation
-##' 
-##' Update of a noisy Kriging model when adding new observation, with or
-##' without covariance parameter re-estimation.  When the noise level is
-##' unkown, a twin model "estim.model" is also updated.
-##' 
-##' 
-##' @param model a Kriging model of "km" class
-##' @param x.new a matrix containing the new points of experiments
-##' @param y.new a matrix containing the function values on the points NewX
-##' @param noise.var scalar: noise variance
-##' @param type kriging type: "SK" or "UK"
-##' @param add.obs boolean: if TRUE, the new point does not exist already in
-##' the design of experiment model@@X
-##' @param index.in.DOE optional integer: if add.obs=TRUE, it specifies the
-##' index of the observation in model@@X corresponding to x.new
-##' @param CovReEstimate optional boolean specfiying if the covariance
-##' parameters should be re-estimated (default value = TRUE)
-##' @param NoiseReEstimate optional boolean specfiying if the noise variance
-##' should be re-estimated (default value = TRUE)
-##' @param estim.model optional input of "km" class. Required if
-##' NoiseReEstimate=TRUE, in order to deal with repetitions.
-##' @param nugget.LB optional scalar: is used to define a lower bound on the
-##' noise variance.
-##' @return A list containing: \item{model}{ The updated Kriging model }
-##' \item{estim.model}{If NoiseReEstimate=TRUE, the updated estim.model}
-##' \item{noise.var}{If NoiseReEstimate=TRUE, the re-estimated noise variance}
-##' @author Victor Picheny 
-##' 
-##' @references V. Picheny and D. Ginsbourger (2013), Noisy kriging-based optimization
-##' methods: A unified implementation within the DiceOptim package,
-##' \emph{Computational Statistics & Data Analysis}
-##' 
-##' @export update_km_noisyEGO
+#' Update of one or two Kriging models when adding new observation
+#' 
+#' Update of a noisy Kriging model when adding new observation, with or
+#' without covariance parameter re-estimation.  When the noise level is
+#' unkown, a twin model "estim.model" is also updated.
+#' 
+#' 
+#' @param model a Kriging model of "km" class
+#' @param x.new a matrix containing the new points of experiments
+#' @param y.new a matrix containing the function values on the points NewX
+#' @param noise.var scalar: noise variance
+#' @param type kriging type: "SK" or "UK"
+#' @param add.obs boolean: if TRUE, the new point does not exist already in
+#' the design of experiment model@@X
+#' @param index.in.DOE optional integer: if add.obs=TRUE, it specifies the
+#' index of the observation in model@@X corresponding to x.new
+#' @param CovReEstimate optional boolean specfiying if the covariance
+#' parameters should be re-estimated (default value = TRUE)
+#' @param NoiseReEstimate optional boolean specfiying if the noise variance
+#' should be re-estimated (default value = TRUE)
+#' @param estim.model optional input of "km" class. Required if
+#' NoiseReEstimate=TRUE, in order to deal with repetitions.
+#' @param nugget.LB optional scalar: is used to define a lower bound on the
+#' noise variance.
+#' @return A list containing: \item{model}{ The updated Kriging model }
+#' \item{estim.model}{If NoiseReEstimate=TRUE, the updated estim.model}
+#' \item{noise.var}{If NoiseReEstimate=TRUE, the re-estimated noise variance}
+#' @author Victor Picheny 
+#' 
+#' @references V. Picheny and D. Ginsbourger (2013), Noisy kriging-based optimization
+#' methods: A unified implementation within the DiceOptim package,
+#' \emph{Computational Statistics & Data Analysis}
+#' 
+#' @export update_km_noisyEGO
 update_km_noisyEGO <- function(model, x.new, y.new, noise.var=0, type="UK", add.obs=TRUE, index.in.DOE=NULL, 
                                CovReEstimate=TRUE, NoiseReEstimate=FALSE, estim.model=NULL, nugget.LB=1e-5)
 {

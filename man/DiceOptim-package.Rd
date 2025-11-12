@@ -189,7 +189,7 @@ Wiley series in probability and mathematical statistics.
 D. Ginsbourger (2009), \emph{Multiples metamodeles pour l'approximation et
 l'optimisation de fonctions numeriques multivariables}, Ph.D. thesis, Ecole
 Nationale Superieure des Mines de Saint-Etienne, 2009.
-\url{https://tel.archives-ouvertes.fr/tel-00772384}
+\url{https://theses.hal.science/tel-00772384}
 
 D. Ginsbourger, R. Le Riche, and L. Carraro (2010), chapter "Kriging is
 well-suited to parallelize optimization", in \emph{Computational
@@ -215,7 +215,7 @@ methods: A unified implementation within the DiceOptim package,
 \emph{Computational Statistics & Data Analysis}, 71, 1035-1053. 
 
 C.E. Rasmussen and C.K.I. Williams (2006), \emph{Gaussian Processes for
-Machine Learning}, the MIT Press, \url{http://www.gaussianprocess.org/gpml/}
+Machine Learning}, the MIT Press, \url{https://gaussianprocess.org/gpml/}
 
 B.D. Ripley (1987), \emph{Stochastic Simulation}, Wiley.
 
@@ -239,3 +239,4 @@ Olivier Roustant (Mines Saint-Etienne, France).
 
 with contributions by M. Binois, C. Chevalier, S. Marmin and T. Wagner
 }
+\keyword{internal}

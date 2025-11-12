@@ -2,7 +2,7 @@ prob.of.feasible.improvement <- function(integration.points, model.fun, model.co
 {
   n.cst <- length(model.constraint)
   if (is.null(dim(x))) x <- matrix(x, nrow=1)
-  if(n.cst == 1 && class(model.constraint) != "list")  model.constraint <- list(model.constraint)
+  if(n.cst == 1 && !is(model.constraint, "list"))  model.constraint <- list(model.constraint)
   
   if (is.null(nrow(integration.points))) integration.points <- as.matrix(integration.points)
   
@@ -37,7 +37,7 @@ prob.of.feasible.improvement <- function(integration.points, model.fun, model.co
   krig.obj <- predict(object=model.fun, newdata=x, type=type, se.compute=TRUE, cov.compute=FALSE, checkNames=FALSE)   
   mk.obj <- krig.obj$mean
   sk.obj <- krig.obj$sd
-  if (class(model.fun)=="km") {
+  if (is(model.fun, "km")) {
     if (obj.min!=Inf) {
       obj.min.tilde <- (obj.min - mn.X.obj) / sn.X.obj
       p.obj.min.tilde <- pnorm(obj.min.tilde)

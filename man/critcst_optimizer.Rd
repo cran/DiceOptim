@@ -45,8 +45,8 @@ Options for the \code{\link[DiceOptim]{checkPredict}} function: \code{threshold}
  see \code{\link[rgenoud]{genoud}}. Numbers into brackets are the default values.
  @return A list with components: 
  \itemize{
- \item{\code{par}}{: The best set of parameters found,}
- \item{\code{value}}{: The value of expected improvement at \code{par}.}
+ \item \code{par}: The best set of parameters found,
+ \item \code{value}: The value of expected improvement at \code{par}.
  }}
 }
 \description{

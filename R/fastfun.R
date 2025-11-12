@@ -1,15 +1,14 @@
-##' Modification of an R function to be used as with methods \code{predict} and \code{update} (similar to a \code{\link[DiceKriging]{km}} object). 
-##' It creates an S4 object which contains the values corresponding to evaluations of other costly observations.
-##' It is useful when an objective can be evaluated fast.
-##' @title Fastfun function
-##' @param fn the evaluator function, found by a call to \code{\link[base]{match.fun}},
-##' @param design a data frame representing the design of experiments.
-##' The ith row contains the values of the d input variables corresponding to the ith evaluation.
-##' @param response optional vector (or 1-column matrix or data frame) containing the values of the 1-dimensional output given by the objective function at the design points.
-##' @import methods 
-##' @export
-##' @examples
-##' @return An object of class  \code{\link[DiceOptim]{fastfun-class}}.
+#' Modification of an R function to be used as with methods \code{predict} and \code{update} (similar to a \code{\link[DiceKriging]{km}} object). 
+#' It creates an S4 object which contains the values corresponding to evaluations of other costly observations.
+#' It is useful when an objective can be evaluated fast.
+#' @title Fastfun function
+#' @param fn the evaluator function, found by a call to \code{\link[base]{match.fun}},
+#' @param design a data frame representing the design of experiments.
+#' The ith row contains the values of the d input variables corresponding to the ith evaluation.
+#' @param response optional vector (or 1-column matrix or data frame) containing the values of the 1-dimensional output given by the objective function at the design points.
+#' @import methods 
+#' @export
+#' @return An object of class  \code{\link[DiceOptim]{fastfun-class}}.
 `fastfun` <-
   function(fn, design, response = NULL) {
     
@@ -39,14 +38,14 @@
 ## ----------------
 
 ## fastfun Class
-##' Class for fast to compute objective.
-##' @slot d spatial dimension,
-##' @slot n observations number,
-##' @slot X the design of experiments, size \code{n x d},
-##' @slot y  the observations, size \code{n x 1},
-##' @slot fun the evaluator function.
-##' @section Objects from the Class : To create a \code{fastfun} object, use \code{\link[DiceOptim]{fastfun}}. See also this function for more details and examples.
-##' @export
+#' Class for fast to compute objective.
+#' @slot d spatial dimension,
+#' @slot n observations number,
+#' @slot X the design of experiments, size \code{n x d},
+#' @slot y  the observations, size \code{n x 1},
+#' @slot fun the evaluator function.
+#' @section Objects from the Class : To create a \code{fastfun} object, use \code{\link[DiceOptim]{fastfun}}. See also this function for more details and examples.
+#' @export
 setClass("fastfun", 		
          representation( 
            d = "integer",          ## spatial dimension
@@ -98,8 +97,8 @@ if(!isGeneric("predict")) {
   )
 }
 
-##' @describeIn fastfun Predict(by evaluating \code{fun}) the result at a new observation.
-##' @param newdata Matrix of the new location for the design
+#' @describeIn fastfun Predict(by evaluating \code{fun}) the result at a new observation.
+#' @param newdata Matrix of the new location for the design
 setMethod("predict", "fastfun", 
           function(object, newdata, ...) {
             predict.fastfun(object = object, newdata = newdata, ...)
@@ -126,12 +125,12 @@ if(!isGeneric("update")) {
   )
 }
 
-##' @param object \code{\link[DiceOptim]{fastfun}} object
-##' @param newX Matrix of the new location for the design
-##' @param newy Matrix of the responses at \code{newX}
-##' @param ... further arguments (not used)
-##' @describeIn fastfun Update the \code{X} and \code{y} slots with a new design and observation.
-##' @keywords internal
+#' @param object \code{\link[DiceOptim]{fastfun}} object
+#' @param newX Matrix of the new location for the design
+#' @param newy Matrix of the responses at \code{newX}
+#' @param ... further arguments (not used)
+#' @describeIn fastfun Update the \code{X} and \code{y} slots with a new design and observation.
+#' @keywords internal
 setMethod("update", "fastfun", 
           function(object, newX, newy, ...) {
             update.fastfun(object = object, newX = newX, newy = newy, ...) 
@@ -159,17 +158,17 @@ if(!isGeneric("simulate")) {
   )
 }
 
-##' @param object \code{\link[DiceOptim]{fastfun}} object
-##' @param nsim an optional number specifying the number of response vectors to simulate. Default is 1.
-##' @param seed usual seed argument of method simulate. Not used.
-##' @param newdata an optional vector, matrix or data frame containing the points where to perform predictions.
-##'  Default is \code{NULL}: simulation is performed at design points specified in \code{object}.
-##' @param cond an optional boolean indicating the type of simulations. Not used.
-##' @param nugget.sim	an optional number corresponding to a numerical nugget effect. Not used.
-##' @param checkNames an optional boolean. Not used.
-##' @param ... further arguments (not used)
-##' @describeIn fastfun Simulate responses values (for compatibility with methods using \code{DiceKriging simulate})
-##' @keywords internal
+#' @param object \code{\link[DiceOptim]{fastfun}} object
+#' @param nsim an optional number specifying the number of response vectors to simulate. Default is 1.
+#' @param seed usual seed argument of method simulate. Not used.
+#' @param newdata an optional vector, matrix or data frame containing the points where to perform predictions.
+#'  Default is \code{NULL}: simulation is performed at design points specified in \code{object}.
+#' @param cond an optional boolean indicating the type of simulations. Not used.
+#' @param nugget.sim	an optional number corresponding to a numerical nugget effect. Not used.
+#' @param checkNames an optional boolean. Not used.
+#' @param ... further arguments (not used)
+#' @describeIn fastfun Simulate responses values (for compatibility with methods using \code{DiceKriging simulate})
+#' @keywords internal
 setMethod("simulate", "fastfun", 
           function(object, nsim, seed, newdata, cond, nugget.sim, checkNames, ...) {
             simulate.fastfun(object = object, nsim = nsim, seed = seed, newdata = newdata, 

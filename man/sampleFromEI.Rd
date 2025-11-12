@@ -94,7 +94,7 @@ optimization of expensive black-box functions, \emph{Journal of Global
 Optimization}, 13, 455-492.
 }
 \seealso{
-\code{\link{EI}}, \code{\link{km}}, \code{\link{qEI}}
+\code{\link{EI}}, \code{\link[DiceKriging]{km}}, \code{\link{qEI}}
 }
 \author{
 Sebastien Marmin 

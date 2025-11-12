@@ -68,13 +68,14 @@ numerical issues occuring when adding points too close to the existing ones.}
 \value{
 A list with components:
 \itemize{
-\item{\code{par}}{: a matrix representing the additional points visited during the algorithm,}
-\item{\code{values}}{: a vector representing the response (objective) values at the points given in \code{par},}
-\item{\code{constraint}}{: a matrix representing the constraints values at the points given in \code{par},}
-\item{\code{feasibility}}{: a boolean vector saying if points given in \code{par} respect the constraints,}
-\item{\code{nsteps}}{: an integer representing the desired number of iterations (given in argument),}
-\item{\code{lastmodel.fun}}{: an object of class \code{\link[DiceKriging]{km}} corresponding to the objective function,}
-\item{\code{lastmodel.constraint}}{: one or a list of objects of class \code{\link[DiceKriging]{km}} corresponding to the last kriging models fitted to the constraints.}\cr \cr
+\item \code{par}: a matrix representing the additional points visited during the algorithm,
+\item \code{values}: a vector representing the response (objective) values at the points given in \code{par},
+\item \code{constraint}: a matrix representing the constraints values at the points given in \code{par},
+\item \code{feasibility}: a boolean vector saying if points given in \code{par} respect the constraints,
+\item \code{nsteps}: an integer representing the desired number of iterations (given in argument),
+\item \code{lastmodel.fun}: an object of class \code{\link[DiceKriging]{km}} corresponding to the objective function,
+\item \code{lastmodel.constraint}: one or a list of objects of class \code{\link[DiceKriging]{km}} corresponding to the last kriging models fitted to the constraints.
+\cr \cr
 If a problem occurs during either model updates or criterion maximization, the last working model and corresponding values are returned.
 }
 }

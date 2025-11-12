@@ -1,12 +1,12 @@
 Package: DiceOptim
-Version: 2.1.1
+Version: 2.1.2
 Title: Kriging-Based Optimization for Computer Experiments
-Date: 2021-01-29
-Authors@R: c(person("Victor", "Picheny", role = c("aut", "cre"),
-                      email = "victor.picheny@toulouse.inra.fr"),
-               person("David Ginsbourger", "Green", role = "aut"),
+Date: 2025-11-12
+Authors@R: c(person("Mickael", "Binois", role = c("cre", "ctb"),
+               email = "mickael.binois@inria.fr"),
+               person("Victor", "Picheny", role = "aut"),
+               person("David", "Ginsbourger", role = "aut"),
                person("Olivier", "Roustant", role = "aut"),
-               person("Mickael", "Binois", role = "ctb"),
                person("Sebastien", "Marmin", role = "ctb"),
                person("Tobias", "Wagner", role = "ctb"))
 Description: Efficient Global Optimization (EGO) algorithm as described in "Roustant et al. (2012)" <doi:10.18637/jss.v051.i01> and adaptations for problems with noise ("Picheny and Ginsbourger, 2012") <doi:10.1016/j.csda.2013.03.018>, parallel infill, and problems with constraints.
@@ -14,17 +14,16 @@ Depends: DiceKriging (>= 1.2), methods
 Imports: randtoolbox, pbivnorm, rgenoud, mnormt, DiceDesign, parallel
 Suggests: KrigInv, GPareto
 License: GPL-2 | GPL-3
-URL: http://dice.emse.fr/
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.3
+Encoding: UTF-8
 NeedsCompilation: yes
-Packaged: 2021-02-01 08:25:48 UTC; victor
-Repository: CRAN
-Date/Publication: 2021-02-02 00:10:23 UTC
-Author: Victor Picheny [aut, cre],
-  David Ginsbourger Green [aut],
+Packaged: 2025-11-12 18:57:10 UTC; mbinois
+Author: Mickael Binois [cre, ctb],
+  Victor Picheny [aut],
+  David Ginsbourger [aut],
   Olivier Roustant [aut],
-  Mickael Binois [ctb],
   Sebastien Marmin [ctb],
   Tobias Wagner [ctb]
-Maintainer: Victor Picheny <victor.picheny@toulouse.inra.fr>
-Encoding: UTF-8
+Maintainer: Mickael Binois <mickael.binois@inria.fr>
+Repository: CRAN
+Date/Publication: 2025-11-12 23:30:25 UTC

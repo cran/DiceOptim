@@ -1,132 +1,132 @@
-##' Computes the Stepwise Uncertainty Reduction (SUR) criterion at current location
-##' 
-##' @title Stepwise Uncertainty Reduction criterion
-##' 
-##' @param x a vector representing the input for which one wishes to calculate \code{SUR},
-##' @param model.fun object of class \code{\link[DiceKriging]{km}} corresponding to the objective function,
-##' or, if the objective function is fast-to-evaluate, a \code{\link[DiceOptim]{fastfun}} object,
-##' @param model.constraint either one or a list of objects of class \code{\link[DiceKriging]{km}}, one for each constraint function,
-##' @param equality either \code{FALSE} if all constraints are for inequalities, else a vector of boolean indicating which are equalities 
-##' @param critcontrol optional list with arguments:
-##' \itemize{
-##' \item \code{tolConstraints} optional vector giving a tolerance (> 0) for each of the constraints (equality or inequality).
-##' It is highly recommended to use it when there are equality constraints since the default tolerance of 0.05 in such case might not be suited;
-##' \item \code{integration.points} and \code{integration.weights}: optional matrix and vector of integration points;
-##' \item \code{precalc.data.cst, precalc.data.obj, mn.X.cst, sn.X.cst, mn.X.obj, sn.X.obj}: useful quantities for the 
-##' fast evaluation of the criterion. 
-##' \item Options for the \code{\link[DiceOptim]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) 
-##' are used to avoid numerical issues occuring when adding points too close to the existing ones.
-##' }
-##' @param type "\code{SK}" or "\code{UK}" (by default), depending whether uncertainty related to trend estimation 
-##'        has to be taken into account. 
-##' @return The Stepwise Uncertainty Reduction criterion at \code{x}.
-##' @seealso \code{\link[DiceOptim]{EI}} from package DiceOptim, \code{\link[DiceOptim]{crit_EFI}}, \code{\link[DiceOptim]{crit_AL}}.
-##' 
-##' @export
-##' @importFrom pbivnorm pbivnorm
-##' 
-##' @author
-##' Victor Picheny 
-##' 
-##' Mickael Binois 
-##' 
-##' @references 
-##' V. Picheny (2014),
-##' A stepwise uncertainty reduction approach to constrained global optimization,
-##' \emph{Proceedings of the 17th International Conference on Artificial Intelligence and Statistics}, JMLR W&CP 33, 787-795.
-##' 
-##' @examples
-##' #---------------------------------------------------------------------------
-##' # Stepwise Uncertainty Reduction criterion surface with one inequality constraint
-##' #---------------------------------------------------------------------------
-##' \donttest{
-##' set.seed(25468)
-##' library(DiceDesign)
-##' 
-##' n_var <- 2 
-##' fun.obj <- goldsteinprice
-##' fun.cst <- function(x){return(-branin(x) + 25)}
-##' n.grid <- 21
-##' test.grid <- expand.grid(X1 = seq(0, 1, length.out = n.grid), X2 = seq(0, 1, length.out = n.grid))
-##' obj.grid <- apply(test.grid, 1, fun.obj)
-##' cst.grid <- apply(test.grid, 1, fun.cst)
-##' 
-##' n_appr <- 15 
-##' design.grid <- round(maximinESE_LHS(lhsDesign(n_appr, n_var, seed = 42)$design)$design, 1)
-##' obj.init <- apply(design.grid, 1, fun.obj)
-##' cst.init <- apply(design.grid, 1, fun.cst)
-##' model.fun <- km(~., design = design.grid, response = obj.init)
-##' model.constraint <- km(~., design = design.grid, response = cst.init)
-##' 
-##' integration.param <- integration_design_cst(integcontrol =list(integration.points = test.grid),
-##'                                             lower = rep(0, n_var), upper = rep(1, n_var))
-##' 
-##' SUR_grid <- apply(test.grid, 1, crit_SUR_cst, model.fun = model.fun,
-##'                   model.constraint = model.constraint, critcontrol=integration.param)
-##' 
-##' filled.contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), nlevels = 50,
-##'                matrix(SUR_grid, n.grid), main = "SUR criterion",
-##'                xlab = expression(x[1]), ylab = expression(x[2]), color = terrain.colors, 
-##'                plot.axes = {axis(1); axis(2);
-##'                             points(design.grid[,1], design.grid[,2], pch = 21, bg = "white")
-##'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), 
-##'                             matrix(obj.grid, n.grid), nlevels = 10,
-##'                                    add=TRUE,drawlabels=TRUE, col = "black")
-##'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), 
-##'                             matrix(cst.grid, n.grid), level = 0, add=TRUE,
-##'                                    drawlabels=FALSE,lwd=1.5, col = "red")
-##'                             }
-##'               )
-##' }
-##' #---------------------------------------------------------------------------
-##' # SUR with one inequality and one equality constraint
-##' #---------------------------------------------------------------------------
-##' \donttest{
-##' set.seed(25468)
-##' library(DiceDesign)
-##' 
-##' n_var <- 2 
-##' fun.obj <- goldsteinprice
-##' fun.cstineq <- function(x){return(3/2 - x[1] - 2*x[2] - .5*sin(2*pi*(x[1]^2 - 2*x[2])))}
-##' fun.csteq <- function(x){return(branin(x) - 25)}
-##' n.grid <- 21
-##' test.grid <- expand.grid(X1 = seq(0, 1, length.out = n.grid), X2 = seq(0, 1, length.out = n.grid))
-##' obj.grid <- apply(test.grid, 1, fun.obj)
-##' cstineq.grid <- apply(test.grid, 1, fun.cstineq)
-##' csteq.grid <- apply(test.grid, 1, fun.csteq)
-##' n_appr <- 25 
-##' design.grid <- round(maximinESE_LHS(lhsDesign(n_appr, n_var, seed = 42)$design)$design, 1)
-##' obj.init <- apply(design.grid, 1, fun.obj)
-##' cstineq.init <- apply(design.grid, 1, fun.cstineq)
-##' csteq.init <- apply(design.grid, 1, fun.csteq)
-##' model.fun <- km(~., design = design.grid, response = obj.init)
-##' model.constraintineq <- km(~., design = design.grid, response = cstineq.init)
-##' model.constrainteq <- km(~., design = design.grid, response = csteq.init)
-##' 
-##' models.cst <- list(model.constraintineq, model.constrainteq)
-##'  
-##' SUR_grid <- apply(test.grid, 1, crit_SUR_cst, model.fun = model.fun, model.constraint = models.cst,
-##'                   equality = c(FALSE, TRUE), critcontrol = list(tolConstraints = c(0.05, 3), 
-##'                   integration.points=integration.param$integration.points))
-##' 
-##' filled.contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), nlevels = 50,
-##'                matrix(SUR_grid, n.grid), main = "SUR criterion",
-##'                xlab = expression(x[1]), ylab = expression(x[2]), color = terrain.colors, 
-##'                plot.axes = {axis(1); axis(2);
-##'                             points(design.grid[,1], design.grid[,2], pch = 21, bg = "white")
-##'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), 
-##'                             matrix(obj.grid, n.grid), nlevels = 10,
-##'                                    add=TRUE,drawlabels=TRUE, col = "black")
-##'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), 
-##'                             matrix(cstineq.grid, n.grid), level = 0, add=TRUE,
-##'                                    drawlabels=FALSE,lwd=1.5, col = "red")
-##'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid),
-##'                             matrix(csteq.grid, n.grid), level = 0, add=TRUE,
-##'                                    drawlabels=FALSE,lwd=1.5, col = "orange")
-##'                             }
-##'               )
-##' }
-##' 
+#' Computes the Stepwise Uncertainty Reduction (SUR) criterion at current location
+#' 
+#' @title Stepwise Uncertainty Reduction criterion
+#' 
+#' @param x a vector representing the input for which one wishes to calculate \code{SUR},
+#' @param model.fun object of class \code{\link[DiceKriging]{km}} corresponding to the objective function,
+#' or, if the objective function is fast-to-evaluate, a \code{\link[DiceOptim]{fastfun}} object,
+#' @param model.constraint either one or a list of objects of class \code{\link[DiceKriging]{km}}, one for each constraint function,
+#' @param equality either \code{FALSE} if all constraints are for inequalities, else a vector of boolean indicating which are equalities 
+#' @param critcontrol optional list with arguments:
+#' \itemize{
+#' \item \code{tolConstraints} optional vector giving a tolerance (> 0) for each of the constraints (equality or inequality).
+#' It is highly recommended to use it when there are equality constraints since the default tolerance of 0.05 in such case might not be suited;
+#' \item \code{integration.points} and \code{integration.weights}: optional matrix and vector of integration points;
+#' \item \code{precalc.data.cst, precalc.data.obj, mn.X.cst, sn.X.cst, mn.X.obj, sn.X.obj}: useful quantities for the 
+#' fast evaluation of the criterion. 
+#' \item Options for the \code{\link[DiceOptim]{checkPredict}} function: \code{threshold} (\code{1e-4}) and \code{distance} (\code{covdist}) 
+#' are used to avoid numerical issues occuring when adding points too close to the existing ones.
+#' }
+#' @param type "\code{SK}" or "\code{UK}" (by default), depending whether uncertainty related to trend estimation 
+#'        has to be taken into account. 
+#' @return The Stepwise Uncertainty Reduction criterion at \code{x}.
+#' @seealso \code{\link[DiceOptim]{EI}} from package DiceOptim, \code{\link[DiceOptim]{crit_EFI}}, \code{\link[DiceOptim]{crit_AL}}.
+#' 
+#' @export
+#' @importFrom pbivnorm pbivnorm
+#' 
+#' @author
+#' Victor Picheny 
+#' 
+#' Mickael Binois 
+#' 
+#' @references 
+#' V. Picheny (2014),
+#' A stepwise uncertainty reduction approach to constrained global optimization,
+#' \emph{Proceedings of the 17th International Conference on Artificial Intelligence and Statistics}, JMLR W&CP 33, 787-795.
+#' 
+#' @examples
+#' #---------------------------------------------------------------------------
+#' # Stepwise Uncertainty Reduction criterion surface with one inequality constraint
+#' #---------------------------------------------------------------------------
+#' \donttest{
+#' set.seed(25468)
+#' library(DiceDesign)
+#' 
+#' n_var <- 2 
+#' fun.obj <- goldsteinprice
+#' fun.cst <- function(x){return(-branin(x) + 25)}
+#' n.grid <- 21
+#' test.grid <- expand.grid(X1 = seq(0, 1, length.out = n.grid), X2 = seq(0, 1, length.out = n.grid))
+#' obj.grid <- apply(test.grid, 1, fun.obj)
+#' cst.grid <- apply(test.grid, 1, fun.cst)
+#' 
+#' n_appr <- 15 
+#' design.grid <- round(maximinESE_LHS(lhsDesign(n_appr, n_var, seed = 42)$design)$design, 1)
+#' obj.init <- apply(design.grid, 1, fun.obj)
+#' cst.init <- apply(design.grid, 1, fun.cst)
+#' model.fun <- km(~., design = design.grid, response = obj.init)
+#' model.constraint <- km(~., design = design.grid, response = cst.init)
+#' 
+#' integration.param <- integration_design_cst(integcontrol =list(integration.points = test.grid),
+#'                                             lower = rep(0, n_var), upper = rep(1, n_var))
+#' 
+#' SUR_grid <- apply(test.grid, 1, crit_SUR_cst, model.fun = model.fun,
+#'                   model.constraint = model.constraint, critcontrol=integration.param)
+#' 
+#' filled.contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), nlevels = 50,
+#'                matrix(SUR_grid, n.grid), main = "SUR criterion",
+#'                xlab = expression(x[1]), ylab = expression(x[2]), color = terrain.colors, 
+#'                plot.axes = {axis(1); axis(2);
+#'                             points(design.grid[,1], design.grid[,2], pch = 21, bg = "white")
+#'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), 
+#'                             matrix(obj.grid, n.grid), nlevels = 10,
+#'                                    add=TRUE,drawlabels=TRUE, col = "black")
+#'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), 
+#'                             matrix(cst.grid, n.grid), level = 0, add=TRUE,
+#'                                    drawlabels=FALSE,lwd=1.5, col = "red")
+#'                             }
+#'               )
+#' }
+#' #---------------------------------------------------------------------------
+#' # SUR with one inequality and one equality constraint
+#' #---------------------------------------------------------------------------
+#' \donttest{
+#' set.seed(25468)
+#' library(DiceDesign)
+#' 
+#' n_var <- 2 
+#' fun.obj <- goldsteinprice
+#' fun.cstineq <- function(x){return(3/2 - x[1] - 2*x[2] - .5*sin(2*pi*(x[1]^2 - 2*x[2])))}
+#' fun.csteq <- function(x){return(branin(x) - 25)}
+#' n.grid <- 21
+#' test.grid <- expand.grid(X1 = seq(0, 1, length.out = n.grid), X2 = seq(0, 1, length.out = n.grid))
+#' obj.grid <- apply(test.grid, 1, fun.obj)
+#' cstineq.grid <- apply(test.grid, 1, fun.cstineq)
+#' csteq.grid <- apply(test.grid, 1, fun.csteq)
+#' n_appr <- 25 
+#' design.grid <- round(maximinESE_LHS(lhsDesign(n_appr, n_var, seed = 42)$design)$design, 1)
+#' obj.init <- apply(design.grid, 1, fun.obj)
+#' cstineq.init <- apply(design.grid, 1, fun.cstineq)
+#' csteq.init <- apply(design.grid, 1, fun.csteq)
+#' model.fun <- km(~., design = design.grid, response = obj.init)
+#' model.constraintineq <- km(~., design = design.grid, response = cstineq.init)
+#' model.constrainteq <- km(~., design = design.grid, response = csteq.init)
+#' 
+#' models.cst <- list(model.constraintineq, model.constrainteq)
+#'  
+#' SUR_grid <- apply(test.grid, 1, crit_SUR_cst, model.fun = model.fun, model.constraint = models.cst,
+#'                   equality = c(FALSE, TRUE), critcontrol = list(tolConstraints = c(0.05, 3), 
+#'                   integration.points=integration.param$integration.points))
+#' 
+#' filled.contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), nlevels = 50,
+#'                matrix(SUR_grid, n.grid), main = "SUR criterion",
+#'                xlab = expression(x[1]), ylab = expression(x[2]), color = terrain.colors, 
+#'                plot.axes = {axis(1); axis(2);
+#'                             points(design.grid[,1], design.grid[,2], pch = 21, bg = "white")
+#'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), 
+#'                             matrix(obj.grid, n.grid), nlevels = 10,
+#'                                    add=TRUE,drawlabels=TRUE, col = "black")
+#'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid), 
+#'                             matrix(cstineq.grid, n.grid), level = 0, add=TRUE,
+#'                                    drawlabels=FALSE,lwd=1.5, col = "red")
+#'                             contour(seq(0, 1, length.out = n.grid), seq(0, 1, length.out = n.grid),
+#'                             matrix(csteq.grid, n.grid), level = 0, add=TRUE,
+#'                                    drawlabels=FALSE,lwd=1.5, col = "orange")
+#'                             }
+#'               )
+#' }
+#' 
 crit_SUR_cst <- function(x, model.fun, model.constraint, equality = FALSE, critcontrol = NULL, type = "UK")
 {
   n.cst <- length(model.constraint)
@@ -137,7 +137,7 @@ crit_SUR_cst <- function(x, model.fun, model.constraint, equality = FALSE, critc
   }
   
   if (is.null(dim(x))) x <- matrix(x, nrow=1)
-  if(n.cst == 1 && class(model.constraint) != "list")  model.constraint <- list(model.constraint)
+  if(n.cst == 1 && !is(model.constraint, "list"))  model.constraint <- list(model.constraint)
   
   # Check if x is not singular
   if(checkPredict(x, c(model.constraint, model.fun), type = type, distance = critcontrol$distance, threshold = critcontrol$threshold))
@@ -160,7 +160,7 @@ crit_SUR_cst <- function(x, model.fun, model.constraint, equality = FALSE, critc
     if (is.null(integration.weights)) {integration.weights <- rep(1/n.integration.points, n.integration.points)}
     
     if(is.null(critcontrol$precalc.data.cst) || is.null(critcontrol$mn.X.cst) || is.null(critcontrol$sn.X.cst) ||
-         (is.null(critcontrol$precalc.data.obj)&&class(model.fun)=="km") || is.null(critcontrol$mn.X.obj) || is.null(critcontrol$sn.X.obj) ){
+         (is.null(critcontrol$precalc.data.obj)&&is(model.fun,"km")) || is.null(critcontrol$mn.X.obj) || is.null(critcontrol$sn.X.obj) ){
       precalc.data.cst <- vector("list", n.cst)
       mn.X.cst <- sn.X.cst <- matrix(0, n.cst, nrow(integration.points))
       
@@ -174,7 +174,7 @@ crit_SUR_cst <- function(x, model.fun, model.constraint, equality = FALSE, critc
       p.tst <- predict(model.fun, newdata=integration.points, type=type, checkNames=FALSE)
       mn.X.obj <- p.tst$mean
       sn.X.obj   <- p.tst$sd
-      if (class(model.fun)=="km") precalc.data.obj <- precomputeUpdateData(model.fun, integration.points)
+      if (is(model.fun,"km")) precalc.data.obj <- precomputeUpdateData(model.fun, integration.points)
       else                        precalc.data.obj <- NULL
       
     } else {
@@ -239,7 +239,7 @@ crit_SUR_cst <- function(x, model.fun, model.constraint, equality = FALSE, critc
     krig.obj <- predict(object=model.fun, newdata=x, type=type, se.compute=TRUE, cov.compute=FALSE, checkNames=FALSE)   
     mk.obj <- krig.obj$mean
     sk.obj <- krig.obj$sd
-    if (class(model.fun)=="km") {
+    if (is(model.fun,"km")) {
 #       if (obj.min!=Inf) {
         kn.obj <- computeQuickKrigcov2(model.fun,integration.points=(integration.points),X.new=(X.new),
                                                 precalc.data=precalc.data.obj, F.newdata=krig.obj$F.newdata, c.newdata=krig.obj$c)

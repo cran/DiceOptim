@@ -1,95 +1,95 @@
-##' Approximate Knowledge Gradient (AKG)
-##' 
-##' Evaluation of the Approximate Knowledge Gradient (AKG) criterion.
-##' 
-##' 
-##' @param x the input vector at which one wants to evaluate the criterion
-##' @param model a Kriging model of "km" class
-##' @param new.noise.var (scalar) noise variance of the future observation.
-##' Default value is 0 (noise-free observation).
-##' @param type Kriging type: "SK" or "UK"
-##' @param envir environment for saving intermediate calculations and reusing
-##' them within AKG.grad
-##' @return Approximate Knowledge Gradient
-##' @author Victor Picheny  
-##' 
-##' David Ginsbourger 
-##' 
-##' @references Scott, W., Frazier, P., Powell, W. (2011). 
-##' The correlated knowledge gradient for simulation optimization of continuous parameters using gaussian process regression. 
-##' \emph{SIAM Journal on Optimization}, 21(3), 996-1026.
-##' @examples
-##' 
-##' ##########################################################################
-##' ###    AKG SURFACE ASSOCIATED WITH AN ORDINARY KRIGING MODEL          ####
-##' ### OF THE BRANIN FUNCTION KNOWN AT A 12-POINT LATIN HYPERCUBE DESIGN ####
-##' ##########################################################################
-##' set.seed(421)
-##' # Set test problem parameters
-##' doe.size <- 12
-##' dim <- 2
-##' test.function <- get("branin2")
-##' lower <- rep(0,1,dim)
-##' upper <- rep(1,1,dim)
-##' noise.var <- 0.2
-##' 
-##' # Generate DOE and response
-##' doe <- as.data.frame(matrix(runif(doe.size*dim),doe.size))
-##' y.tilde <- rep(0, 1, doe.size)
-##' for (i in 1:doe.size)  {
-##'   y.tilde[i] <- test.function(doe[i,]) + sqrt(noise.var)*rnorm(n=1)
-##' }
-##' y.tilde <- as.numeric(y.tilde)
-##' 
-##' # Create kriging model
-##' model <- km(y~1, design=doe, response=data.frame(y=y.tilde),
-##'             covtype="gauss", noise.var=rep(noise.var,1,doe.size), 
-##'             lower=rep(.1,dim), upper=rep(1,dim), control=list(trace=FALSE))
-##' 
-##' # Compute actual function and criterion on a grid
-##' n.grid <- 12 # Change to 21 for a nicer picture
-##' x.grid <- y.grid <- seq(0,1,length=n.grid)
-##' design.grid <- expand.grid(x.grid, y.grid)
-##' nt <- nrow(design.grid)
-##' 
-##' crit.grid <- apply(design.grid, 1, AKG, model=model, new.noise.var=noise.var)
-##' func.grid <- apply(design.grid, 1, test.function)
-##' 
-##' # Compute kriging mean and variance on a grid
-##' names(design.grid) <- c("V1","V2")
-##' pred <- predict.km(model, newdata=design.grid, type="UK")
-##' mk.grid <- pred$m
-##' sk.grid <- pred$sd
-##' 
-##' # Plot actual function
-##' z.grid <- matrix(func.grid, n.grid, n.grid)
-##' filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = topo.colors,
-##'                plot.axes = {title("Actual function");
-##'                             points(model@@X[,1],model@@X[,2],pch=17,col="blue"); 
-##'                             axis(1); axis(2)})
-##' 
-##' # Plot Kriging mean
-##' z.grid <- matrix(mk.grid, n.grid, n.grid)
-##' filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = topo.colors,
-##'                plot.axes = {title("Kriging mean");
-##'                             points(model@@X[,1],model@@X[,2],pch=17,col="blue"); 
-##'                             axis(1); axis(2)})
-##' 
-##' # Plot Kriging variance
-##' z.grid <- matrix(sk.grid^2, n.grid, n.grid)
-##' filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = topo.colors,
-##'                plot.axes = {title("Kriging variance");
-##'                             points(model@@X[,1],model@@X[,2],pch=17,col="blue"); 
-##'                             axis(1); axis(2)})
-##' 
-##' # Plot AKG criterion
-##' z.grid <- matrix(crit.grid, n.grid, n.grid)
-##' filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = topo.colors,
-##'                plot.axes = {title("AKG");
-##'                             points(model@@X[,1],model@@X[,2],pch=17,col="blue"); 
-##'                             axis(1); axis(2)})
-##' 
-##' @export
+#' Approximate Knowledge Gradient (AKG)
+#' 
+#' Evaluation of the Approximate Knowledge Gradient (AKG) criterion.
+#' 
+#' 
+#' @param x the input vector at which one wants to evaluate the criterion
+#' @param model a Kriging model of "km" class
+#' @param new.noise.var (scalar) noise variance of the future observation.
+#' Default value is 0 (noise-free observation).
+#' @param type Kriging type: "SK" or "UK"
+#' @param envir environment for saving intermediate calculations and reusing
+#' them within AKG.grad
+#' @return Approximate Knowledge Gradient
+#' @author Victor Picheny  
+#' 
+#' David Ginsbourger 
+#' 
+#' @references Scott, W., Frazier, P., Powell, W. (2011). 
+#' The correlated knowledge gradient for simulation optimization of continuous parameters using gaussian process regression. 
+#' \emph{SIAM Journal on Optimization}, 21(3), 996-1026.
+#' @examples
+#' 
+#' ##########################################################################
+#' ###    AKG SURFACE ASSOCIATED WITH AN ORDINARY KRIGING MODEL          ####
+#' ### OF THE BRANIN FUNCTION KNOWN AT A 12-POINT LATIN HYPERCUBE DESIGN ####
+#' ##########################################################################
+#' set.seed(421)
+#' # Set test problem parameters
+#' doe.size <- 12
+#' dim <- 2
+#' test.function <- get("branin2")
+#' lower <- rep(0,1,dim)
+#' upper <- rep(1,1,dim)
+#' noise.var <- 0.2
+#' 
+#' # Generate DOE and response
+#' doe <- as.data.frame(matrix(runif(doe.size*dim),doe.size))
+#' y.tilde <- rep(0, 1, doe.size)
+#' for (i in 1:doe.size)  {
+#'   y.tilde[i] <- test.function(doe[i,]) + sqrt(noise.var)*rnorm(n=1)
+#' }
+#' y.tilde <- as.numeric(y.tilde)
+#' 
+#' # Create kriging model
+#' model <- km(y~1, design=doe, response=data.frame(y=y.tilde),
+#'             covtype="gauss", noise.var=rep(noise.var,1,doe.size), 
+#'             lower=rep(.1,dim), upper=rep(1,dim), control=list(trace=FALSE))
+#' 
+#' # Compute actual function and criterion on a grid
+#' n.grid <- 12 # Change to 21 for a nicer picture
+#' x.grid <- y.grid <- seq(0,1,length=n.grid)
+#' design.grid <- expand.grid(x.grid, y.grid)
+#' nt <- nrow(design.grid)
+#' 
+#' crit.grid <- apply(design.grid, 1, AKG, model=model, new.noise.var=noise.var)
+#' func.grid <- apply(design.grid, 1, test.function)
+#' 
+#' # Compute kriging mean and variance on a grid
+#' names(design.grid) <- c("V1","V2")
+#' pred <- predict.km(model, newdata=design.grid, type="UK")
+#' mk.grid <- pred$m
+#' sk.grid <- pred$sd
+#' 
+#' # Plot actual function
+#' z.grid <- matrix(func.grid, n.grid, n.grid)
+#' filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = topo.colors,
+#'                plot.axes = {title("Actual function");
+#'                             points(model@@X[,1],model@@X[,2],pch=17,col="blue"); 
+#'                             axis(1); axis(2)})
+#' 
+#' # Plot Kriging mean
+#' z.grid <- matrix(mk.grid, n.grid, n.grid)
+#' filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = topo.colors,
+#'                plot.axes = {title("Kriging mean");
+#'                             points(model@@X[,1],model@@X[,2],pch=17,col="blue"); 
+#'                             axis(1); axis(2)})
+#' 
+#' # Plot Kriging variance
+#' z.grid <- matrix(sk.grid^2, n.grid, n.grid)
+#' filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = topo.colors,
+#'                plot.axes = {title("Kriging variance");
+#'                             points(model@@X[,1],model@@X[,2],pch=17,col="blue"); 
+#'                             axis(1); axis(2)})
+#' 
+#' # Plot AKG criterion
+#' z.grid <- matrix(crit.grid, n.grid, n.grid)
+#' filled.contour(x.grid,y.grid, z.grid, nlevels=50, color = topo.colors,
+#'                plot.axes = {title("AKG");
+#'                             points(model@@X[,1],model@@X[,2],pch=17,col="blue"); 
+#'                             axis(1); axis(2)})
+#' 
+#' @export
 AKG <- function(x, model, new.noise.var=0, type = "UK", envir=NULL)
 {
 

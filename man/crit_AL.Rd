@@ -25,12 +25,12 @@ or, if the objective function is fast-to-evaluate, a \code{\link[DiceOptim]{fast
 
 \item{critcontrol}{optional list with the following arguments:
 \itemize{
- \item{\code{slack}}{: logical. If TRUE, slack variables are used for inequality constraints (see Details)}
- \item{\code{rho}}{: penalty term (scalar),}
- \item{\code{lambda}}{: Lagrange multipliers (vector of size the number of constraints),}
- \item{\code{elit}}{: logical. If TRUE, sets the criterion to zero for all x's not improving the objective function}
- \item{\code{n.mc}}{: number of Monte-Carlo drawings used to evaluate the criterion (see Details)}
- \item{\code{nt}}{: number of discretization points for the WNCS distribution (see Details)}
+ \item \code{slack}: logical. If TRUE, slack variables are used for inequality constraints (see Details)
+ \item \code{rho}: penalty term (scalar),
+ \item \code{lambda}: Lagrange multipliers (vector of size the number of constraints),
+ \item \code{elit}: logical. If TRUE, sets the criterion to zero for all x's not improving the objective function
+ \item \code{n.mc}: number of Monte-Carlo drawings used to evaluate the criterion (see Details)
+ \item \code{nt}: number of discretization points for the WNCS distribution (see Details)
  \item \code{tolConstraints}, an optional vector giving a tolerance (> 0) for each of the constraints (equality or inequality).
 It is highly recommended to use it when there are equality constraints since the default tolerance of 0.05 in such case might not be suited.
  }

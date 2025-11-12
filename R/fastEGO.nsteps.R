@@ -1,115 +1,115 @@
-##' Sequential EI maximization and model re-estimation, with a number of
-##' iterations fixed in advance by the user
-##' 
-##' Executes \emph{nsteps} iterations of the EGO method to an object of class
-##' \code{\link[DiceKriging]{km}}.  At each step, a kriging model is
-##' re-estimated (including covariance parameters re-estimation) based on the
-##' initial design points plus the points visited during all previous
-##' iterations; then a new point is obtained by maximizing the Expected
-##' Improvement criterion (\code{\link{EI}}).
-##' 
-##' 
-##' @param model an object of class \code{\link[DiceKriging]{km}} ,
-##' @param fun the objective function to be minimized,
-##' @param nsteps an integer representing the desired number of iterations,
-##' @param lower vector of lower bounds for the variables to be optimized over,
-##' @param upper vector of upper bounds for the variables to be optimized over,
-##' @param control an optional list of control parameters for EGO. One
-##' can control
-##' 
-##' \code{"warping"} whether or not a warping is applied to the outputs (default FALSE)
-##' 
-##' \code{"cov.reestim"} whether or not the covariance parameters are estimated at
-##' each step (default TRUE)
-##' \code{"gpmean.trick"} whether or not EI should be replaced periodically by the GP mean
-##'  (default FALSE)
-##'  
-##' \code{"gpmean.freq"} frequency at which EI is replaced by the GP mean (default 1e4)
-##' 
-##' \code{"always.sample"} if TRUE, forces observation even if it creates poor conditioning
-##' 
-##' @param trace between -1 (no trace) and 3 (full messages)
-##' @param n.cores number of cores used for EI maximisation
-##' @param ... additional parameters to be given to \code{fun}
-##' @return A list with components:
-##' 
-##' \item{par}{a data frame representing the additional points visited during
-##' the algorithm,}
-##' 
-##' \item{value}{a data frame representing the response values at the points
-##' given in \code{par},}
-##' 
-##' \item{npoints}{an integer representing the number of parallel computations
-##' (=1 here),}
-##' 
-##' \item{nsteps}{an integer representing the desired number of iterations
-##' (given in argument),}
-##' 
-##' \item{lastmodel}{an object of class \code{\link[DiceKriging]{km}}
-##' corresponding to the last kriging model fitted. If warping is true, 
-##' \code{y} values are normalized (warped) and will not match \code{value}.}
-##' @author Victor Picheny
-##' 
-##' @seealso \code{\link{EI}}, \code{\link{max_crit}}, \code{\link{EI.grad}}
-##' @references
-##' 
-##' D.R. Jones, M. Schonlau, and W.J. Welch (1998), Efficient global
-##' optimization of expensive black-box functions, \emph{Journal of Global
-##' Optimization}, 13, 455-492.
-##' 
-##' J. Mockus (1988), \emph{Bayesian Approach to Global Optimization}. Kluwer
-##' academic publishers.
-##' 
-##' T.J. Santner, B.J. Williams, and W.J. Notz (2003), \emph{The design and
-##' analysis of computer experiments}, Springer.
-##' 
-##' M. Schonlau (1997), \emph{Computer experiments and global optimization},
-##' Ph.D. thesis, University of Waterloo.
-##' @keywords optimize
-##' @examples
-##' 
-##' set.seed(123)
-##' ###############################################################
-##' ### 	10 ITERATIONS OF EGO ON THE BRANIN FUNCTION, 	   ####
-##' ###	 STARTING FROM A 9-POINTS FACTORIAL DESIGN         ####
-##' ###############################################################
-##' 
-##' # a 9-points factorial design, and the corresponding response
-##' d <- 2
-##' n <- 9
-##' design.fact <- expand.grid(seq(0,1,length=3), seq(0,1,length=3)) 
-##' names(design.fact)<-c("x1", "x2")
-##' design.fact <- data.frame(design.fact) 
-##' names(design.fact)<-c("x1", "x2")
-##' response.branin <- apply(design.fact, 1, branin)
-##' response.branin <- data.frame(response.branin) 
-##' names(response.branin) <- "y" 
-##' 
-##' # model identification
-##' fitted.model1 <- km(~1, design=design.fact, response=response.branin, 
-##' covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
-##' 
-##' # EGO n steps
-##' nsteps <- 5 
-##' lower <- rep(0,d) 
-##' upper <- rep(1,d)     
-##' oEGO <- fastEGO.nsteps(model=fitted.model1, fun=branin, nsteps=nsteps, lower=lower, upper=upper)
-##' print(oEGO$par)
-##' print(oEGO$value)
-##' 
-##' # graphics
-##' n.grid <- 15 # Was 20, reduced to 15 for speeding up compilation
-##' x.grid <- y.grid <- seq(0,1,length=n.grid)
-##' design.grid <- expand.grid(x.grid, y.grid)
-##' response.grid <- apply(design.grid, 1, branin)
-##' z.grid <- matrix(response.grid, n.grid, n.grid)
-##' contour(x.grid, y.grid, z.grid, 40)
-##' title("Branin function")
-##' points(design.fact[,1], design.fact[,2], pch=17, col="blue")
-##' points(oEGO$par, pch=19, col="red")
-##' text(oEGO$par[,1], oEGO$par[,2], labels=1:nsteps, pos=3)
-##' 
-##' @export fastEGO.nsteps
+#' Sequential EI maximization and model re-estimation, with a number of
+#' iterations fixed in advance by the user
+#' 
+#' Executes \emph{nsteps} iterations of the EGO method to an object of class
+#' \code{\link[DiceKriging]{km}}.  At each step, a kriging model is
+#' re-estimated (including covariance parameters re-estimation) based on the
+#' initial design points plus the points visited during all previous
+#' iterations; then a new point is obtained by maximizing the Expected
+#' Improvement criterion (\code{\link{EI}}).
+#' 
+#' 
+#' @param model an object of class \code{\link[DiceKriging]{km}} ,
+#' @param fun the objective function to be minimized,
+#' @param nsteps an integer representing the desired number of iterations,
+#' @param lower vector of lower bounds for the variables to be optimized over,
+#' @param upper vector of upper bounds for the variables to be optimized over,
+#' @param control an optional list of control parameters for EGO. One
+#' can control
+#' 
+#' \code{"warping"} whether or not a warping is applied to the outputs (default FALSE)
+#' 
+#' \code{"cov.reestim"} whether or not the covariance parameters are estimated at
+#' each step (default TRUE)
+#' \code{"gpmean.trick"} whether or not EI should be replaced periodically by the GP mean
+#'  (default FALSE)
+#'  
+#' \code{"gpmean.freq"} frequency at which EI is replaced by the GP mean (default 1e4)
+#' 
+#' \code{"always.sample"} if TRUE, forces observation even if it creates poor conditioning
+#' 
+#' @param trace between -1 (no trace) and 3 (full messages)
+#' @param n.cores number of cores used for EI maximisation
+#' @param ... additional parameters to be given to \code{fun}
+#' @return A list with components:
+#' 
+#' \item{par}{a data frame representing the additional points visited during
+#' the algorithm,}
+#' 
+#' \item{value}{a data frame representing the response values at the points
+#' given in \code{par},}
+#' 
+#' \item{npoints}{an integer representing the number of parallel computations
+#' (=1 here),}
+#' 
+#' \item{nsteps}{an integer representing the desired number of iterations
+#' (given in argument),}
+#' 
+#' \item{lastmodel}{an object of class \code{\link[DiceKriging]{km}}
+#' corresponding to the last kriging model fitted. If warping is true, 
+#' \code{y} values are normalized (warped) and will not match \code{value}.}
+#' @author Victor Picheny
+#' 
+#' @seealso \code{\link{EI}}, \code{\link{max_crit}}, \code{\link{EI.grad}}
+#' @references
+#' 
+#' D.R. Jones, M. Schonlau, and W.J. Welch (1998), Efficient global
+#' optimization of expensive black-box functions, \emph{Journal of Global
+#' Optimization}, 13, 455-492.
+#' 
+#' J. Mockus (1988), \emph{Bayesian Approach to Global Optimization}. Kluwer
+#' academic publishers.
+#' 
+#' T.J. Santner, B.J. Williams, and W.J. Notz (2003), \emph{The design and
+#' analysis of computer experiments}, Springer.
+#' 
+#' M. Schonlau (1997), \emph{Computer experiments and global optimization},
+#' Ph.D. thesis, University of Waterloo.
+#' @keywords optimize
+#' @examples
+#' 
+#' set.seed(123)
+#' ###############################################################
+#' ### 	10 ITERATIONS OF EGO ON THE BRANIN FUNCTION, 	   ####
+#' ###	 STARTING FROM A 9-POINTS FACTORIAL DESIGN         ####
+#' ###############################################################
+#' 
+#' # a 9-points factorial design, and the corresponding response
+#' d <- 2
+#' n <- 9
+#' design.fact <- expand.grid(seq(0,1,length=3), seq(0,1,length=3)) 
+#' names(design.fact)<-c("x1", "x2")
+#' design.fact <- data.frame(design.fact) 
+#' names(design.fact)<-c("x1", "x2")
+#' response.branin <- apply(design.fact, 1, branin)
+#' response.branin <- data.frame(response.branin) 
+#' names(response.branin) <- "y" 
+#' 
+#' # model identification
+#' fitted.model1 <- km(~1, design=design.fact, response=response.branin, 
+#' covtype="gauss", control=list(pop.size=50,trace=FALSE), parinit=c(0.5, 0.5))
+#' 
+#' # EGO n steps
+#' nsteps <- 5 
+#' lower <- rep(0,d) 
+#' upper <- rep(1,d)     
+#' oEGO <- fastEGO.nsteps(model=fitted.model1, fun=branin, nsteps=nsteps, lower=lower, upper=upper)
+#' print(oEGO$par)
+#' print(oEGO$value)
+#' 
+#' # graphics
+#' n.grid <- 15 # Was 20, reduced to 15 for speeding up compilation
+#' x.grid <- y.grid <- seq(0,1,length=n.grid)
+#' design.grid <- expand.grid(x.grid, y.grid)
+#' response.grid <- apply(design.grid, 1, branin)
+#' z.grid <- matrix(response.grid, n.grid, n.grid)
+#' contour(x.grid, y.grid, z.grid, 40)
+#' title("Branin function")
+#' points(design.fact[,1], design.fact[,2], pch=17, col="blue")
+#' points(oEGO$par, pch=19, col="red")
+#' text(oEGO$par[,1], oEGO$par[,2], labels=1:nsteps, pos=3)
+#' 
+#' @export fastEGO.nsteps
 fastEGO.nsteps <-function(model, fun, nsteps, lower, upper, control=NULL, trace=0, n.cores=1, ...) {
   
   n <- nrow(model@X)

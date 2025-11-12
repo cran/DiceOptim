@@ -40,12 +40,12 @@ easyEGO(
 \value{
 A list with components:
 \itemize{
-\item{\code{par}}{: the best feasible point}
-\item{\code{values}}{: a vector of the objective and constraints at the point given in \code{par},}
-\item{\code{history}}{: a list containing all the points visited by the algorithm (\code{X}) and their corresponding objectives (\code{y}).}
-\item{\code{model}}{: the last GP model, class \code{\link[DiceKriging]{km}}}
-\item{\code{control}}{: full list of control values, see "Details"}
-\item{\code{res}}{: the output of either \code{\link[DiceOptim]{fastEGO.nsteps}} or \code{\link[DiceOptim]{TREGO.nsteps}}}
+\item \code{par}: the best feasible point
+\item \code{values}: a vector of the objective and constraints at the point given in \code{par},
+\item \code{history}: a list containing all the points visited by the algorithm (\code{X}) and their corresponding objectives (\code{y}).
+\item \code{model}: the last GP model, class \code{\link[DiceKriging]{km}}
+\item \code{control}: full list of control values, see "Details"
+\item \code{res}: the output of either \code{\link[DiceOptim]{fastEGO.nsteps}} or \code{\link[DiceOptim]{TREGO.nsteps}}
 }
 }
 \description{
@@ -57,21 +57,21 @@ and executes \code{nsteps} iterations of either EGO or TREGO.
 Does not require knowledge on kriging models (objects of class \code{\link[DiceKriging]{km}})  \cr
 The \code{control} argument is a list that can supply any of the following components: \cr
 \itemize{
-\item \code{trace}{: between -1 and 3}
-\item \code{seed}{: to fix the seed of the run}
-\item \code{cov.reestim}{: Boolean, if TRUE (default) the covariance parameters are re-estimated at each iteration}
-\item \code{model.trend}{: trend for the GP model}
-\item \code{lb, ub}{: lower and upper bounds for the GP covariance ranges}
-\item \code{nugget}{: optional nugget effect}
-\item \code{covtype}{: covariance of the GP model (default "matern5_2")}
-\item \code{optim.method}{: optimisation of the GP hyperparameters (default "BFGS")}
-\item \code{multistart}{: number of restarts of BFGS}
-\item \code{gpmean.trick, gpmean.freq}{: Boolean and integer, resp., for the gpmean trick}
-\item \code{scaling}{: Boolean, activates input scaling}
-\item \code{warping}{: Boolean, activates output warping}
-\item \code{TR}{: Boolean, activates TREGO instead of EGO}
-\item \code{trcontrol}{: list of parameters of the trust region, see \code{\link[DiceOptim]{TREGO.nsteps}}}
-\item \code{always.sample}{: Boolean, activates force observation even if it leads to poor conditioning}
+\item \code{trace}: between -1 and 3
+\item \code{seed}: to fix the seed of the run
+\item \code{cov.reestim}: Boolean, if TRUE (default) the covariance parameters are re-estimated at each iteration
+\item \code{model.trend}: trend for the GP model
+\item \code{lb, ub}: lower and upper bounds for the GP covariance ranges
+\item \code{nugget}: optional nugget effect
+\item \code{covtype}: covariance of the GP model (default "matern5_2")
+\item \code{optim.method}: optimisation of the GP hyperparameters (default "BFGS")
+\item \code{multistart}: number of restarts of BFGS
+\item \code{gpmean.trick, gpmean.freq}: Boolean and integer, resp., for the gpmean trick
+\item \code{scaling}: Boolean, activates input scaling
+\item \code{warping}: Boolean, activates output warping
+\item \code{TR}: Boolean, activates TREGO instead of EGO
+\item \code{trcontrol}: list of parameters of the trust region, see \code{\link[DiceOptim]{TREGO.nsteps}}
+\item \code{always.sample}: Boolean, activates force observation even if it leads to poor conditioning
 }
 }
 \examples{

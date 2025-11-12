@@ -1,18 +1,18 @@
-##' Strongly multimdoal constraint function from Parr et al. (standardized version)
-##' @title 2D constraint function
-##' @param x a 2-dimensional vector or a two-column matrix specifying the location(s) where the function
-##' is to be evaluated.
-##' @return A scalar
-##' @export
-##' @examples
-##' n.grid <- 20
-##' x.grid <- y.grid <- seq(0,1,length=n.grid)
-##' design.grid <- expand.grid(x.grid, y.grid)
-##' response.grid <- apply(design.grid, 1, ParrConstraint)
-##' z.grid <- matrix(response.grid, n.grid, n.grid)
-##' contour(x.grid,y.grid,z.grid,40)
-##' title("Parr constraint function")
-##' 
+#' Strongly multimdoal constraint function from Parr et al. (standardized version)
+#' @title 2D constraint function
+#' @param x a 2-dimensional vector or a two-column matrix specifying the location(s) where the function
+#' is to be evaluated.
+#' @return A scalar
+#' @export
+#' @examples
+#' n.grid <- 20
+#' x.grid <- y.grid <- seq(0,1,length=n.grid)
+#' design.grid <- expand.grid(x.grid, y.grid)
+#' response.grid <- apply(design.grid, 1, ParrConstraint)
+#' z.grid <- matrix(response.grid, n.grid, n.grid)
+#' contour(x.grid,y.grid,z.grid,40)
+#' title("Parr constraint function")
+#' 
 ParrConstraint <- function(x){
   # Constraint function from Parr et al. (standardized version)
   #--------------------------------------------

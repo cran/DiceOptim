@@ -58,9 +58,9 @@ weights equal to infinity. In an importance sample of M points, the maximum weig
 \value{
 A list with components:
 \itemize{
-\item{\code{integration.points}}{ p x d matrix of p points used for the numerical calculation of integrals}
-\item{\code{integration.weights}}{ a vector of size p corresponding to the weight of each point. If all the points are equally 
-weighted, integration.weights is set to NULL}
+\item \code{integration.points} p x d matrix of p points used for the numerical calculation of integrals
+\item \code{integration.weights} a vector of size p corresponding to the weight of each point. If all the points are equally 
+weighted, integration.weights is set to NULL
 }
 }
 \description{
